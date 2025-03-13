@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login</title>
+        <title>Add Product</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
@@ -17,23 +17,26 @@
                 </ul>
             </nav>
 
-            <h3>Login</h3>
+            <h3>Add Product</h3>
 
             <form method="post">
+                {% csrf_token %}
                 <div class="input">
-                    <input type="email" name="email" placeholder="Email" maxlength=50>
+                    <input type="text" name="product-name" placeholder="Name" maxlength=50 required=true>
                 </div>
 
                 <div class="input">
-                    <input type="password" name="password" placeholder="Password" maxlength=50 required=true>
+                    <input type="number" name="price" placeholder="Price" min=0 required=true>
                 </div>
 
                 <div class="input">
-                    <button type="button" name="submit">Login</button>
+                    <textarea name="description" placeholder="Description" maxlength=500 rows=10, cols=24 required=true></textarea>
+                </div>
+
+                <div class="input">
+                    <button type="submit" name="submit">Add Product</button>
                 </div>
             </form>
-
-            <p><a href="/register">Register an account</a></p>
         </div>
     </body>
 </html>
