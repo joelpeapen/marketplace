@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ Product }}</title>
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="/index">Home</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/about">About</a></li>
+                </ul>
+            </nav>
+
+            <summary>
+                <h3>{{ product }}</h3>
+                <h3>By {{ author }}</h3>
+                <p><em>Added on {{ creation_date }}</em></p>
+
+                <div>
+                    {{ rating }}
+                </div>
+
+                <div>
+                    {{ price }}
+                </div>
+
+                <div>
+                    <p>{{ desc }}</p>
+                </div>
+            </summary>
+
+            <section>
+                <h3>Reviews</h3>
+                <a href="">Add Review</a>
+                <hr>
+                <p>There are no reviews yet. Be the first one to <a href="">write a review</a>.</p>
+            </section>
+
+            <section>
+                <h3>Simliar Items</h3>
+            </section>
+
+        </div>
+    </body>
+</html>

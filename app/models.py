@@ -12,8 +12,9 @@ class User(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     desc = models.TextField()
+    author = models.OneToOneField(User, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    rating = models.IntegerField(max_length=10)
+    rating = models.IntegerField()
     creation_date = models.DateField(auto_now_add=True)
 
 class Comment(models.Model):
