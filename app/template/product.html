@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ name }}</title>
+        <title>{{ product.name }}</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
@@ -18,11 +18,11 @@
             </nav>
 
             <summary>
-                <h3>{{ name }}</h3>
-                <h3>By {{ author }}</h3>
-                <p><em>Added on {{ creation_date }}</em></p>
+                <h3>{{ product.name }}</h3>
+                <h3>By {{ product.author }}</h3>
+                <p><em>Added on {{ product.creation_date }}</em></p>
 
-                <div>{{ rating }}</div>
+                <div><p>Rating: {{ product.rating }}</p></div>
 
                 <div><p>Price: {{ price }}</p></div>
 

@@ -19,8 +19,13 @@
 
             <h1>Home</h1>
 
-            <div><a href="/product">A product</a></div>
-            <div><a href="/productadd">Add product</a></div>
+            <h3 style="display:inline">Products</h3>
+            <a href="/product/add">Add</a>
+
+            {% for product in products %}
+            <div><a href="/product/{{ product.id }}">{{ product.name }}</a></div>
+            {% endfor %}
+
         </div>
     </body>
 </html>

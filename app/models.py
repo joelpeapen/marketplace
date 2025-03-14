@@ -28,3 +28,4 @@ class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
     total = models.DecimalField(max_digits=10, decimal_places=2)
+    # quantity of purchase

@@ -1,10 +1,11 @@
 from django.shortcuts import render
 
-from .models import *
+from .models import Product
 
 
 def index(request):
-    return render(request, "index.html")
+    products = Product.objects.all()
+    return render(request, "index.html", {"products": products})
 
 
 def login(request):
@@ -19,18 +20,19 @@ def about(request):
     return render(request, "about.html")
 
 
-def product(request):
-    # get product info from database
-    products = None
+def product(request, id):
+    products = Product.objects.get(pk=id)
     return render(request, "product.html", {"products": products})
 
 
-def product_add(request):
+def add(request):
     if request.POST:
-        name = request.POST["product-name"]
-        price = request.POST["price"]
-        desc = request.POST["description"]
-        obj = Product.objects.create(name=name, price=price, desc=desc)
-        # return render(request, "product.html", {"name": name, "price": price, "desc": desc})
+        name = request.POST.get("product-name")
+        price = request.POST.get("price")
+        desc = request.POST.get("description")
+        # error check first
+        Product.objects.create(name=name, price=price, desc=desc)
+        # redirect to page of the added product
+        # return render(request, "product.html")
     else:
-        return render(request, "product_add.html")
+        return render(request, "add.html")

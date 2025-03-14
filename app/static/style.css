@@ -20,14 +20,14 @@ body {
 }
 
 .input {
-    margin: 5px;
+    margin: 10px;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     padding: 1rem 2rem;
-    background: #cfd8dc;
+    background: #333;
 }
 
 nav ul {
@@ -40,6 +40,6 @@ nav li {
 }
 
 nav a {
-    color: #0d47a1;
+    color: #cfd8dc;
     text-decoration: none;
 }
