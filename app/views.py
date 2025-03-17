@@ -1,6 +1,5 @@
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
-
 from .models import Product
 
 
@@ -37,3 +36,12 @@ def add(request):
             return HttpResponseRedirect(f"/product/{product.id}")
     else:
         return render(request, "add.html")
+
+
+def delete(request, id):
+    try:
+        product = Product.objects.get(pk=id)
+    except Exception as e:
+        raise Http404("Product does not exist\nerror: ", e)
+    product.delete()
+    return HttpResponseRedirect("/index")
