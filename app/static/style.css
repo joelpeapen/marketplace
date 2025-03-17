@@ -33,10 +33,15 @@ nav {
 nav ul {
     display: flex;
     list-style: none;
+    width: 100%;
 }
 
 nav li {
     padding-left: 1rem;
+}
+
+nav li:first-of-type {
+    margin-right: auto;
 }
 
 nav a {
