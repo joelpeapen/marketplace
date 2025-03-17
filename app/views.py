@@ -21,8 +21,8 @@ def about(request):
 
 
 def product(request, id):
-    products = Product.objects.get(pk=id)
-    return render(request, "product.html", {"products": products})
+    product = Product.objects.get(pk=id)
+    return render(request, "product.html", {"product": product})
 
 
 def add(request):
