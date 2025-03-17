@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Home</title>
+        <title>Market</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
@@ -18,7 +18,15 @@
                 </ul>
             </nav>
 
-            <h1>Home</h1>
+            <h1>Market</h1>
+
+            <h3 style="display:inline">Products</h3>
+            <a href="/product/add">Add</a>
+
+            {% for product in products %}
+            <div><a href="/product/{{ product.id }}">{{ product.name }}</a></div>
+            {% endfor %}
+
         </div>
     </body>
 </html>

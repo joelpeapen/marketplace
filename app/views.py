@@ -4,8 +4,7 @@ from .models import Product
 
 
 def index(request):
-    products = Product.objects.all()
-    return render(request, "index.html", {"products": products})
+    return render(request, "index.html")
 
 
 def login(request):
@@ -18,6 +17,11 @@ def register(request):
 
 def about(request):
     return render(request, "about.html")
+
+
+def market(request):
+    products = Product.objects.all()
+    return render(request, "market.html", {"products": products})
 
 
 def product(request, id):
@@ -44,4 +48,4 @@ def delete(request, id):
     except Exception as e:
         raise Http404("Product does not exist\nerror: ", e)
     product.delete()
-    return HttpResponseRedirect("/index")
+    return HttpResponseRedirect("/market")
