@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from .models import Product
@@ -30,9 +31,9 @@ def add(request):
         name = request.POST.get("product-name")
         price = request.POST.get("price")
         desc = request.POST.get("description")
-        # error check first
-        Product.objects.create(name=name, price=price, desc=desc)
-        # redirect to page of the added product
-        # return render(request, "product.html")
+        if name and price:
+            product = Product(name=name, price=price, desc=desc)
+            product.save()
+            return HttpResponseRedirect(f"/product/{product.id}")
     else:
         return render(request, "add.html")
