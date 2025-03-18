@@ -24,7 +24,9 @@
             <a href="/product/add">Add</a>
 
             {% for product in products %}
-            <div><a href="/product/{{ product.id }}">{{ product.name }}</a></div>
+            <div>
+                <a href="{% url 'product' product.id %}">{{ product.name }}</a>
+            </div>
             {% endfor %}
 
         </div>

@@ -37,7 +37,7 @@
                 <p>There are no reviews yet. Be the first one to <a href="">write a review</a>.</p>
             </section>
 
-            <a href="/product/delete/{{ product.id }}">Delete</a>
+            <a href="{% url 'product-del' product.id %}">Delete</a>
 
             <section>
                 <h3>Simliar Items</h3>

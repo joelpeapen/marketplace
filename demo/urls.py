@@ -21,13 +21,13 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("about/", views.about),
-    path("index/", views.index),
-    path("login/", views.login),
-    path("register/", views.register),
-    path("product/<int:id>", views.product),
-    path("product/add/", views.add),
-    path("product/delete/<int:id>", views.delete),
-    path("market/", views.market),
+    path("admin/", admin.site.urls, name="admin"),
+    path("about/", views.about, name="about"),
+    path("index/", views.index, name="index"),
+    path("login/", views.login, name="login"),
+    path("register/", views.register, name="register"),
+    path("product/<int:id>/", views.product, name="product"),
+    path("product/add/", views.add, name="product-add"),
+    path("product/delete/<int:id>/", views.delete, name="product-del"),
+    path("market/", views.market, name="market"),
 ]
