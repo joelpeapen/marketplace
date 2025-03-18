@@ -1,5 +1,5 @@
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from .models import Product
 
 
@@ -43,9 +43,6 @@ def add(request):
 
 
 def delete(request, id):
-    try:
-        product = Product.objects.get(pk=id)
-    except Exception as e:
-        raise Http404("Product does not exist\nerror: ", e)
+    product = get_object_or_404(Product, pk=id)
     product.delete()
     return HttpResponseRedirect("/market")
