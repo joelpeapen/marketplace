@@ -1,6 +1,6 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from .models import Product
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Product, User
 
 
 def index(request):
@@ -8,11 +8,42 @@ def index(request):
 
 
 def login(request):
+    if request.POST:
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = User.objects.get(email=email, password=password)
+        if user:
+            # request.session
+            user = User.objects.get(email=email)
+            return redirect(f"/profile/{user.username}")
+
     return render(request, "login.html")
 
 
 def register(request):
+    if request.POST:
+        email = request.POST.get("email")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        if email and username and password:
+            if User.objects.filter(email=email).exists():
+                messages.error(request, "A user with this email already exists.")
+            elif User.objects.filter(username=username).exists():
+                messages.error(request, "A user with this username already exists.")
+            else:
+                user = User(username=username, email=email, password=password)
+                user.save()
+                messages.success(request, "Registration successful!")
+                return redirect("/login")
+
     return render(request, "register.html")
+
+
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, "profile.html", {"user": user})
 
 
 def about(request):
@@ -37,7 +68,7 @@ def add(request):
         if name and price:
             product = Product(name=name, price=price, desc=desc)
             product.save()
-            return HttpResponseRedirect(f"/product/{product.id}")
+            return redirect(f"/product/{product.id}")
     else:
         return render(request, "add.html")
 
@@ -45,4 +76,4 @@ def add(request):
 def delete(request, id):
     product = get_object_or_404(Product, pk=id)
     product.delete()
-    return HttpResponseRedirect("/market")
+    return redirect("/market")

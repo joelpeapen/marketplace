@@ -26,6 +26,7 @@ urlpatterns = [
     path("index/", views.index, name="index"),
     path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
+    path("profile/<str:username>", views.profile, name="profile"),
     path("product/<int:id>/", views.product, name="product"),
     path("product/add/", views.add, name="product-add"),
     path("product/delete/<int:id>/", views.delete, name="product-del"),
