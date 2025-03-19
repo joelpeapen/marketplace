@@ -8,19 +8,19 @@
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
     <body>
-        <div class="container">
-            <nav>
-                <ul>
-                    <li><a href="/index">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/market">Market</a></li>
-                    <li><a href="/login">Login</a></li>
-                </ul>
-            </nav>
+        <nav>
+            <ul>
+                <li><a href="/index">Home</a></li>
+                <li><a href="/market">Market</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
 
+        <div class="lr-form">
             <h3>Login</h3>
-
             <form method="post">
+                {% csrf_token %}
                 <div class="input">
                     <input type="email" name="email" placeholder="Email" maxlength=50 required=true>
                 </div>
@@ -34,7 +34,7 @@
                 </div>
             </form>
 
-            <p><a href="/register">Register an account</a></p>
+            <a href="/register">Register an account</a>
         </div>
     </body>
 </html>

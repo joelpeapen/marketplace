@@ -8,27 +8,27 @@
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
     <body>
-        <div class="container">
-            <nav>
-                <ul>
-                    <li><a href="/index">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/market">Market</a></li>
-                    <li><a href="/login">Login</a></li>
-                </ul>
-            </nav>
+        <nav>
+            <ul>
+                <li><a href="/index">Home</a></li>
+                <li><a href="/market">Market</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
 
-            <h1>Market</h1>
+        <h1>Market</h1>
 
+        <div>
             <h3 style="display:inline">Products</h3>
             <a href="/product/add">Add</a>
-
-            {% for product in products %}
-            <div>
-                <a href="{% url 'product' product.id %}">{{ product.name }}</a>
-            </div>
-            {% endfor %}
-
         </div>
+
+        {% for product in products %}
+        <div>
+            <a href="{% url 'product' product.id %}">{{ product.name }}</a>
+        </div>
+        {% endfor %}
+
     </body>
 </html>

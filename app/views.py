@@ -69,8 +69,23 @@ def add(request):
             product = Product(name=name, price=price, desc=desc)
             product.save()
             return redirect(f"/product/{product.id}")
-    else:
-        return render(request, "add.html")
+    return render(request, "add.html")
+
+
+def update(request, id):
+    product = get_object_or_404(Product, pk=id)
+    if request.POST:
+        name = request.POST.get("product-name")
+        price = request.POST.get("price")
+        desc = request.POST.get("description")
+
+        if name and price:
+            product.name = name
+            product.price = price
+            product.desc = desc
+            product.save()
+            return redirect(f"/product/{id}")
+    return render(request, "update.html", {"product": product})
 
 
 def delete(request, id):

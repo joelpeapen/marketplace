@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Add Product</title>
+        <title>Update</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
@@ -17,23 +17,23 @@
             </ul>
         </nav>
 
-        <form class="lr-form" method="post">
-            <h3>Add Product</h3>
+        <form class=lr-form method="post">
+            <h3>Update Product</h3>
             {% csrf_token %}
             <div class="input">
-                <input type="text" name="product-name" placeholder="Name" maxlength=50 required=true>
+                <input type="text" name="product-name" placeholder="Name" value="{{ product.name }}" maxlength=50 required=true>
             </div>
 
             <div class="input">
-                <input type="number" name="price" placeholder="Price" min=0 required=true>
+                <input type="number" name="price" placeholder="Price" value={{ product.price }} min=0 required=true>
             </div>
 
             <div class="input">
-                <textarea name="description" placeholder="Description" maxlength=500 rows=10, cols=24 required=true></textarea>
+                <textarea name="description" placeholder="Description" maxlength=500 rows=10, cols=24 required=true>{{ product.desc }}</textarea>
             </div>
 
             <div class="input">
-                <button type="submit" name="submit">Add Product</button>
+                <button type="submit" name="submit">Update</button>
             </div>
         </form>
     </body>

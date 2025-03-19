@@ -29,6 +29,7 @@ urlpatterns = [
     path("profile/<str:username>", views.profile, name="profile"),
     path("product/<int:id>/", views.product, name="product"),
     path("product/add/", views.add, name="product-add"),
+    path("product/update/<int:id>/", views.update, name="product-update"),
     path("product/delete/<int:id>/", views.delete, name="product-del"),
     path("market/", views.market, name="market"),
 ]

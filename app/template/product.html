@@ -8,41 +8,40 @@
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
     <body>
-        <div class="container">
-            <nav>
-                <ul>
-                    <li><a href="/index">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/market">Market</a></li>
-                    <li><a href="/login">Login</a></li>
-                </ul>
-            </nav>
+        <nav>
+            <ul>
+                <li><a href="/index">Home</a></li>
+                <li><a href="/market">Market</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
 
-            <summary>
-                <h3>{{ product.name }}</h3>
-                <h3>By {{ product.author }}</h3>
-                <p><em>Added on {{ product.creation_date }}</em></p>
+        <summary>
+            <h3>{{ product.name }}</h3>
+            <h3>By {{ product.author }}</h3>
+            <p><em>Added on {{ product.creation_date }}</em></p>
 
-                <div><p>Rating: {{ product.rating }}</p></div>
+            <div><p>Rating: {{ product.rating }}</p></div>
 
-                <div><p>Price: {{ product.price }}</p></div>
+            <div><p>Price: {{ product.price }}</p></div>
 
-                <div><p>Description: {{ product.desc }}</p> </div>
-            </summary>
+            <div><p>Description: {{ product.desc }}</p> </div>
+        </summary>
 
-            <section>
-                <h3>Reviews</h3>
-                <a href="">Add Review</a>
-                <hr>
-                <p>There are no reviews yet. Be the first one to <a href="">write a review</a>.</p>
-            </section>
+        <section>
+            <h3>Reviews</h3>
+            <a href="">Add Review</a>
+            <hr>
+            <p>There are no reviews yet. Be the first one to <a href="">write a review</a>.</p>
+        </section>
 
-            <a href="{% url 'product-del' product.id %}">Delete</a>
+        <a href="{% url 'product-update' product.id %}">Update</a>
+        <a href="{% url 'product-del' product.id %}">Delete</a>
 
-            <section>
-                <h3>Simliar Items</h3>
-            </section>
+        <section>
+            <h3>Simliar Items</h3>
+        </section>
 
-        </div>
     </body>
 </html>
