@@ -15,12 +15,10 @@ figure, blockquote, dl, dd {
 }
 
 body {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     line-height: 1.5;
-}
-
-.input {
-    margin: 10px;
 }
 
 nav {
@@ -40,11 +38,40 @@ nav li {
     padding-left: 1rem;
 }
 
-nav li:first-of-type {
-    margin-right: auto;
+nav li:last-of-type {
+    margin-left: auto;
 }
 
 nav a {
     color: #cfd8dc;
     text-decoration: none;
+}
+
+.lr-form {
+    margin: auto;
+    width: 20rem;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.lr-form input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.lr-form button {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    background-color: #007bff;
+}
+
+.lr-form button:hover {
+    background-color: #0056b3;
 }
