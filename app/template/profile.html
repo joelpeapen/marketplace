@@ -13,11 +13,20 @@
                 <li><a href="/index">Home</a></li>
                 <li><a href="/market">Market</a></li>
                 <li><a href="/about">About</a></li>
-                <li><a href="/login">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' user.username %}">Account</a></li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
 
         <h3>{{ user.username }}</h3>
 
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
     </body>
 </html>

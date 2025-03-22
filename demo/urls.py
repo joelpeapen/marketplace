@@ -22,10 +22,12 @@ from app import views
 
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
-    path("about/", views.about, name="about"),
+    path('', views.index, name='index'),
     path("index/", views.index, name="index"),
-    path("login/", views.login, name="login"),
+    path("about/", views.about, name="about"),
     path("register/", views.register, name="register"),
+    path("login/", views.login_user, name="login"),
+    path("profile/", views.profile),
     path("profile/<str:username>", views.profile, name="profile"),
     path("product/<int:id>/", views.product, name="product"),
     path("product/add/", views.add, name="product-add"),

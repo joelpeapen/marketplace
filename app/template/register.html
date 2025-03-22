@@ -13,7 +13,11 @@
                 <li><a href="/index">Home</a></li>
                 <li><a href="/market">Market</a></li>
                 <li><a href="/about">About</a></li>
-                <li><a href="/login">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' user.username %}">Account</a></li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -22,21 +26,32 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="input">
-                    <input type="text" name="username" placeholder="Username" maxlength=50 required=true>
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" maxlength=50 required>
                 </div>
 
                 <div class="input">
-                    <input type="email" name="email" placeholder="Email" maxlength=50 required=true>
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" maxlength=50 required>
                 </div>
 
                 <div class="input">
-                    <input type="password" name="password" placeholder="Password" maxlength=50 required=true>
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" maxlength=50 required>
                 </div>
 
                 <div class="input">
                     <button type="submit" name="submit">Register</button>
                 </div>
             </form>
+
+            <div>Have an account? <a href="/login">Login</a></div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
         </div>
     </body>
 </html>

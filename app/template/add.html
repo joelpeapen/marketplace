@@ -13,7 +13,11 @@
                 <li><a href="/index">Home</a></li>
                 <li><a href="/market">Market</a></li>
                 <li><a href="/about">About</a></li>
-                <li><a href="/login">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' user.username %}">Account</a></li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -21,15 +25,15 @@
             <h3>Add Product</h3>
             {% csrf_token %}
             <div class="input">
-                <input type="text" name="product-name" placeholder="Name" maxlength=50 required=true>
+                <input type="text" name="product-name" placeholder="Name" maxlength=50 required>
             </div>
 
             <div class="input">
-                <input type="number" name="price" placeholder="Price" min=0 required=true>
+                <input type="number" name="price" placeholder="Price" min=0 required>
             </div>
 
             <div class="input">
-                <textarea name="description" placeholder="Description" maxlength=500 rows=10, cols=24 required=true></textarea>
+                <textarea name="description" placeholder="Description" maxlength=500 rows=10, cols=24 required></textarea>
             </div>
 
             <div class="input">
