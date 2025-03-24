@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Register</title>
+        <title>Settings</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
@@ -21,31 +21,33 @@
             </ul>
         </nav>
 
+        <aside>
+            <h4>User settings</h4>
+            <a href="/user/settings">Profile</a>
+        </aside>
+
         <div class="lr-form">
-            <h3>Register</h3>
             <form method="post">
                 {% csrf_token %}
                 <div class="input">
                     <label for="username">Username</label>
-                    <input id="username" type="text" name="username" maxlength=50 required>
+                    <input id="username" type="text" name="username" maxlength=50 value="{{ user.username }}" required>
                 </div>
 
                 <div class="input">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" name="email" maxlength=50 required>
+                    <label for="fname">First Name</label>
+                    <input id="fname" type="text" name="fname" maxlength=50 value="{{ user.first_name }}">
                 </div>
 
                 <div class="input">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" name="password" maxlength=50 required>
+                    <label for="lname">Last Name</label>
+                    <input id="lname" type="text" name="lname" maxlength=50 value="{{ user.last_name }}">
                 </div>
 
                 <div class="input">
-                    <button type="submit" name="submit">Register</button>
+                    <button type="submit" name="submit">Save</button>
                 </div>
             </form>
-
-            <div>Have an account? <a href="/login">Login</a></div>
 
             {% if messages %}
                 {% for message in messages %}

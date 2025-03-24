@@ -1,6 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth import authenticate, login, logout
 
 from .models import Product, User
 
@@ -22,10 +22,10 @@ def register(request):
         if email and username and password:
             if User.objects.filter(email=email).exists():
                 messages.error(request, "A user with this email already exists")
-                return redirect("/register")
+                return redirect(request.path)
             elif User.objects.filter(username=username).exists():
                 messages.error(request, "A user with this username already exists")
-                return redirect("/register")
+                return redirect(request.path)
             else:
                 User.objects.create_user(
                     username=username, email=email, password=password
@@ -44,10 +44,10 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return redirect("/profile")
+            return redirect("/user")
         else:
             messages.error(request, "Username or password is incorrect")
-            return redirect("/login")
+            return redirect(request.path)
 
     return render(request, "login.html", {"user": request.user})
 
@@ -59,20 +59,49 @@ def logout_user(request):
     return redirect("/market")
 
 
-def profile(request, username=None):
+def settings(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    if request.POST:
+        email = request.POST.get("email")
+        username = request.POST.get("username")
+        fname = request.POST.get("fname")
+        lname = request.POST.get("lname")
+
+        user = request.user
+        if username and username != user.username:
+            user.username = username
+
+        if email and email != user.email:
+            user.email = email
+
+        if fname != user.first_name:
+            user.first_name = fname
+
+        if lname != user.last_name:
+            user.last_name = lname
+
+        user.save()
+        messages.success(request, "Profile Updated")
+        return redirect(request.path)
+
+    return render(request, "settings.html", {"user": request.user})
+
+
+def user(request, username=None):
     if username:
         try:
             profile = User.objects.get(username=username)
             return render(
-                request, "profile.html", {"profile": profile, "user": request.user}
+                request, "user.html", {"profile": profile, "user": request.user}
             )
         except User.DoesNotExist:
-            messages.error(request, "User does not exist")
-            return redirect("/404")  # Redirect to a 404 page
+            return redirect("/404")
 
     if request.user.is_authenticated:
         return render(
-            request, "profile.html", {"profile": request.user, "user": request.user}
+            request, "user.html", {"profile": request.user, "user": request.user}
         )
     return redirect("/login")
 
@@ -81,8 +110,7 @@ def product(request, id):
     try:
         product = Product.objects.get(pk=id)
     except Product.DoesNotExist:
-        messages.error(request, "product does not exist")
-        return redirect("/market")  # should go to 404
+        return redirect("/404")
 
     return render(request, "product.html", {"user": request.user, "product": product})
 
@@ -100,6 +128,9 @@ def add(request):
             product = Product(name=name, author=author, price=price, desc=desc)
             product.save()
             return redirect(f"/product/{product.id}")
+        else:
+            messages.error("Must provide name and price")
+            return redirect(request.path)
 
     return render(request, "add.html", {"user": request.user})
 
@@ -122,6 +153,9 @@ def update(request, id):
             if request.user == product.author:
                 product.save()
             return redirect(f"/product/{id}")
+        else:
+            messages.error("Must provide name and price")
+            return redirect(request.path)
 
     return render(request, "update.html", {"user": request.user, "product": product})
 

@@ -14,7 +14,7 @@
                 <li><a href="/market">Market</a></li>
                 <li><a href="/about">About</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
+                    <li><a href="{% url 'user' user.username %}">{{ user.username }}</a></li>
                 {% else %}
                     <li><a href="/login">Login</a></li>
                 {% endif %}
@@ -33,7 +33,7 @@
         {% for product in products %}
         <div>
             <p>
-                <a href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'profile' product.author %}">{{ product.author }}</a>
+                <a href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'user' product.author %}">{{ product.author }}</a>
             </p>
         </div>
         {% endfor %}
