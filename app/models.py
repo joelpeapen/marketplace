@@ -9,7 +9,7 @@ class User(AbstractUser):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     desc = models.TextField()
-    # author = models.OneToOneField(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     rating = models.IntegerField(default=0)
     creation_date = models.DateField(auto_now_add=True)

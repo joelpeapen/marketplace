@@ -40,7 +40,7 @@
             <p>There are no reviews yet. Be the first one to <a href="">write a review</a>.</p>
         </section>
 
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user == product.author %}
             <a href="{% url 'product-update' product.id %}">Update</a>
             <a href="{% url 'product-del' product.id %}">Delete</a>
         {% endif %}

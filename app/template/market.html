@@ -32,7 +32,9 @@
 
         {% for product in products %}
         <div>
-            <a href="{% url 'product' product.id %}">{{ product.name }}</a>
+            <p>
+                <a href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'profile' product.author %}">{{ product.author }}</a>
+            </p>
         </div>
         {% endfor %}
 

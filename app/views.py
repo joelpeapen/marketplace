@@ -54,7 +54,7 @@ def login_user(request):
 
 def logout_user(request):
     if not request.user.is_authenticated:
-        return redirect("/profile")
+        return redirect("/login")
     logout(request)
     return redirect("/market")
 
@@ -95,8 +95,9 @@ def add(request):
         name = request.POST.get("product-name")
         price = request.POST.get("price")
         desc = request.POST.get("description")
+        author = request.user
         if name and price:
-            product = Product(name=name, price=price, desc=desc)
+            product = Product(name=name, author=author, price=price, desc=desc)
             product.save()
             return redirect(f"/product/{product.id}")
 
@@ -104,10 +105,10 @@ def add(request):
 
 
 def update(request, id):
-    if not request.user.is_authenticated:
-        return redirect(f"/product/{id}")
-
     product = get_object_or_404(Product, pk=id)
+
+    if not request.user.is_authenticated or request.user != product.author:
+        return redirect(f"/product/{id}")
 
     if request.POST:
         name = request.POST.get("product-name")
@@ -118,17 +119,19 @@ def update(request, id):
             product.name = name
             product.price = price
             product.desc = desc
-            product.save()
+            if request.user == product.author:
+                product.save()
             return redirect(f"/product/{id}")
 
     return render(request, "update.html", {"user": request.user, "product": product})
 
 
 def delete(request, id):
-    if not request.user.is_authenticated:
+    product = get_object_or_404(Product, pk=id)
+
+    if not request.user.is_authenticated or request.user != product.author:
         return redirect(f"/product/{id}")
 
-    product = get_object_or_404(Product, pk=id)
     product.delete()
     return redirect("/market")
 
