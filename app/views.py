@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Product, User
@@ -52,17 +52,28 @@ def login_user(request):
     return render(request, "login.html", {"user": request.user})
 
 
+def logout_user(request):
+    if not request.user.is_authenticated:
+        return redirect("/profile")
+    logout(request)
+    return redirect("/market")
+
+
 def profile(request, username=None):
     if username:
         try:
-            user = User.objects.get(username=username)
-            return render(request, "profile.html", {"user": user})
+            profile = User.objects.get(username=username)
+            return render(
+                request, "profile.html", {"profile": profile, "user": request.user}
+            )
         except User.DoesNotExist:
             messages.error(request, "User does not exist")
-            return redirect("/login")  # should go to 404
+            return redirect("/404")  # Redirect to a 404 page
 
     if request.user.is_authenticated:
-        return render(request, "profile.html", {"user": request.user})
+        return render(
+            request, "profile.html", {"profile": request.user, "user": request.user}
+        )
     return redirect("/login")
 
 

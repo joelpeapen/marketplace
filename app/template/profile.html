@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ user.username }}'s Profile</title>
+        <title>{{ profile.username }}'s Profile</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
@@ -14,14 +14,18 @@
                 <li><a href="/market">Market</a></li>
                 <li><a href="/about">About</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'profile' user.username %}">Account</a></li>
+                    <li><a href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
                 {% else %}
                     <li><a href="/login">Login</a></li>
                 {% endif %}
             </ul>
         </nav>
 
-        <h3>{{ user.username }}</h3>
+        <h3>{{ profile.username }}</h3>
+
+        {% if user.is_authenticated and user == profile %}
+            <a href="/logout">Log out</a>
+        {% endif %}
 
         {% if messages %}
             {% for message in messages %}
