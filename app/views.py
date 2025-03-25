@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
 from .models import Product, User
 
@@ -87,6 +87,38 @@ def settings(request):
         return redirect(request.path)
 
     return render(request, "settings.html", {"user": request.user})
+
+
+def settings_account(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    if request.POST:
+        password = request.POST.get("password")
+        old_password = request.POST.get("old-password")
+        confirm = request.POST.get("confirm-pw")
+
+        user = request.user
+
+        if not old_password:
+            messages.error(request, "Must provide old password to change password")
+        elif not password:
+            messages.error(request, "Must provide a new password")
+        elif not confirm:
+            messages.error(request, "Must confirm the new password")
+        elif password != confirm:
+            messages.error(request, "Passwords do not match")
+        elif not user.check_password(old_password):
+            messages.error(request, "Old password is incorrect")
+        else:
+            user.set_password(password)
+            update_session_auth_hash(request, user)
+            user.save()
+            messages.success(request, "Password Changed")
+
+        return redirect(request.path)
+
+    return render(request, "settings_account.html", {"user": request.user})
 
 
 def user(request, username=None):

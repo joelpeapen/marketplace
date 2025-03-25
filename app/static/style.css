@@ -52,6 +52,10 @@ nav a {
     text-decoration: none;
 }
 
+aside a {
+    display: block;
+}
+
 .lr-form {
     margin: auto;
     width: 20rem;

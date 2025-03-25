@@ -30,19 +30,20 @@
         <div class="lr-form">
             <form method="post">
                 {% csrf_token %}
+
                 <div class="input">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" name="username" maxlength=50 value="{{ user.username }}" required>
+                    <label for="old-password">Old Password</label>
+                    <input id="old-password" type="password" name="old-password" maxlength=50 required>
                 </div>
 
                 <div class="input">
-                    <label for="fname">First Name</label>
-                    <input id="fname" type="text" name="fname" maxlength=50 value="{{ user.first_name }}">
+                    <label for="password">New Password</label>
+                    <input id="password" type="password" name="password" maxlength=50 required>
                 </div>
 
                 <div class="input">
-                    <label for="lname">Last Name</label>
-                    <input id="lname" type="text" name="lname" maxlength=50 value="{{ user.last_name }}">
+                    <label for="confirm-pw">Confirm New Password</label>
+                    <input id="confirm-pw" type="password" name="confirm-pw" maxlength=50 required>
                 </div>
 
                 <div class="input">

@@ -30,6 +30,7 @@ urlpatterns = [
     path("logout/", views.logout_user, name="logout"),
     path("user/", views.user),
     path("user/settings/", views.settings, name="settings"),
+    path("user/settings/account", views.settings_account, name="settings-account"),
     path("user/<str:username>/", views.user, name="user"),
     path("product/<int:id>/", views.product, name="product"),
     path("product/add/", views.add, name="product-add"),
