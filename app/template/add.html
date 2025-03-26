@@ -21,19 +21,27 @@
             </ul>
         </nav>
 
-        <form class="lr-form" method="post">
+        <form class="lr-form" method="post" enctype="multipart/form-data">
             <h3>Add Product</h3>
             {% csrf_token %}
             <div class="input">
-                <input type="text" name="product-name" placeholder="Name" maxlength=50 required>
+                <label for="name">Name</label>
+                <input id="name" type="text" name="product-name" maxlength=50 required>
             </div>
 
             <div class="input">
-                <input type="number" name="price" placeholder="Price" min=0 required>
+                <label for="price">Price</label>
+                <input id="price" type="number" name="price" min=0 required>
             </div>
 
             <div class="input">
-                <textarea name="description" placeholder="Description" maxlength=500 rows=10, cols=24 required></textarea>
+                <label for="desc">Description</label>
+                <textarea id="desc" name="description" maxlength=500 rows=10, cols=24 required></textarea>
+            </div>
+
+            <div class="input">
+                <label for="image">Add an Image</label>
+                <input id="image" name="image" type="file" accept="image/*">
             </div>
 
             <div class="input">

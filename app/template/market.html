@@ -31,7 +31,10 @@
         </div>
 
         {% for product in products %}
-        <div>
+        <div class="product">
+            <figure>
+                <img src="/static{{ product.image.url }}">
+            </figure>
             <p>
                 <a href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'user' product.author %}">{{ product.author }}</a>
             </p>

@@ -13,6 +13,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     rating = models.IntegerField(default=0)
     creation_date = models.DateField(auto_now_add=True)
+    image = models.ImageField(upload_to="images/", default="images/default.png")
 
 
 class Comment(models.Model):

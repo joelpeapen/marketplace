@@ -32,6 +32,9 @@ def register(request):
                 )
                 messages.success(request, "Registration successful")
                 return redirect("/login")
+        else:
+            messages.error(request, "All fields must be filled")
+            return redirect(request.path)
 
     return render(request, "register.html", {"user": request.user})
 
@@ -41,7 +44,11 @@ def login_user(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
 
-        user = authenticate(username=username, password=password)
+        if username and password:
+            user = authenticate(username=username, password=password)
+        else:
+            messages.error(request, "All fields must be filled")
+
         if user:
             login(request, user)
             return redirect("/user")
@@ -125,15 +132,21 @@ def user(request, username=None):
     if username:
         try:
             profile = User.objects.get(username=username)
+            products = Product.objects.filter(author=profile)
             return render(
-                request, "user.html", {"profile": profile, "user": request.user}
+                request,
+                "user.html",
+                {"profile": profile, "user": request.user, "products": products},
             )
         except User.DoesNotExist:
             return redirect("/404")
 
     if request.user.is_authenticated:
+        products = Product.objects.filter(author=request.user)
         return render(
-            request, "user.html", {"profile": request.user, "user": request.user}
+            request,
+            "user.html",
+            {"profile": request.user, "user": request.user, "products": products},
         )
     return redirect("/login")
 
@@ -155,13 +168,24 @@ def add(request):
         name = request.POST.get("product-name")
         price = request.POST.get("price")
         desc = request.POST.get("description")
+        img = request.FILES.get("image")
         author = request.user
+
         if name and price:
-            product = Product(name=name, author=author, price=price, desc=desc)
+            data = {
+                "name": name,
+                "author": author,
+                "price": price,
+                "desc": desc,
+            }
+            if img:
+                data["image"] = img
+
+            product = Product(**data)
             product.save()
             return redirect(f"/product/{product.id}")
         else:
-            messages.error("Must provide name and price")
+            messages.error(request, "Must provide name and price")
             return redirect(request.path)
 
     return render(request, "add.html", {"user": request.user})
@@ -177,11 +201,14 @@ def update(request, id):
         name = request.POST.get("product-name")
         price = request.POST.get("price")
         desc = request.POST.get("description")
+        img = request.FILES.get("image")
 
         if name and price:
             product.name = name
             product.price = price
             product.desc = desc
+            if img:
+                product.image = img
             if request.user == product.author:
                 product.save()
             return redirect(f"/product/{id}")
