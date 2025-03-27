@@ -36,16 +36,16 @@
         {% endif %}
 
         {% if products %}
-        {% for product in products %}
-        <div class="product">
-            <figure>
-                <img src="/static/{{ product.image.url }}">
-            </figure>
-            <p>
-                <a href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'user' product.author %}">{{ product.author }}</a>
-            </p>
+        <div class="product-container">
+            {% for product in products %}
+            <div class="product">
+                <a id="product-name" href="{% url 'product' product.id %}"><img src="/static{{ product.image.url }}"></a>
+                <p>
+                    <a id="product-name" href="{% url 'product' product.id %}">{{ product.name }}</a>
+                </p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
         {% else %}
             <p>This user has no products</p>
         {% endif %}

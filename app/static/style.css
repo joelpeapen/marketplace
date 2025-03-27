@@ -51,18 +51,43 @@ aside a {
     display: block;
 }
 
+.product-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
 .product {
+    margin: 8px 8px 10px 8px;
     max-width: 10rem;
+    border-radius: 0.5rem;
+    outline: 0.08rem solid #ccc;
+    box-shadow: 0 5px 20px #0000011a;
 }
 
 .product img {
-    width: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+summary img {
+    max-width: 20%;
+}
+
+.product p {
+    text-align: center;
+    margin: 0 3px 6px 3px;
+}
+
+.product #product-name {
+    font-weight: 800;
 }
 
 .form {
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px #0000001a;
 }
 
 .form input, textarea, button {
@@ -86,8 +111,7 @@ aside a {
 }
 
 .lr {
-    margin: auto;
-    width: 20rem;
+    margin: auto !important;
 }
 
 .lr h3 {
@@ -112,9 +136,10 @@ aside a {
         color: #54a4dc;
     }
 
-    .form {
+    .product {
         background-color: #04121b;
         border: 0.0625rem solid #3d444d;
+        outline: none;
     }
 
     .form input, textarea, button {

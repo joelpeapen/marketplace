@@ -20,17 +20,12 @@
         </nav>
 
         <summary>
-            <figure class="product">
-                <img src="/static/{{ product.image.url }}">
-            </figure>
+            <img src="/static/{{ product.image.url }}">
             <h3>{{ product.name }}</h3>
-            <h3>By {{ product.author }}</h3>
-            <p><em>Added on {{ product.creation_date }}</em></p>
-
+            <p>By {{ product.author }}</p>
+            <p>Added on {{ product.creation_date }}</p>
             <div><p>Rating: {{ product.rating }}</p></div>
-
             <div><p>Price: {{ product.price }}</p></div>
-
             <div><p>Description: {{ product.desc }}</p></div>
         </summary>
 
