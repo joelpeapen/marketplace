@@ -19,41 +19,44 @@
             {% endif %}
         </nav>
 
-        <aside>
-            <h4>User settings</h4>
-            <a href="/user/settings">Profile</a>
-            <a href="/user/settings/account">Account</a>
-        </aside>
+        <div class="settings">
+            <aside class="menu">
+                <p class="header">User settings</p>
+                <a href="/user/settings">Profile</a>
+                <a class="active" href="/user/settings/account">Account</a>
+            </aside>
 
-        <div class="form">
-            <form method="post">
-                {% csrf_token %}
+            <div class="form">
+                <p class="header">Change Password</p>
+                <form method="post">
+                    {% csrf_token %}
 
-                <div class="input">
-                    <label for="old-password">Old Password</label>
-                    <input id="old-password" type="password" name="old-password" maxlength=50 required>
-                </div>
+                    <div class="input">
+                        <label for="old-password">Old Password</label>
+                        <input id="old-password" type="password" name="old-password" maxlength=50 required>
+                    </div>
 
-                <div class="input">
-                    <label for="password">New Password</label>
-                    <input id="password" type="password" name="password" maxlength=50 required>
-                </div>
+                    <div class="input">
+                        <label for="password">New Password</label>
+                        <input id="password" type="password" name="password" maxlength=50 required>
+                    </div>
 
-                <div class="input">
-                    <label for="confirm-pw">Confirm New Password</label>
-                    <input id="confirm-pw" type="password" name="confirm-pw" maxlength=50 required>
-                </div>
+                    <div class="input">
+                        <label for="confirm-pw">Confirm New Password</label>
+                        <input id="confirm-pw" type="password" name="confirm-pw" maxlength=50 required>
+                    </div>
 
-                <div class="input">
-                    <button type="submit" name="submit">Save</button>
-                </div>
-            </form>
+                    <div class="input">
+                        <button type="submit" name="submit">Save</button>
+                    </div>
+                </form>
 
-            {% if messages %}
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </body>
 </html>

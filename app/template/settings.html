@@ -19,40 +19,44 @@
             {% endif %}
         </nav>
 
-        <aside>
-            <h4>User settings</h4>
-            <a href="/user/settings">Profile</a>
-            <a href="/user/settings/account">Account</a>
-        </aside>
+        <div class="settings">
+            <aside class="menu">
+                <p class="header">User settings</p>
+                <a class="active" href="/user/settings">Profile</a>
+                <a href="/user/settings/account">Account</a>
+            </aside>
 
-        <div class="form">
-            <form method="post">
-                {% csrf_token %}
-                <div class="input">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" name="username" maxlength=50 value="{{ user.username }}" required>
-                </div>
+            <div class="form">
+                <p class="header">Public Profile</p>
+                <form method="post">
+                    {% csrf_token %}
 
-                <div class="input">
-                    <label for="fname">First Name</label>
-                    <input id="fname" type="text" name="fname" maxlength=50 value="{{ user.first_name }}">
-                </div>
+                    <div class="input">
+                        <label for="username">Username</label>
+                        <input id="username" type="text" name="username" maxlength=50 value="{{ user.username }}" required>
+                    </div>
 
-                <div class="input">
-                    <label for="lname">Last Name</label>
-                    <input id="lname" type="text" name="lname" maxlength=50 value="{{ user.last_name }}">
-                </div>
+                    <div class="input">
+                        <label for="fname">First Name</label>
+                        <input id="fname" type="text" name="fname" maxlength=50 value="{{ user.first_name }}">
+                    </div>
 
-                <div class="input">
-                    <button type="submit" name="submit">Save</button>
-                </div>
-            </form>
+                    <div class="input">
+                        <label for="lname">Last Name</label>
+                        <input id="lname" type="text" name="lname" maxlength=50 value="{{ user.last_name }}">
+                    </div>
 
-            {% if messages %}
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
+                    <div class="input">
+                        <button type="submit" name="submit">Save</button>
+                    </div>
+                </form>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </body>
 </html>
