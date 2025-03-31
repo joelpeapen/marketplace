@@ -19,29 +19,47 @@
             {% endif %}
         </nav>
 
-        <summary>
+        <div class="pdetails">
             <img src="/static/{{ product.image.url }}">
-            <h3>{{ product.name }}</h3>
-            <p>By {{ product.author }}</p>
-            <p>Added on {{ product.creation_date }}</p>
-            <div><p>Rating: {{ product.rating }}</p></div>
-            <div><p>Price: {{ product.price }}</p></div>
-            <div><p>Description: {{ product.desc }}</p></div>
-        </summary>
 
-        <section>
-            <h3>Reviews</h3>
-            <a href="">Add Review</a>
-            <hr>
-            <p>There are no reviews yet. Be the first one to <a href="">write a review</a>.</p>
+            <section>
+                <div class="phead">
+                    <div class="pname">
+                        <h2>{{ product.name }}</h2>
+                        <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
+                        <p>Rating: {{ product.rating }}</p>
+                    </div>
+                {% if user.is_authenticated and user == product.author %}
+                    <div class="edit">
+                        <a href="{% url 'product-update' product.id %}">Update</a>
+                        <a href="{% url 'product-del' product.id %}">Delete</a>
+                    </div>
+                {% endif %}
+                </div>
+                <div class="price">
+                    <p>₹ {{ product.price }}</p>
+                    <a href="">Add to Cart</a>
+                </div>
+                <div class="desc">
+                    <h5>About</h5>
+                    <p>{{ product.desc }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="metadata">
+            <p>Added on {{ product.creation_date }}</p>
+        </div>
+
+        <section class="reviews">
+            <div>
+                <h2>Reviews</h2>
+                <a id="add-review" href="">Add Review</a>
+            </div>
+            <p>There are no reviews yet</p>
         </section>
 
-        {% if user.is_authenticated and user == product.author %}
-            <a href="{% url 'product-update' product.id %}">Update</a>
-            <a href="{% url 'product-del' product.id %}">Delete</a>
-        {% endif %}
-
-        <section>
+        <section class="similar">
             <h3>Simliar Items</h3>
         </section>
 
