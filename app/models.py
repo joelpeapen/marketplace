@@ -18,9 +18,9 @@ class Product(models.Model):
 
 class Comment(models.Model):
     text = models.TextField()
+    creation_date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    creation_date = models.DateField(auto_now_add=True)
 
 
 class Cart(models.Model):

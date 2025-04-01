@@ -35,5 +35,7 @@ urlpatterns = [
     path("product/add/", views.add, name="product-add"),
     path("product/update/<int:id>/", views.update, name="product-update"),
     path("product/delete/<int:id>/", views.delete, name="product-del"),
+    path("comment/<int:id>", views.comment_add, name="comment-add"),
+    path("comment/delete/<int:id>", views.comment_delete, name="comment-del"),
     path("market/", views.market, name="market"),
 ]

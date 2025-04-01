@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from .models import Product, User
+from .models import Product, User, Comment
 
 
 def index(request):
@@ -154,10 +154,20 @@ def user(request, username=None):
 def product(request, id):
     try:
         product = Product.objects.get(pk=id)
+        comments = Comment.objects.filter(product=id)
     except Product.DoesNotExist:
         return redirect("/404")
 
-    return render(request, "product.html", {"user": request.user, "product": product})
+    return render(
+        request,
+        "product.html",
+        {
+            "user": request.user,
+            "product": product,
+            "comments": comments,
+            "count": comments.count(),
+        },
+    )
 
 
 def add(request):
@@ -232,3 +242,37 @@ def delete(request, id):
 def market(request):
     products = Product.objects.all()
     return render(request, "market.html", {"user": request.user, "products": products})
+
+
+# TODO: need to make purchased table and comment only if user has bought product
+def comment_add(request, id):
+    if not request.user.is_authenticated:
+        return redirect(f"/product/{id}")
+
+    if request.POST:
+        text = request.POST.get("comment")
+        user = request.user
+        product = Product.objects.get(pk=id)
+
+        if text:
+            comment = Comment(text=text, user=user, product=product)
+            comment.save()
+            return redirect(f"/product/{id}")
+        else:
+            messages.error("Must add a comment first")
+            return redirect(f"/product/{id}")
+
+    return redirect(f"/product/{id}")
+
+def comment_delete(request, id):
+    if not request.user.is_authenticated:
+        return redirect(request.path)
+
+    comment = Comment.objects.get(pk=id)
+
+    if request.POST:
+        if comment.user == request.user:
+            comment.delete()
+        return redirect(f"/product/{comment.product.id}")
+
+    return redirect(f"/product/{comment.product.id}")
