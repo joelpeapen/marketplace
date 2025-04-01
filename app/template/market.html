@@ -1,55 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Market</title>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-        <script src="{% static 'index.js' %}"></script>
-    </head>
-    <body>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/market">Market</a>
-            <a href="/about">About</a>
-            {% if user.is_authenticated %}
-                <button id="user" class="user">{{ user.username }}</button>
-                <div id="umenu" class="menu">
-                    <p class="header">{{ user.username }}</p>
-                    <a href="/user/">Profile</a>
-                    <a href="/user/settings">Settings</a>
-                    <a href="/logout">Log out</a>
-                </div>
-            {% else %}
-                <a href="/login">Login</a>
-            {% endif %}
-        </nav>
+{% extends "layouts/base.html" %}
 
-        <h1>Market</h1>
+{% block title %} Market {% endblock title %}
 
-        {% if user.is_authenticated %}
-            <a href="/product/add">Add</a>
-        {% endif %}
+{% block content %}
 
-        {% if products %}
-        <div class="product-container">
-            {% for product in products %}
-            <div class="product">
-                <a id="product-name" href="{% url 'product' product.id %}"><img src="/static{{ product.image.url }}"></a>
-                <p>
-                    <a id="product-name" href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'user' product.author %}">{{ product.author }}</a>
-                </p>
-            </div>
-            {% endfor %}
+    <h1>Market</h1>
+
+    {% if user.is_authenticated %}
+        <a href="/product/add">Add</a>
+    {% endif %}
+
+    {% if products %}
+    <div class="product-container">
+        {% for product in products %}
+        <div class="product">
+            <a id="product-name" href="{% url 'product' product.id %}"><img src="/static{{ product.image.url }}"></a>
+            <p>
+                <a id="product-name" href="{% url 'product' product.id %}">{{ product.name }}</a> by <a href="{% url 'user' product.author %}">{{ product.author }}</a>
+            </p>
         </div>
-        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
 
-        {% if messages %}
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
 
-    </body>
-</html>
+{% endblock content %}

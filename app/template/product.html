@@ -1,108 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        {% load static %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ product.name }}</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-        <script src="{% static 'index.js' %}"></script>
-    </head>
-    <body>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/market">Market</a>
-            <a href="/about">About</a>
-            {% if user.is_authenticated %}
-                <button id="user" class="user">{{ user.username }}</button>
-                <div id="umenu" class="menu">
-                    <p class="header">{{ user.username }}</p>
-                    <a href="/user/">Profile</a>
-                    <a href="/user/settings">Settings</a>
-                    <a href="/logout">Log out</a>
-                </div>
-            {% else %}
-                <a href="/login">Login</a>
-            {% endif %}
-        </nav>
+{% extends "layouts/base.html" %}
 
-        <div class="pdetails">
-            <img src="/static/{{ product.image.url }}">
+{% block title %} {{ product.name }} {% endblock title %}
 
-            <section>
-                <div class="phead">
-                    <div class="pname">
-                        <h2>{{ product.name }}</h2>
-                        <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
-                        <p>Rating: {{ product.rating }}</p>
-                    </div>
-                {% if user.is_authenticated and user == product.author %}
-                    <div class="edit">
-                        <a href="{% url 'product-update' product.id %}">Update</a>
-                        <a class="delete confirm" href="{% url 'product-del' product.id %}">Delete</a>
-                    </div>
-                {% endif %}
-                </div>
-                <div class="price">
-                    <p>₹ {{ product.price }}</p>
-                    {% if user.is_authenticated %}
-                        <a href="">Add to Cart</a>
-                    {% endif %}
-                </div>
-                <div class="desc">
-                    <h5>About</h5>
-                    <p>{{ product.desc }}</p>
-                </div>
-            </section>
-        </div>
+{% block content %}
 
-        <div class="metadata">
-            <p>Added on {{ product.creation_date }}</p>
-        </div>
+    <div class="pdetails">
+        <img src="/static/{{ product.image.url }}">
 
-        <section class="reviews">
-            <div id="h">
-                <h3>Reviews ({{ count }})</h3>
-            {% if user.is_authenticated %}
-                <a id="add-comment">Add Review</a>
+        <section>
+            <div class="phead">
+                <div class="pname">
+                    <h2>{{ product.name }}</h2>
+                    <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
+                    <p>Rating: {{ product.rating }}</p>
+                </div>
+            {% if user.is_authenticated and user == product.author %}
+                <div class="edit">
+                    <a href="{% url 'product-update' product.id %}">Update</a>
+                    <a class="delete confirm" href="{% url 'product-del' product.id %}">Delete</a>
+                </div>
             {% endif %}
             </div>
+            <div class="price">
+                <p>₹ {{ product.price }}</p>
+                {% if user.is_authenticated %}
+                    <a href="">Add to Cart</a>
+                {% endif %}
+            </div>
+            <div class="desc">
+                <h5>About</h5>
+                <p>{{ product.desc }}</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="metadata">
+        <p>Added on {{ product.creation_date }}</p>
+    </div>
+
+    <section class="reviews">
+        <div id="h">
+            <h3>Reviews ({{ count }})</h3>
         {% if user.is_authenticated %}
-            <form class="form" id="comment-form" action="{% url 'comment-add' product.id %}" method="post">
-                {% csrf_token %}
-                <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>
-                <div class=>
-                    <button id="cancel" type="button">Cancel</button>
-                    <button type="submit" name="submit">Post</button>
-                </div>
-            </form>
+            <a id="add-comment">Add Review</a>
         {% endif %}
-        </section>
-
-        {% if comments %}
-            <div class="comments">
-            {% for comment in comments %}
-                <div class="comment">
-                    <div class="ch">
-                    <a href="{% url 'user' comment.user %}">{{ comment.user }}</a> - <span>{{ comment.creation_date }}</span>
-               {% if user.is_authenticated and user == comment.user %}
-                    <form action="{% url 'comment-del' comment.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="delete confirm" >delete</button>
-                    </form>
-                {% endif %}
-                    </div>
-                    <p>{{ comment.text }}</p>
-                </div>
-            {% endfor %}
+        </div>
+    {% if user.is_authenticated %}
+        <form class="form" id="comment-form" action="{% url 'comment-add' product.id %}" method="post">
+            {% csrf_token %}
+            <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>
+            <div class=>
+                <button id="cancel" type="button">Cancel</button>
+                <button type="submit" name="submit">Post</button>
             </div>
-        {% elif not user.is_authenticated %}
-            <p>There are no reviews</p>
-        {% endif %}
+        </form>
+    {% endif %}
+    </section>
 
-        <section class="similar">
-            <h3>Simliar Items</h3>
-        </section>
+    {% if comments %}
+        <div class="comments">
+        {% for comment in comments %}
+            <div class="comment">
+                <div class="ch">
+                <a href="{% url 'user' comment.user %}">{{ comment.user }}</a> - <span>{{ comment.creation_date }}</span>
+           {% if user.is_authenticated and user == comment.user %}
+                <form action="{% url 'comment-del' comment.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="delete confirm" >| delete</button>
+                </form>
+            {% endif %}
+                </div>
+                <p>{{ comment.text }}</p>
+            </div>
+        {% endfor %}
+        </div>
+    {% elif not user.is_authenticated %}
+        <p>There are no reviews</p>
+    {% endif %}
 
-    </body>
-</html>
+    <section class="similar">
+        <h3>Simliar Items</h3>
+    </section>
+
+{% endblock content %}

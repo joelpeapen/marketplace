@@ -1,0 +1,16 @@
+<nav>
+    <a href="/">Home</a>
+    <a href="/market">Market</a>
+    <a href="/about">About</a>
+{% if user.is_authenticated %}
+    <button id="user" class="user">{{ user.username }}</button>
+    <div id="umenu" class="menu">
+        <p class="header">{{ user.username }}</p>
+        <a href="/user/">Profile</a>
+        <a href="/user/settings">Settings</a>
+        <a href="/logout">Log out</a>
+    </div>
+{% else %}
+    <a href="/login">Login</a>
+{% endif %}
+</nav>

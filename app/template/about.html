@@ -1,33 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>About</title>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-        <script src="{% static 'index.js' %}"></script>
-    </head>
-    <body>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/market">Market</a>
-            <a href="/about">About</a>
-            {% if user.is_authenticated %}
-                <button id="user" class="user">{{ user.username }}</button>
-                <div id="umenu" class="menu">
-                    <p class="header">{{ user.username }}</p>
-                    <a href="/user/">Profile</a>
-                    <a href="/user/settings">Settings</a>
-                    <a href="/logout">Log out</a>
-                </div>
-            {% else %}
-                <a href="/login">Login</a>
-            {% endif %}
-        </nav>
+{% extends "layouts/base.html" %}
 
-        <h3>About</h3>
+{% block title %} About {% endblock title %}
 
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia aspernatur dolore ex, voluptates omnis reiciendis repudiandae quis rem expedita nam, iste aperiam facilis quod delectus nihil exercitationem, non amet asperiores?</p>
-    </body>
-</html>
+{% block content %}
+
+    <h3>About</h3>
+
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia aspernatur
+    dolore ex, voluptates omnis reiciendis repudiandae quis rem expedita nam,
+    iste aperiam facilis quod delectus nihil exercitationem, non amet
+    asperiores?</p>
+
+{% endblock content %}

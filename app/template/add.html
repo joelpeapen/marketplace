@@ -1,57 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Add Product</title>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-        <script src="{% static 'index.js' %}"></script>
-    </head>
-    <body>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/market">Market</a>
-            <a href="/about">About</a>
-            {% if user.is_authenticated %}
-                <button id="user" class="user">{{ user.username }}</button>
-                <div id="umenu" class="menu">
-                    <p class="header">{{ user.username }}</p>
-                    <a href="/user/">Profile</a>
-                    <a href="/user/settings">Settings</a>
-                    <a href="/logout">Log out</a>
-                </div>
-            {% else %}
-                <a href="/login">Login</a>
-            {% endif %}
-        </nav>
+{% extends "layouts/base.html" %}
 
-        <form class="form lr" method="post" enctype="multipart/form-data">
-            <h3>Add Product</h3>
-            {% csrf_token %}
-            <div class="input">
-                <label for="name">Name</label>
-                <input id="name" type="text" name="product-name" maxlength=50 required>
-            </div>
+{% block title %} Add Product {% endblock title %}
 
-            <div class="input">
-                <label for="price">Price</label>
-                <input id="price" type="number" name="price" min=0 required>
-            </div>
+{% block content %}
 
-            <div class="input">
-                <label for="desc">Description</label>
-                <textarea id="desc" name="description" maxlength=500 rows=10, cols=24 required></textarea>
-            </div>
+    <form class="form lr" method="post" enctype="multipart/form-data">
+        <h3>Add Product</h3>
+        {% csrf_token %}
+        <div class="input">
+            <label for="name">Name</label>
+            <input id="name" type="text" name="product-name" maxlength=50 required>
+        </div>
 
-            <div class="input">
-                <label for="image">Add an Image</label>
-                <input id="image" name="image" type="file" accept="image/*">
-            </div>
+        <div class="input">
+            <label for="price">Price</label>
+            <input id="price" type="number" name="price" min=0 required>
+        </div>
 
-            <div class="input">
-                <button type="submit" name="submit">Add Product</button>
-            </div>
-        </form>
-    </body>
-</html>
+        <div class="input">
+            <label for="desc">Description</label>
+            <textarea id="desc" name="description" maxlength=500 rows=10, cols=24 required></textarea>
+        </div>
+
+        <div class="input">
+            <label for="image">Add an Image</label>
+            <input id="image" name="image" type="file" accept="image/*">
+        </div>
+
+        <div class="input">
+            <button type="submit" name="submit">Add Product</button>
+        </div>
+    </form>
+
+{% endblock content %}
