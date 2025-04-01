@@ -28,17 +28,62 @@ a {
 nav {
     width: 100%;
     display: flex;
-    padding: 1rem 2rem;
+    padding: 0.6rem 2rem;
+    align-items: center;
     justify-content: space-between;
+    background-color: #4793cc;
 }
 
 nav a {
     color: #ffffff;
+    padding: 0.5rem 1.2%;
     padding-left: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-nav a:last-of-type {
+nav a:hover {
+    background-color: #0c1a24;
+}
+
+nav a:nth-of-type(4) {
     margin-left: auto;
+}
+
+nav .user {
+    color: #ffffff;
+    padding: 0.5rem 1.2%;
+    border: none;
+    border-radius: 5px;
+    margin-left: auto;
+    cursor: pointer;
+    background-color: #4793cc;
+}
+
+nav .user:hover {
+    background-color: #0c1a24;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+}
+
+.menu a {
+    border-radius: 0;
+}
+
+#umenu {
+    width: 14%;
+    display: none;
+    margin-right: 10px;
+    top: 8%;
+    text-align: left;
+    position: absolute;
+    left: auto !important;
+    right: 0 !important;
 }
 
 a:hover:not(nav a) {
@@ -275,7 +320,6 @@ a:hover:not(nav a) {
 .settings aside {
     width: 200px;
     display: flex;
-    flex-direction: column;
     border-radius: 0.5rem;
 }
 
@@ -302,10 +346,6 @@ a:hover:not(nav a) {
 }
 
 @media (prefers-color-scheme: light) {
-    nav {
-        background-color: #4793cc;
-    }
-
     a {
        color: #0969da;
     }
@@ -332,6 +372,10 @@ a:hover:not(nav a) {
 
     .menu .active {
         background-color: #f1f3f5;
+    }
+
+    #umenu {
+        box-shadow: 0 6px 8px #0000001a;
     }
 
     .form {
@@ -365,10 +409,6 @@ a:hover:not(nav a) {
     body {
         color: #ffffff;
         background-color: #0c1a24;
-    }
-
-    nav {
-        background-color: #4793cc;
     }
 
     a {
@@ -405,6 +445,10 @@ a:hover:not(nav a) {
 
     .menu .active {
         background-color: #082437;
+    }
+
+    #umenu {
+        box-shadow: 0 6px 8px #00001758;
     }
 
     .form {
