@@ -5,7 +5,7 @@
 {% block content %}
 
     <div class="pdetails">
-        <img src="/static/{{ product.image.url }}">
+        <img src="/static{{ product.image.url }}">
 
         <section>
             <div class="phead">
@@ -21,11 +21,33 @@
                 </div>
             {% endif %}
             </div>
-            <div class="price">
-                <p>₹ {{ product.price }}</p>
-                {% if user.is_authenticated %}
-                    <a href="">Add to Cart</a>
-                {% endif %}
+            <div class="product-cart">
+                <p class="price">₹ {{ product.price }}</p>
+                {% if user.is_authenticated and user != product.author %}
+                <div class="p-action">
+                    {% if not in_cart %}
+                    <form action="{% url 'cart-add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <label for="quantity">Quantity</label>
+                        <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max=10"> <!-- change max to stock left -->
+                        <button id="cart-add" type="submit">Add to Cart</button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'cart-del' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="confirm" id="cart-del" type="submit">Remove from Cart</button>
+                    </form>
+                    <div class="q-update">
+                        <form action="{% url 'cart-update' product.id %}" method="post">
+                            {% csrf_token %}
+                            <label for="quantity">Quantity</label>
+                            <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max=10"> <!-- change max to stock left -->
+                            <button id="cart-add" type="submit">Update</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            {% endif %}
             </div>
             <div class="desc">
                 <h5>About</h5>
@@ -49,13 +71,19 @@
         <form class="form" id="comment-form" action="{% url 'comment-add' product.id %}" method="post">
             {% csrf_token %}
             <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>
-            <div class=>
+            <div>
                 <button id="cancel" type="button">Cancel</button>
-                <button type="submit" name="submit">Post</button>
+                <button type="submit">Post</button>
             </div>
         </form>
     {% endif %}
     </section>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
 
     {% if comments %}
         <div class="comments">
@@ -75,7 +103,9 @@
         {% endfor %}
         </div>
     {% elif not user.is_authenticated %}
-        <p>There are no reviews</p>
+        <div class="comments">
+            <p>There are no reviews</p>
+        </div>
     {% endif %}
 
     <section class="similar">

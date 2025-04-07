@@ -1,3 +1,22 @@
+:root {
+    --red: #ff4343;
+    --red-dark: #de3b3b;
+    --green: #4cca51;
+    --green-dark: #4caf50;
+    --grey: #979797;
+    --grey-dark: #3d444d;
+    --white: #ffffff;
+    --white-dark: #f1f3f5;
+    --blue: #54a4dc;
+    --blue-dark: #4793cc;
+    --blue-light: #1f6feb;
+    --navy: #082437;
+    --navy-light: #304f64;
+    --navy-dark: #0c1a24;
+    --navy-bg: #04121b;
+    --shadow: #0000011a;
+}
+
 *,
 *::before,
 *::after {
@@ -25,19 +44,25 @@ a {
     text-decoration: none;
 }
 
+button  {
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 6px;
+}
+
 nav {
     width: 100%;
     display: flex;
     padding: 0.6rem 2rem;
     align-items: center;
     justify-content: space-between;
-    background-color: #4793cc;
+    background-color: var(--blue-dark);
 }
 
 nav a {
-    color: #ffffff;
+    color: var(--white);
     padding: 0.5rem 1.2%;
-    padding-left: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -47,18 +72,17 @@ nav a:hover {
     background-color: #0c1a24;
 }
 
-nav a:nth-of-type(4) {
+.nlast {
     margin-left: auto;
 }
 
 nav .user {
-    color: #ffffff;
+    color: var(--white);
     padding: 0.5rem 1.2%;
     border: none;
     border-radius: 5px;
-    margin-left: auto;
     cursor: pointer;
-    background-color: #4793cc;
+    background-color: var(--blue-dark);
 }
 
 nav .user:hover {
@@ -104,14 +128,12 @@ a:hover:not(nav a) {
 }
 
 .form button[type="submit"] {
-    border: none;
-    cursor: pointer;
-    color: white;
-    background-color: #4CAF50;
+    color: var(--white);
+    background-color: var(--green-dark);
 }
 
 .form button[type="submit"]:hover {
-    background-color: #4CCA51;
+    background-color: var(--green);
 }
 
 .lr {
@@ -121,6 +143,18 @@ a:hover:not(nav a) {
 .lr h3,
 .lr div:last-of-type {
     text-align: center;
+}
+
+.add {
+    max-width: 5%;
+    padding: 6px;
+    text-align: center;
+    color: var(--navy-dark);
+    background-color: var(--blue);
+}
+
+.add:hover {
+    text-decoration: none;
 }
 
 .product-container {
@@ -175,7 +209,7 @@ a:hover:not(nav a) {
     justify-content: space-between;
     padding: 0.5rem 0;
     margin: 0 0 0.5rem 0;
-    border-bottom: 1px solid #979797;
+    border-bottom: 1px solid var(--grey);
 }
 
 .edit {
@@ -185,15 +219,32 @@ a:hover:not(nav a) {
     margin: 0 0 0 0.8rem;
 }
 
-.price {
+.product-cart {
     display: flex;
-    align-items: center;
     justify-content: space-between;
 }
 
-.price p {
+.price {
     font-weight: 500;
     font-size: 30px;
+}
+
+.p-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.p-action input {
+    width: 5rem;
+}
+
+.q-update {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0 0 0;
 }
 
 .desc {
@@ -223,7 +274,7 @@ a:hover:not(nav a) {
     text-wrap: nowrap;
     padding: 0.5rem 0;
     margin: 0 0 0.5rem 0;
-    border-bottom: 1px solid #979797;
+    border-bottom: 1px solid var(--grey);
 }
 
 .reviews form {
@@ -261,21 +312,22 @@ a:hover:not(nav a) {
 
 #cancel {
     cursor: pointer;
-    background-color: #de3b3b;
+    background-color: var(--red-dark);
 }
 
 #cancel:hover {
-    background-color: #ff4343;
+    background-color: var(--red);
 }
 
-.comments {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 0 10%;
+.delete {
+    color: var(--red);
 }
 
 .comments {
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 10%;
 }
 
 .comments a {
@@ -297,17 +349,107 @@ a:hover:not(nav a) {
     display: inline;
 }
 
-.comment button {
-    border: none;
-    cursor: pointer;
-}
-
 .comment button:hover {
     text-decoration: underline;
 }
 
-.delete {
-    color: #ff4343;
+#cart-add {
+    background-color: var(--green-dark);
+}
+
+#cart-del {
+    background-color: var(--red);
+}
+
+.cart {
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem 20px;
+    padding: 1.2rem;
+    border-radius: 0.5rem;
+    min-height: 80vh;
+    justify-content: flex-start;
+}
+
+.cart a:hover {
+    text-decoration: none;
+}
+
+.cart .title {
+    font-size: 30px;
+    margin: 0 10px 0 0px;
+    border-bottom: 1px solid var(--grey);
+}
+
+.cart .title p {
+    margin-left: 10px;
+}
+
+.cart .heading {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px 0 5px 5rem;
+    border-bottom: 1px solid var(--grey);
+}
+
+.cart .heading p {
+    margin: 5px 10px 0 10px;
+}
+
+.cart .heading p:last-of-type {
+    margin: 5px 4rem 0 auto;
+}
+
+.cart .product {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: none;
+    margin: 10px 0;
+    max-width: 100%;
+}
+
+.cart .product p:last-of-type {
+    margin: 5px 10px 0 auto;
+}
+
+.cart .product a {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.3rem;
+}
+
+.cart .product a p {
+    margin: 0 0 0 30px;
+}
+
+.cart img {
+    width: 5rem;
+}
+
+.cart .product form {
+    margin: 0 10px 0 10px;
+}
+
+.cart .product button {
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.cart .total {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--grey);
+    margin-top: auto;
+    padding: 10px 0 0 0;
+}
+
+.cart .total p {
+    font-size: 20px;
 }
 
 .settings {
@@ -347,19 +489,20 @@ a:hover:not(nav a) {
 
 @media (prefers-color-scheme: light) {
     a {
-       color: #0969da;
+       color: var(--blue-light);
     }
 
     .product {
-        outline: 0.08rem solid #ccc;
+        outline: 0.08rem solid var(--grey);
+        background-color: var(--white-dark);
     }
 
     .product:hover {
-        box-shadow: 5px 5px #0000011a;
+        box-shadow: 5px 5px var(--shadow);
     }
 
     .settings aside {
-        box-shadow: 0 2px 10px #0000001a;
+        box-shadow: 0 2px 10px var(--shadow);
     }
 
     .menu a {
@@ -367,116 +510,146 @@ a:hover:not(nav a) {
     }
 
     .menu a:hover {
-        background-color: #f0f1f3;
+        background-color: var(--white-dark);
     }
 
     .menu .active {
-        background-color: #f1f3f5;
+        background-color: var(--white-dark);
     }
 
     #umenu {
-        box-shadow: 0 6px 8px #0000001a;
+        box-shadow: 0 6px 8px var(--shadow);
+    }
+
+    .form, .cart {
+        border: 1px solid var(--grey-dark);
     }
 
     .form {
-        box-shadow: 0 2px 10px #0000001a;
+        box-shadow: 0 2px 10px var(--shadow);
     }
 
-    .form input, .form textarea, .form button {
-        border: 1px solid #ccc;
+    .form input,
+    .form textarea,
+    .form button {
+        border: 1px solid var(--grey);
     }
 
-    .form input:focus, textarea:focus {
+    .form input:focus,
+    textarea:focus {
         border: none;
-        outline: 0.08rem solid #54a4dc;
-        box-shadow: inset 0 0 0 1px #1f6feb;
+        outline: 0.08rem solid var(--blue);
+        box-shadow: inset 0 0 0 1px var(--blue-light);
     }
 
-    .form input:focus-visible, textarea:focus-visible {
-        box-shadow: inset 0 0 0 1px #1f6feb;
+    .form input:focus-visible,
+    textarea:focus-visible {
+        box-shadow: inset 0 0 0 1px var(--blue-light);
     }
 
     .form button {
-        color: white;
+        color: var(--white);
     }
 
-    .reviews form, .comment button {
-        background-color: #ffffff;
+    .reviews form,
+    .comment button {
+        background-color: var(--white);
+    }
+
+    .cart a {
+        color: black;
+    }
+
+    .cart .product:hover {
+        box-shadow: 5px 5px #0000011a;
     }
 }
 
 @media (prefers-color-scheme: dark) {
     body {
-        color: #ffffff;
-        background-color: #0c1a24;
+        color: var(--white);
+        background-color: var(--navy-dark);
     }
 
     a {
-        color: #54a4dc;
+        color: var(--blue);
     }
 
     .product {
         outline: none;
-        background-color: #04121b;
-        border: 0.0625rem solid #3d444d;
+        background-color: var(--navy-bg);
+        border: 0.0625rem solid var(--grey-dark);
     }
 
     .product:hover {
-        box-shadow: 5px 5px #4793cc;
+        box-shadow: 5px 5px var(--blue-dark);
     }
 
     .settings {
-        color: #ffffff;
+        color: var(--white);
     }
 
     .menu {
         outline: none;
-        border: 1px solid #3d444d88;
-        background-color: #061825;
+        border: 1px solid var(--grey-dark);
+        background-color: var(--navy-bg);
     }
 
     .menu a {
-        color: #ffffff;
+        color: var(--white);
     }
 
     .menu a:hover {
-        background-color: #304f64;
+        background-color: var(--navy-light);
     }
 
     .menu .active {
-        background-color: #082437;
+        background-color: var(--navy);
     }
 
     #umenu {
-        box-shadow: 0 6px 8px #00001758;
+        box-shadow: 0 6px 8px var(--shadow);
     }
 
-    .form {
-        border: 1px solid #3d444d88;
-        background-color: #061825;
+    .form, .cart {
+        border: 1px solid var(--grey-dark);
+        background-color: var(--navy-bg);
     }
 
-    .form input, .form textarea, .form button {
-        color: #ffffff;
-        border: 1px solid #3d444d;
-        background-color: #082437;
+    .form input,
+    .form textarea,
+    .form button {
+        color: var(--white);
+        border: 1px solid var(--grey-dark);
+        background-color: var(--navy);
     }
 
-    .form input:focus, textarea:focus {
+    .form input:focus,
+    textarea:focus {
         border: none;
-        outline: 0.08rem solid #54a4dc;
-        box-shadow: inset 0 0 0 1px #1f6feb;
+        outline: 0.08rem solid var(--blue);
+        box-shadow: inset 0 0 0 1px var(--blue-light);
     }
 
-    .form input:focus-visible, textarea:focus-visible {
-        box-shadow: inset 0 0 0 1px #1f6feb;
+    .form input:focus-visible,
+    textarea:focus-visible {
+        box-shadow: inset 0 0 0 1px var(--blue-light);
     }
 
     .form button {
-        color: white;
+        color: var(--white);
     }
 
-    .reviews form, .comment button {
-        background-color: #0c1a24;
+    .reviews form,
+    .comment button {
+        background-color: var(--navy-dark);
+    }
+
+    .cart a {
+        color: var(--white-dark);
+    }
+
+    .cart .product {
+        background-color: var(--navy);
     }
 }

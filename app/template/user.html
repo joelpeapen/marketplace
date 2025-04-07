@@ -6,6 +6,10 @@
 
     <h3>{{ profile.username }}</h3>
 
+    {% if user.is_authenticated %}
+        <a class="add" href="/product/add">Add</a>
+    {% endif %}
+
     {% if messages %}
         {% for message in messages %}
             <p>{{ message }}</p>

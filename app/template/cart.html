@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Cart {% endblock title %}
+
+{% block content %}
+
+    <div class="cart">
+        <div class="title">
+            <p>Cart ({{ cart_items.count }})</p>
+        </div>
+        <div class="heading">
+            <p>Product</p>
+            <p>Price</p>
+            <p>Quantity</p>
+            <p>Total</p>
+        </div>
+    {% for i in cart_items %}
+        <div class="product">
+            <a href="{% url 'product' i.product.id %}">
+                <img src="/static{{ i.product.image.url }}">
+                <p>{{ i.product.name }}</p>
+                <p>{{ i.product.price }}</p>
+                <p>{{ i.quantity }}</p>
+                <p>{{ i.total }}</p>
+            </a>
+            <form action="{% url 'cart-del' i.product.id %}" method="post">
+                {% csrf_token %}
+                <button class="confirm" id="cart-del" type="submit">×</button>
+            </form>
+        </div>
+    {% endfor %}
+        <div class="total">
+            <p>Total</p>
+            <p>₹ {{ cart.total }}</p>
+        </div>
+    </div>
+
+{% endblock content %}

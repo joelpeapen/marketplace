@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from .models import Product, User, Comment
+from app.models import Cart, CartItem, Comment, Product, User
 
 
 def index(request):
@@ -22,19 +22,20 @@ def register(request):
         if email and username and password:
             if User.objects.filter(email=email).exists():
                 messages.error(request, "A user with this email already exists")
-                return redirect(request.path)
+                return redirect("/register")
             elif User.objects.filter(username=username).exists():
                 messages.error(request, "A user with this username already exists")
-                return redirect(request.path)
+                return redirect("/register")
             else:
-                User.objects.create_user(
+                user = User.objects.create_user(
                     username=username, email=email, password=password
                 )
+                Cart.objects.create(user=user, total=0)
                 messages.success(request, "Registration successful")
                 return redirect("/login")
         else:
             messages.error(request, "All fields must be filled")
-            return redirect(request.path)
+            return redirect("/register")
 
     return render(request, "register.html", {"user": request.user})
 
@@ -54,7 +55,7 @@ def login_user(request):
             return redirect("/user")
         else:
             messages.error(request, "Username or password is incorrect")
-            return redirect(request.path)
+            return redirect("/login")
 
     return render(request, "login.html", {"user": request.user})
 
@@ -63,7 +64,7 @@ def logout_user(request):
     if not request.user.is_authenticated:
         return redirect("/login")
     logout(request)
-    return redirect("/market")
+    return redirect("/login")
 
 
 def settings(request):
@@ -91,7 +92,7 @@ def settings(request):
 
         user.save()
         messages.success(request, "Profile Updated")
-        return redirect(request.path)
+        return redirect("/user/settings")
 
     return render(request, "settings.html", {"user": request.user})
 
@@ -123,7 +124,7 @@ def settings_account(request):
             user.save()
             messages.success(request, "Password Changed")
 
-        return redirect(request.path)
+        return redirect("/user/settings/account")
 
     return render(request, "settings_account.html", {"user": request.user})
 
@@ -158,16 +159,20 @@ def product(request, id):
     except Product.DoesNotExist:
         return redirect("/404")
 
-    return render(
-        request,
-        "product.html",
-        {
-            "user": request.user,
-            "product": product,
-            "comments": comments,
-            "count": comments.count(),
-        },
-    )
+    data = {
+        "user": request.user,
+        "product": product,
+        "comments": comments,
+        "count": comments.count(),
+    }
+
+    if request.user.is_authenticated:
+        cart = Cart.objects.get(pk=request.user.email)
+        data["cart"] = cart
+        data["in_cart"] = cart.has_item(product)
+        data["cart_item"] = cart.get_item(product)
+
+    return render(request, "product.html", data)
 
 
 def add(request):
@@ -180,6 +185,10 @@ def add(request):
         desc = request.POST.get("description")
         img = request.FILES.get("image")
         author = request.user
+
+        if int(price) < 0:
+            messages.error(request, "invalid price")
+            return redirect(request.META.get("HTTP_REFERER"))
 
         if name and price:
             data = {
@@ -196,7 +205,7 @@ def add(request):
             return redirect(f"/product/{product.id}")
         else:
             messages.error(request, "Must provide name and price")
-            return redirect(request.path)
+            return redirect(request.META.get("HTTP_REFERER"))
 
     return render(request, "add.html", {"user": request.user})
 
@@ -213,6 +222,10 @@ def update(request, id):
         desc = request.POST.get("description")
         img = request.FILES.get("image")
 
+        if int(price) < 0:
+            messages.error(request, "invalid price")
+            return redirect(request.META.get("HTTP_REFERER"))
+
         if name and price:
             product.name = name
             product.price = price
@@ -221,10 +234,11 @@ def update(request, id):
                 product.image = img
             if request.user == product.author:
                 product.save()
+                Cart.update(product)
             return redirect(f"/product/{id}")
         else:
             messages.error("Must provide name and price")
-            return redirect(request.path)
+            return redirect(f"/product/update/{id}")
 
     return render(request, "update.html", {"user": request.user, "product": product})
 
@@ -255,8 +269,7 @@ def comment_add(request, id):
         product = Product.objects.get(pk=id)
 
         if text:
-            comment = Comment(text=text, user=user, product=product)
-            comment.save()
+            Comment.objects.create(text=text, user=user, product=product)
             return redirect(f"/product/{id}")
         else:
             messages.error("Must add a comment first")
@@ -264,9 +277,10 @@ def comment_add(request, id):
 
     return redirect(f"/product/{id}")
 
+
 def comment_delete(request, id):
     if not request.user.is_authenticated:
-        return redirect(request.path)
+        return redirect(request.path.get("HTTP_REFERER"))
 
     comment = Comment.objects.get(pk=id)
 
@@ -276,3 +290,90 @@ def comment_delete(request, id):
         return redirect(f"/product/{comment.product.id}")
 
     return redirect(f"/product/{comment.product.id}")
+
+
+def cart(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    cart = Cart.objects.get(pk=request.user.email)
+
+    return render(
+        request,
+        "cart.html",
+        {
+            "user": request.user,
+            "cart": cart,
+            "cart_items": cart.get_items(),
+        },
+    )
+
+
+def cart_add(request, id):
+    if not request.user.is_authenticated:
+        return redirect(f"/product/{id}")
+
+    if request.POST:
+        cart = Cart.objects.get(pk=request.user)
+        product = get_object_or_404(Product, id=id)
+        quantity = int(request.POST.get("quantity"))
+
+        if quantity < 0 or quantity > 10:
+            messages.error(request, "invalid quantity")
+            return redirect(request.META.get("HTTP_REFERER"))
+
+        item = CartItem.objects.create(
+            cart=cart,
+            product=product,
+            quantity=quantity,
+            total=product.price * quantity,
+        )
+        item.save()
+
+        cart.total = 0
+        for item in cart.get_items():
+            cart.total += item.total
+
+        cart.save()
+        product.cart_users.add(request.user)
+
+    return redirect(request.META.get("HTTP_REFERER"))
+
+
+def cart_delete(request, id):
+    if not request.user.is_authenticated:
+        return redirect(f"/product/{id}")
+
+    if request.POST:
+        cart = Cart.objects.get(pk=request.user)
+        product = get_object_or_404(Product, id=id)
+
+        item = CartItem.objects.get(cart=cart, product=product)
+        cart.total -= item.total
+        item.delete()
+        cart.save()
+        product.cart_users.remove(request.user)
+
+    return redirect(request.META.get("HTTP_REFERER"))
+
+
+def cart_update(request, id):
+    if not request.user.is_authenticated:
+        return redirect(f"/product/{id}")
+
+    if request.POST:
+        cart = Cart.objects.get(pk=request.user)
+        product = get_object_or_404(Product, id=id)
+        quantity = int(request.POST.get("quantity"))
+
+        if quantity < 0 or quantity > 10:
+            messages.error(request, "invalid quantity")
+            return redirect(request.META.get("HTTP_REFERER"))
+
+        item = cart.get_item(product)
+        if item:
+            item.quantity = quantity
+            item.save()
+            cart.update(product)
+
+    return redirect(request.META.get("HTTP_REFERER"))
