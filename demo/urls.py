@@ -29,7 +29,7 @@ urlpatterns = [
     path("logout/", views.logout_user, name="logout"),
     path("user/", views.user),
     path("user/settings/", views.settings, name="settings"),
-    path("user/settings/account", views.settings_account, name="settings-account"),
+    path("user/settings/account/", views.settings_account, name="settings-account"),
     path("user/<str:username>/", views.user, name="user"),
     path("market/", views.market, name="market"),
     path("product/<int:id>/", views.product, name="product"),
@@ -42,4 +42,6 @@ urlpatterns = [
     path("cart/add/<int:id>", views.cart_add, name="cart-add"),
     path("cart/delete/<int:id>", views.cart_delete, name="cart-del"),
     path("cart/update/<int:id>", views.cart_update, name="cart-update"),
+    path("checkout/", views.checkout, name="checkout"),
+    path("purchases/", views.purchases, name="purchases"),
 ]

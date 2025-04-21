@@ -63,11 +63,11 @@
     <section class="reviews">
         <div id="h">
             <h3>Reviews ({{ count }})</h3>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and is_bought %}
             <a id="add-comment">Add Review</a>
         {% endif %}
         </div>
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and is_bought %}
         <form class="form" id="comment-form" action="{% url 'comment-add' product.id %}" method="post">
             {% csrf_token %}
             <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>

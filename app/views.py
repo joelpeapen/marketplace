@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.models import Cart, CartItem, Comment, Product, User
+from app.models import Cart, Comment, Product, User, History
 
 
 def index(request):
@@ -147,7 +147,12 @@ def user(request, username=None):
         return render(
             request,
             "user.html",
-            {"profile": request.user, "user": request.user, "products": products},
+            {
+                "profile": request.user,
+                "user": request.user,
+                "products": products,
+                "user_products": request.user.purchases.all(),
+            },
         )
     return redirect("/login")
 
@@ -171,6 +176,7 @@ def product(request, id):
         data["cart"] = cart
         data["in_cart"] = cart.has_item(product)
         data["cart_item"] = cart.get_item(product)
+        data["is_bought"] = product.is_bought(request.user)
 
     return render(request, "product.html", data)
 
@@ -234,7 +240,7 @@ def update(request, id):
                 product.image = img
             if request.user == product.author:
                 product.save()
-                Cart.update(product)
+                Cart.update_product(product)
             return redirect(f"/product/{id}")
         else:
             messages.error("Must provide name and price")
@@ -267,6 +273,10 @@ def comment_add(request, id):
         text = request.POST.get("comment")
         user = request.user
         product = Product.objects.get(pk=id)
+
+        if not product.is_bought(request.user):
+            messages.error("Must buy the product to comment")
+            return redirect(f"/product/{id}")
 
         if text:
             Comment.objects.create(text=text, user=user, product=product)
@@ -322,20 +332,8 @@ def cart_add(request, id):
             messages.error(request, "invalid quantity")
             return redirect(request.META.get("HTTP_REFERER"))
 
-        item = CartItem.objects.create(
-            cart=cart,
-            product=product,
-            quantity=quantity,
-            total=product.price * quantity,
-        )
-        item.save()
-
-        cart.total = 0
-        for item in cart.get_items():
-            cart.total += item.total
-
-        cart.save()
-        product.cart_users.add(request.user)
+        if not cart.has_item(product):
+            cart.add_item(product, quantity)
 
     return redirect(request.META.get("HTTP_REFERER"))
 
@@ -347,12 +345,7 @@ def cart_delete(request, id):
     if request.POST:
         cart = Cart.objects.get(pk=request.user)
         product = get_object_or_404(Product, id=id)
-
-        item = CartItem.objects.get(cart=cart, product=product)
-        cart.total -= item.total
-        item.delete()
-        cart.save()
-        product.cart_users.remove(request.user)
+        cart.remove_item(product)
 
     return redirect(request.META.get("HTTP_REFERER"))
 
@@ -374,6 +367,37 @@ def cart_update(request, id):
         if item:
             item.quantity = quantity
             item.save()
-            cart.update(product)
+            cart.update_product(product)
 
     return redirect(request.META.get("HTTP_REFERER"))
+
+
+def checkout(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    if request.POST:
+        cart = Cart.objects.get(user=request.user)
+        cart.checkout()
+
+        checked = request.user.purchases.filter(cart_status=True)
+        count = checked.count()
+
+        return render(
+            request,
+            "checkout.html",
+            {"user": request.user, "purchased": checked, "count": count},
+        )
+
+    return redirect("/user")
+
+
+def purchases(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    return render(
+        request,
+        "bought.html",
+        {"user": request.user, "products": request.user.purchases.all()},
+    )

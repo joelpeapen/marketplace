@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Purchase Success {% endblock title %}
+
+{% block content %}
+
+    <div class="cart">
+        <div class="title">
+            <p>Purchase of {{ count }} products successful</p>
+        </div>
+        <div class="heading">
+            <p>Product</p>
+            <p>Price</p>
+            <p>Quantity</p>
+            <p>Total</p>
+        </div>
+    {% for p in purchased %}
+        <div class="product">
+            <a href="{% url 'product' p.id %}">
+                <p>{{ p.name }}</p>
+                <p>{{ p.price }}</p>
+                <p>{{ p.quantity }}</p>
+                <p>{{ p.total }}</p>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock content %}

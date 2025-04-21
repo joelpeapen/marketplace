@@ -33,6 +33,17 @@
             <p>Total</p>
             <p>₹ {{ cart.total }}</p>
         </div>
+        <div class="checkout">
+            <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button class="confirm" type="submit">Checkout</button>
+            </form>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
     </div>
 
 {% endblock content %}

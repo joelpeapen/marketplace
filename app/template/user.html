@@ -16,6 +16,8 @@
         {% endfor %}
     {% endif %}
 
+    <h3>Your Products</h3>
+
     {% if products %}
     <div class="product-container">
         {% for product in products %}
@@ -28,7 +30,11 @@
         {% endfor %}
     </div>
     {% else %}
+        {% if user.is_authenticated %}
+        <p>You have no products</p>
+        {% else %}
         <p>This user has no products</p>
+        {% endif %}
     {% endif %}
 
 {% endblock content %}
