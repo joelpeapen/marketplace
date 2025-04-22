@@ -37,6 +37,7 @@ urlpatterns = [
     path("product/update/<int:id>/", views.update, name="product-update"),
     path("product/delete/<int:id>/", views.delete, name="product-del"),
     path("comment/<int:id>", views.comment_add, name="comment-add"),
+    path("comment/update/<int:id>", views.comment_update, name="comment-update"),
     path("comment/delete/<int:id>", views.comment_delete, name="comment-del"),
     path("cart/", views.cart, name="cart"),
     path("cart/add/<int:id>", views.cart_add, name="cart-add"),

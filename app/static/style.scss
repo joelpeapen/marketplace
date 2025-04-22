@@ -321,11 +321,32 @@ a:hover:not(nav a) {
   }
 }
 
+.comment {
+  .edit {
+    padding: 0;
+    border: none;
+    display: none;
+    max-width: 40%;
+    box-shadow: none;
+    margin: 0 !important;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      button {
+        margin: 5px 5px 8px;
+      }
+    }
+  }
+}
+
 #add-comment {
   cursor: pointer;
 }
 
-#cancel {
+.cancel {
   cursor: pointer;
   background-color: $red-dark;
 
@@ -500,91 +521,6 @@ a:hover:not(nav a) {
   }
 }
 
-@media (prefers-color-scheme: light) {
-  a {
-    color: $blue-light;
-  }
-
-  .product {
-    outline: 0.08rem solid $grey;
-    background-color: $white-dark;
-
-    &:hover {
-      box-shadow: 5px 5px $shadow;
-    }
-  }
-
-  .settings aside {
-    box-shadow: 0 2px 10px $shadow;
-  }
-
-  .menu a {
-    color: black;
-
-    .active {
-      background-color: $white-dark;
-    }
-
-    &:hover {
-      background-color: $white-dark;
-    }
-  }
-
-  #umenu {
-    box-shadow: 0 6px 8px $shadow;
-  }
-
-  .form, .cart {
-    border: 1px solid $grey-dark;
-  }
-
-  .form {
-    box-shadow: 0 2px 10px $shadow;
-
-    input,
-    textarea,
-    button {
-      border: 1px solid $grey;
-    }
-
-    input,
-    textarea {
-      &:focus {
-        border: none;
-        outline: 0.08rem solid $blue;
-        box-shadow: inset 0 0 0 1px $blue-light;
-      }
-    }
-
-    input,
-    textarea {
-      &:focus-visible {
-        box-shadow: inset 0 0 0 1px $blue-light;
-      }
-    }
-
-    button {
-      color: $white;
-    }
-  }
-
-  .reviews form,
-  .comment button {
-    background-color: $white;
-  }
-
-  .cart {
-
-    a {
-      color: black;
-    }
-
-    .product:hover {
-      box-shadow: 5px 5px #0000011a;
-    }
-  }
-}
-
 @media (prefers-color-scheme: dark) {
   body {
     color: $white;
@@ -635,6 +571,10 @@ a:hover:not(nav a) {
   .form, .cart {
     border: 1px solid $grey-dark;
     background-color: $navy-bg;
+  }
+
+  .comment .edit {
+    background-color: unset;
   }
 
   .form {

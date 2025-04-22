@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     const add = document.getElementById("add-comment");
+    const update = document.getElementById("update-comment");
 
     if (add) {
         add.addEventListener('click', function() {
-            var c = document.getElementById("comment-form");
+            let c = document.getElementById("comment-form");
             if (c.style.display === "none" || c.style.display === '') {
                 c.style.display = "block";
             } else {
@@ -16,6 +17,29 @@ document.addEventListener("DOMContentLoaded", function() {
     if (cancel) {
         cancel.addEventListener("click", function() {
             document.getElementById("comment-form").style.display = "none";
+        });
+    }
+
+    if (update) {
+        update.addEventListener('click', function() {
+            let c = document.getElementById("comment-update-form");
+            let comment = document.getElementById("user-comment");
+            if (c.style.display === "block") {
+                c.style.display = "none";
+                comment.style.display = "block";
+            } else {
+                comment.style.display = "none";
+                c.style.display = "block";
+            }
+        });
+    }
+
+
+    const cancelUpdate = document.getElementById("cancel-update");
+    if (cancelUpdate) {
+        cancelUpdate.addEventListener("click", function() {
+            document.getElementById("comment-update-form").style.display = "none";
+            document.getElementById("user-comment").style.display = "block";
         });
     }
 

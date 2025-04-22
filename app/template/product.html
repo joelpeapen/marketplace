@@ -72,7 +72,7 @@
             {% csrf_token %}
             <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>
             <div>
-                <button id="cancel" type="button">Cancel</button>
+                <button id="cancel" class="cancel" type="button">Cancel</button>
                 <button type="submit">Post</button>
             </div>
         </form>
@@ -86,26 +86,41 @@
     {% endif %}
 
     {% if comments %}
-        <div class="comments">
+    <div class="comments">
         {% for comment in comments %}
-            <div class="comment">
-                <div class="ch">
+        <div class="comment">
+            <div class="ch">
                 <a href="{% url 'user' comment.user %}">{{ comment.user }}</a> - <span>{{ comment.creation_date }}</span>
-           {% if user.is_authenticated and user == comment.user %}
+                {% if user.is_authenticated and user == comment.user %}
+                <a id="update-comment">| edit</a></button>
                 <form action="{% url 'comment-del' comment.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="delete confirm" >| delete</button>
                 </form>
-            {% endif %}
-                </div>
-                <p>{{ comment.text }}</p>
+                {% endif %}
             </div>
-        {% endfor %}
-        </div>
+            {% if user.is_authenticated and user == comment.user %}
+                <p id="user-comment">{{ comment.text }}</p>
+            {% else %}
+                <p>{{ comment.text }}</p>
+            {% endif %}
+           {% if user.is_authenticated and is_bought %}
+           <form class="form edit" id="comment-update-form" action="{% url 'comment-update' product.id %}" method="post">
+               {% csrf_token %}
+                <textarea name="comment" rows=10 required>{{ comment.text }}</textarea>
+               <div>
+                   <button id="cancel-update" class="cancel" type="button">Cancel</button>
+                   <button type="submit">Save</button>
+               </div>
+           </form>
+       {% endif %}
+       </div>
+       {% endfor %}
+    </div>
     {% elif not user.is_authenticated %}
-        <div class="comments">
-            <p>There are no reviews</p>
-        </div>
+    <div class="comments">
+        <p>There are no reviews</p>
+    </div>
     {% endif %}
 
     <section class="similar">

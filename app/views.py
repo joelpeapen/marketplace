@@ -288,6 +288,19 @@ def comment_add(request, id):
     return redirect(f"/product/{id}")
 
 
+def comment_update(request, id):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    if request.POST:
+        text = request.POST.get("comment")
+        if text:
+            Comment.objects.update(text=text)
+            return redirect(f"/product/{id}")
+
+    return redirect(request.path.get("HTTP_REFERER"))
+
+
 def comment_delete(request, id):
     if not request.user.is_authenticated:
         return redirect(request.path.get("HTTP_REFERER"))
