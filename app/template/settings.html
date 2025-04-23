@@ -13,8 +13,16 @@
 
         <div class="form">
             <p class="header">Public Profile</p>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+
+                <div class="input">
+                    <label for="pic">Profile Picture</label>
+                    <div class="pic">
+                        <img src="/static{{ user.pic.url }}" alt="profile picture">
+                        <input id="pic" name="pic" type="file" accept="image/*">
+                    </div>
+                </div>
 
                 <div class="input">
                     <label for="username">Username</label>

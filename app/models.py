@@ -4,8 +4,9 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     email = models.EmailField(primary_key=True, max_length=254)
+    pic = models.ImageField(upload_to="images/profiles/", default="images/profiles/profile_default.png")
     purchases = models.ManyToManyField("History", related_name="products_bought")
-
+    creation_date = models.DateField(auto_now_add=True)
 
 class Product(models.Model):
     name = models.CharField(max_length=50)

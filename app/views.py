@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.models import Cart, Comment, Product, User, History
+from app.models import Cart, Comment, Product, User
 
 
 def index(request):
@@ -76,6 +76,7 @@ def settings(request):
         username = request.POST.get("username")
         fname = request.POST.get("fname")
         lname = request.POST.get("lname")
+        pic = request.FILES.get("pic")
 
         user = request.user
         if username and username != user.username:
@@ -89,6 +90,10 @@ def settings(request):
 
         if lname != user.last_name:
             user.last_name = lname
+
+        if pic:
+            print("adding new profile picture" )
+            user.pic = pic
 
         user.save()
         messages.success(request, "Profile Updated")
@@ -187,12 +192,12 @@ def add(request):
 
     if request.POST:
         name = request.POST.get("product-name")
-        price = request.POST.get("price")
+        price = float(request.POST.get("price"))
         desc = request.POST.get("description")
         img = request.FILES.get("image")
         author = request.user
 
-        if int(price) < 0:
+        if price < 0:
             messages.error(request, "invalid price")
             return redirect(request.META.get("HTTP_REFERER"))
 
@@ -224,11 +229,11 @@ def update(request, id):
 
     if request.POST:
         name = request.POST.get("product-name")
-        price = request.POST.get("price")
+        price = float(request.POST.get("price"))
         desc = request.POST.get("description")
         img = request.FILES.get("image")
 
-        if int(price) < 0:
+        if price < 0:
             messages.error(request, "invalid price")
             return redirect(request.META.get("HTTP_REFERER"))
 

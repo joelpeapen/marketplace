@@ -14,7 +14,7 @@
 
         <div class="input">
             <label for="price">Price</label>
-            <input id="price" type="number" name="price" value="{{ product.price }}" min=0 required>
+            <input id="price" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" name="price" value="{{ product.price }}" min=0 required>
         </div>
 
         <div class="input">

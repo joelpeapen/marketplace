@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
     const add = document.getElementById("add-comment");
-    const update = document.getElementById("update-comment");
-
     if (add) {
         add.addEventListener('click', function() {
             let c = document.getElementById("comment-form");
@@ -20,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    const update = document.getElementById("update-comment");
     if (update) {
         update.addEventListener('click', function() {
             let c = document.getElementById("comment-update-form");
@@ -33,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-
 
     const cancelUpdate = document.getElementById("cancel-update");
     if (cancelUpdate) {

@@ -40,26 +40,73 @@ nav {
   justify-content: space-between;
   background-color: #4793cc;
 }
-nav a {
+nav #user {
+  font-weight: bold;
+  background-color: inherit;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0.5rem 1.2%;
+  gap: 0.5rem;
+}
+nav #user:hover {
+  background-color: #0c1a24;
+}
+
+.navitem {
   color: #ffffff;
   padding: 0.5rem 1.2%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-nav a:hover {
+.navitem:hover {
   background-color: #0c1a24;
 }
-nav .user {
-  color: #ffffff;
-  padding: 0.5rem 1.2%;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #4793cc;
+
+.navicon {
+  width: 28px;
+  border: 2px solid #ffffff;
 }
-nav .user:hover {
-  background-color: #0c1a24;
+
+.user {
+  border-radius: 50%;
+}
+
+.container {
+  display: flex;
+}
+
+.container main {
+  margin: 1rem 1.2rem;
+}
+
+aside.user {
+  display: flex;
+  flex-direction: column;
+  height: 88vh;
+  max-width: 250px;
+  padding: 1.5rem;
+  margin: 1rem 1.2rem;
+  border-right: 1px solid #979797;
+  border-radius: 0;
+}
+aside.user h3 {
+  font-size: 30px;
+}
+aside.user #flname {
+  display: inline;
+  font-size: 20px;
+  color: #9198a1;
+}
+aside.user #flname a {
+  font-size: 13px;
+}
+aside.user img.user {
+  width: 100%;
+  border-radius: 50%;
+  border: none !important;
+  margin: 0 0 5px 0;
 }
 
 .nlast {
@@ -119,6 +166,13 @@ a:hover:not(nav a) {
 .form .header {
   font-weight: 800;
   margin: 0 0 10px;
+}
+
+.input .pic {
+  margin: 3px;
+}
+.input .pic img {
+  max-width: 15%;
 }
 
 .lr {
@@ -441,6 +495,10 @@ a:hover:not(nav a) {
 }
 .settings .form {
   width: 50%;
+}
+.settings input[type=file] {
+  display: block;
+  max-width: 33%;
 }
 
 @media (prefers-color-scheme: dark) {

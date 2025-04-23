@@ -42,7 +42,7 @@ a {
   text-decoration: none;
 }
 
-button  {
+button {
   border: none;
   cursor: pointer;
   padding: 0.3rem;
@@ -57,29 +57,80 @@ nav {
   justify-content: space-between;
   background-color: $blue-dark;
 
-  a {
-    color: $white;
-    padding: 0.5rem 1.2%;
-    border: none;
+  #user {
+    font-weight: bold;
+    background-color: inherit;
+
+    display: flex;
+    align-items: center;
     border-radius: 5px;
-    cursor: pointer;
+    padding: 0.5rem 1.2%;
+    gap: 0.5rem;
 
     &:hover {
-      background-color: #0c1a24;
+      background-color: $navy-dark;
+    }
+  }
+}
+
+.navitem {
+  color: $white;
+  padding: 0.5rem 1.2%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $navy-dark;
+  }
+}
+
+.navicon {
+  width: 28px;
+  border: 2px solid $white;
+}
+
+.user {
+  border-radius: 50%;
+}
+
+.container {
+  display: flex;
+}
+
+.container main {
+  margin: 1rem 1.2rem;
+}
+
+aside.user {
+  display: flex;
+  flex-direction: column;
+  height: 88vh;
+  max-width: 250px;
+  padding: 1.5rem;
+  margin: 1rem 1.2rem;
+  border-right: 1px solid $grey;
+  border-radius: 0;
+
+  h3 {
+    font-size: 30px;
+  }
+
+  #flname {
+    display: inline;
+    font-size: 20px;
+    color: #9198a1;
+
+    a {
+      font-size: 13px;
     }
   }
 
-  .user {
-    color: $white;
-    padding: 0.5rem 1.2%;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: $blue-dark;
-
-    &:hover {
-      background-color: #0c1a24;
-    }
+  img.user {
+    width: 100%;
+    border-radius: 50%;
+    border: none !important;
+    margin: 0 0 5px 0;
   }
 }
 
@@ -146,6 +197,14 @@ a:hover:not(nav a) {
   .header {
     font-weight: 800;
     margin: 0 0 10px;
+  }
+}
+
+.input .pic {
+  margin: 3px;
+
+  img {
+    max-width: 15%;
   }
 }
 
@@ -518,6 +577,11 @@ a:hover:not(nav a) {
 
   .form {
     width: 50%;
+  }
+
+  input[type="file"] {
+    display: block;
+    max-width: 33%;
   }
 }
 

@@ -1,10 +1,13 @@
 <nav>
-    <a href="/">Home</a>
-    <a href="/market">Market</a>
-    <a href="/about">About</a>
+    <a class="navitem" href="/">Home</a>
+    <a class="navitem" href="/market">Market</a>
+    <a class="navitem" href="/about">About</a>
 {% if user.is_authenticated %}
-    <a class="nlast" href="/cart">Cart</a>
-    <button id="user" class="user">{{ user.username }}</button>
+    <a class="navitem nlast" href="/cart">Cart</a>
+    <button id="user" class="navitem user">
+        <img class="user navicon" src="/static{{ user.pic.url }}" alt="profile picture">
+        {{ user.username }}
+    </button>
     <div id="umenu" class="menu">
         <p class="header">{{ user.username }}</p>
         <a href="/user/">Profile</a>
@@ -13,6 +16,6 @@
         <a href="/logout">Log out</a>
     </div>
 {% else %}
-    <a class="nlast" href="/login">Login</a>
+    <a class="navitem nlast" href="/login">Login</a>
 {% endif %}
 </nav>

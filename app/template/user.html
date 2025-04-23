@@ -3,38 +3,53 @@
 {% block title %} {{ profile.username }}'s Profile {% endblock title %}
 
 {% block content %}
-
-    <h3>{{ profile.username }}</h3>
-
-    {% if user.is_authenticated %}
-        <a class="add" href="/product/add">Add</a>
-    {% endif %}
-
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-
-    <h3>Your Products</h3>
-
-    {% if products %}
-    <div class="product-container">
-        {% for product in products %}
-        <div class="product">
-            <a id="product-name" href="{% url 'product' product.id %}"><img src="/static{{ product.image.url }}"></a>
-            <p>
-                <a id="product-name" href="{% url 'product' product.id %}">{{ product.name }}</a>
+    <div class="container">
+        <aside class="user">
+            <img class="user" src="/static{{ profile.pic.url }}" alt="profile picture">
+            <h3>{{ profile.username }}</h3>
+            <p id="flname">
+            {% if profile.first_name %} {{ profile.first_name }} {% endif %}
+            {% if profile.last_name %} {{ profile.last_name }} {% endif %}
+                <a href="mailto:{{ profile.email }}">Contact</a>
             </p>
-        </div>
-        {% endfor %}
+            <p><em>joined on {{ profile.creation_date }}</em></p>
+        </aside>
+
+        <main>
+            {% if user.is_authenticated %}
+            <h3>Your Products</h3>
+            {% else %}
+            <h3>{{ profile.username }}'s Products</h3>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a class="add" href="/product/add">Add</a>
+            {% endif %}
+
+            {% if products %}
+            <div class="product-container">
+                {% for product in products %}
+                <div class="product">
+                    <a id="product-name" href="{% url 'product' product.id %}"><img src="/static{{ product.image.url }}"></a>
+                    <p>
+                        <a id="product-name" href="{% url 'product' product.id %}">{{ product.name }}</a>
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                {% if user.is_authenticated %}
+                <p>You have no products</p>
+                {% else %}
+                <p>This user has no products</p>
+                {% endif %}
+            {% endif %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </main>
     </div>
-    {% else %}
-        {% if user.is_authenticated %}
-        <p>You have no products</p>
-        {% else %}
-        <p>This user has no products</p>
-        {% endif %}
-    {% endif %}
 
 {% endblock content %}
