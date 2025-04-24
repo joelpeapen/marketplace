@@ -13,6 +13,7 @@
                     <h2>{{ product.name }}</h2>
                     <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
                     <p>Rating: {{ product.rating }}</p>
+                    <p class="stock {% if product.stock < 5 %} low {% elif product.stock < 1 %} nil {% endif %}">Stock: {{ product.stock }} left</p>
                 </div>
             {% if user.is_authenticated and user == product.author %}
                 <div class="edit">
@@ -29,7 +30,7 @@
                     <form action="{% url 'cart-add' product.id %}" method="post">
                         {% csrf_token %}
                         <label for="quantity">Quantity</label>
-                        <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max=10"> <!-- change max to stock left -->
+                        <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max={{ product.stock }}>
                         <button id="cart-add" type="submit">Add to Cart</button>
                     </form>
                     {% else %}
@@ -41,7 +42,7 @@
                         <form action="{% url 'cart-update' product.id %}" method="post">
                             {% csrf_token %}
                             <label for="quantity">Quantity</label>
-                            <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max=10"> <!-- change max to stock left -->
+                            <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max={{ product.stock }}>
                             <button id="cart-add" type="submit">Update</button>
                         </form>
                     </div>

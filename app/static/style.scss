@@ -1,5 +1,7 @@
 $red: #ff4343;
 $red-dark: #de3b3b;
+$orange: #fe8019;
+$yellow: #fabd2f;
 $green: #4cca51;
 $green-dark: #4caf50;
 $grey: #979797;
@@ -287,6 +289,16 @@ a:hover:not(nav a) {
   padding: 0.5rem 0;
   margin: 0 0 0.5rem 0;
   border-bottom: 1px solid $grey;
+
+  .stock {
+    color: $green;
+  }
+  .stock.low {
+    color: $orange;
+  }
+  .stock.nil {
+    color: $red;
+  }
 }
 
 .edit {
@@ -299,11 +311,11 @@ a:hover:not(nav a) {
 .product-cart {
   display: flex;
   justify-content: space-between;
-}
 
-.price {
-  font-weight: 500;
-  font-size: 30px;
+  .price {
+    font-weight: 500;
+    font-size: 30px;
+  }
 }
 
 .p-action {

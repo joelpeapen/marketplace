@@ -17,14 +17,15 @@ class Product(models.Model):
     creation_date = models.DateField(auto_now_add=True)
     image = models.ImageField(upload_to="images/", default="images/default.png")
     users = models.ManyToManyField("User", related_name="carted_users")
+    stock = models.IntegerField(default=0)
 
     def is_bought(self, user):
-        return user.purchases.filter(id=self.id).exists()
+        return user.purchases.filter(pid=self.id).exists()
 
 
 class History(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    id = models.IntegerField(default=0, primary_key=True)
+    pid = models.IntegerField(default=0)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.IntegerField(default=1)
@@ -84,7 +85,7 @@ class Cart(models.Model):
         for item in self.get_items():
             h = History.objects.create(
                 user=self.user,
-                id=item.product.id,
+                pid=item.product.id,
                 name=item.product.name,
                 price=item.product.price,
                 quantity=item.quantity,
@@ -92,6 +93,8 @@ class Cart(models.Model):
                 cart_status=True,
             )
             self.user.purchases.add(h)
+            item.product.stock -= item.quantity
+            item.product.save()
             self.remove_item(item.product)
 
     @classmethod

@@ -244,6 +244,15 @@ a:hover:not(nav a) {
   margin: 0 0 0.5rem 0;
   border-bottom: 1px solid #979797;
 }
+.phead .stock {
+  color: #4cca51;
+}
+.phead .stock.low {
+  color: #fe8019;
+}
+.phead .stock.nil {
+  color: #ff4343;
+}
 
 .edit {
   display: flex;
@@ -256,8 +265,7 @@ a:hover:not(nav a) {
   display: flex;
   justify-content: space-between;
 }
-
-.price {
+.product-cart .price {
   font-weight: 500;
   font-size: 30px;
 }

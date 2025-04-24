@@ -16,7 +16,7 @@
         </div>
     {% for p in purchased %}
         <div class="product">
-            <a href="{% url 'product' p.id %}">
+            <a href="{% url 'product' p.pid %}">
                 <p>{{ p.name }}</p>
                 <p>{{ p.price }}</p>
                 <p>{{ p.quantity }}</p>

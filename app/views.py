@@ -92,7 +92,6 @@ def settings(request):
             user.last_name = lname
 
         if pic:
-            print("adding new profile picture" )
             user.pic = pic
 
         user.save()
@@ -138,7 +137,7 @@ def user(request, username=None):
     if username:
         try:
             profile = User.objects.get(username=username)
-            products = Product.objects.filter(author=profile)
+            products = Product.objects.filter(author=profile, stock__gt=0)
             return render(
                 request,
                 "user.html",
@@ -148,7 +147,7 @@ def user(request, username=None):
             return redirect("/404")
 
     if request.user.is_authenticated:
-        products = Product.objects.filter(author=request.user)
+        products = Product.objects.filter(author=request.user, stock__gt=0)
         return render(
             request,
             "user.html",
@@ -193,6 +192,7 @@ def add(request):
     if request.POST:
         name = request.POST.get("product-name")
         price = float(request.POST.get("price"))
+        stock = int(request.POST.get("stock"))
         desc = request.POST.get("description")
         img = request.FILES.get("image")
         author = request.user
@@ -201,11 +201,16 @@ def add(request):
             messages.error(request, "invalid price")
             return redirect(request.META.get("HTTP_REFERER"))
 
+        if stock <= 0:
+            messages.error(request, "invalid stock")
+            return redirect(request.META.get("HTTP_REFERER"))
+
         if name and price:
             data = {
                 "name": name,
                 "author": author,
                 "price": price,
+                "stock": stock,
                 "desc": desc,
             }
             if img:
@@ -230,6 +235,7 @@ def update(request, id):
     if request.POST:
         name = request.POST.get("product-name")
         price = float(request.POST.get("price"))
+        stock = int(request.POST.get("stock"))
         desc = request.POST.get("description")
         img = request.FILES.get("image")
 
@@ -237,10 +243,15 @@ def update(request, id):
             messages.error(request, "invalid price")
             return redirect(request.META.get("HTTP_REFERER"))
 
+        if stock <= 0:
+            messages.error(request, "invalid stock")
+            return redirect(request.META.get("HTTP_REFERER"))
+
         if name and price:
             product.name = name
             product.price = price
             product.desc = desc
+            product.stock = stock
             if img:
                 product.image = img
             if request.user == product.author:
@@ -265,7 +276,7 @@ def delete(request, id):
 
 
 def market(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(stock__gt=0)
     return render(request, "market.html", {"user": request.user, "products": products})
 
 
@@ -346,7 +357,7 @@ def cart_add(request, id):
         product = get_object_or_404(Product, id=id)
         quantity = int(request.POST.get("quantity"))
 
-        if quantity < 0 or quantity > 10:
+        if quantity < 0 or quantity > product.stock:
             messages.error(request, "invalid quantity")
             return redirect(request.META.get("HTTP_REFERER"))
 
