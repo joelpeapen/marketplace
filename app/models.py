@@ -7,6 +7,7 @@ class User(AbstractUser):
     pic = models.ImageField(upload_to="images/profiles/", default="images/profiles/profile_default.png")
     purchases = models.ManyToManyField("History", related_name="products_bought")
     creation_date = models.DateField(auto_now_add=True)
+    bio = models.TextField()
 
 class Product(models.Model):
     name = models.CharField(max_length=50)

@@ -69,6 +69,10 @@ nav #user:hover {
   border: 2px solid #ffffff;
 }
 
+.nlast {
+  margin-left: auto;
+}
+
 .user {
   border-radius: 50%;
 }
@@ -105,12 +109,20 @@ aside.user #flname a {
 aside.user img.user {
   width: 100%;
   border-radius: 50%;
-  border: none !important;
+  border: 6px solid #304f64 !important;
   margin: 0 0 5px 0;
 }
+aside.user p:last-of-type {
+  margin-top: auto;
+}
 
-.nlast {
-  margin-left: auto;
+.bio {
+  margin: 10px 0;
+}
+.bio p:first-of-type {
+  font-weight: 500;
+  font-size: 18px;
+  color: #9198a1;
 }
 
 .menu {
@@ -491,18 +503,16 @@ a:hover:not(nav a) {
 }
 
 .settings {
-  height: 100%;
-  display: flex;
   justify-content: space-around;
   margin: 1.5rem 50px 0;
 }
-.settings aside {
+.settings .menu {
   width: 200px;
   display: flex;
   border-radius: 0.5rem;
 }
 .settings .form {
-  width: 50%;
+  width: 60%;
 }
 .settings input[type=file] {
   display: block;

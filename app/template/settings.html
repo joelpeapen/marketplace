@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <div class="settings">
+    <div class="container settings">
         <aside class="menu">
             <p class="header">User settings</p>
             <a class="active" href="/user/settings">Profile</a>
@@ -37,6 +37,11 @@
                 <div class="input">
                     <label for="lname">Last Name</label>
                     <input id="lname" type="text" name="lname" maxlength=50 value="{{ user.last_name }}">
+                </div>
+
+                <div class="input">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" maxlength=500 rows=10, cols=24 required>{{ user.bio }}</textarea>
                 </div>
 
                 <div class="input">

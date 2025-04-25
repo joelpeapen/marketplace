@@ -77,6 +77,7 @@ def settings(request):
         fname = request.POST.get("fname")
         lname = request.POST.get("lname")
         pic = request.FILES.get("pic")
+        bio = request.POST.get("bio")
 
         user = request.user
         if username and username != user.username:
@@ -90,6 +91,9 @@ def settings(request):
 
         if lname != user.last_name:
             user.last_name = lname
+
+        if bio and bio != user.bio:
+            user.bio = bio
 
         if pic:
             user.pic = pic

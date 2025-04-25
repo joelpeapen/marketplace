@@ -12,6 +12,12 @@
             {% if profile.last_name %} {{ profile.last_name }} {% endif %}
                 <a href="mailto:{{ profile.email }}">Contact</a>
             </p>
+            <div class="bio">
+                {% if profile.bio %}
+                <p>Bio</p>
+                <p>{{ profile.bio }}</p>
+                {% endif %}
+            </div>
             <p><em>joined on {{ profile.creation_date }}</em></p>
         </aside>
 
