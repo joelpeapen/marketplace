@@ -41,13 +41,21 @@
 
                 <div class="input">
                     <label for="bio">Bio</label>
-                    <textarea id="bio" name="bio" maxlength=500 rows=10, cols=24 required>{{ user.bio }}</textarea>
+                    <textarea id="bio" name="bio" maxlength=500 rows=10, cols=24>{{ user.bio }}</textarea>
                 </div>
 
                 <div class="input">
                     <button type="submit" name="submit">Save</button>
                 </div>
             </form>
+
+            <div class="delete">
+                <p class="header">Danger Zone</p>
+                <form action="{% url "delete-user" %}" method="post">
+                    {% csrf_token %}
+                    <button id="delete-user" type="submit" name=submit>Delete Account</button>
+                </form>
+            </div>
 
             {% if messages %}
                 {% for message in messages %}

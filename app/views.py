@@ -40,6 +40,17 @@ def register(request):
     return render(request, "register.html", {"user": request.user})
 
 
+def delete_user(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    if request.POST:
+        n = request.user.username
+        request.user.delete()
+        messages.success(request, f"User {n} has been deleted")
+        return redirect("/register")
+
+
 def login_user(request):
     if request.POST:
         username = request.POST.get("username")

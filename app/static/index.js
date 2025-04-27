@@ -51,6 +51,17 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    del = document.getElementById("delete-user");
+    if (del) {
+        del.addEventListener("click", function(event) {
+            const confirmed = confirm("THIS ACTION CANNOT BE UNDONE!");
+            if (!confirmed) {
+                event.preventDefault();
+                console.log("Delete action canceled.");
+            }
+        });
+    }
+
     user = document.getElementById("user")
     if (user) {
         user.addEventListener("click", function() {

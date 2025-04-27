@@ -508,8 +508,13 @@ a:hover:not(nav a) {
 }
 .settings .menu {
   width: 200px;
+  max-height: 147px;
   display: flex;
   border-radius: 0.5rem;
+}
+.settings .menu a:last-of-type {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 .settings .form {
   width: 60%;
@@ -517,6 +522,23 @@ a:hover:not(nav a) {
 .settings input[type=file] {
   display: block;
   max-width: 33%;
+}
+.settings button[type=submit] {
+  max-width: 150px;
+}
+.settings .delete {
+  border: 3px solid #ff4343;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 10px 0 0 0;
+  background: repeating-linear-gradient(45deg, rgba(255, 67, 67, 0.2), rgba(255, 67, 67, 0.2) 10px, rgba(4, 18, 27, 0.2) 10px, rgba(4, 18, 27, 0.2) 20px);
+}
+.settings .delete button {
+  max-width: 150px;
+  background-color: #de3b3b;
+}
+.settings .delete button:hover {
+  background-color: red;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -563,8 +585,7 @@ a:hover:not(nav a) {
     background-color: unset;
   }
   .form input,
-  .form textarea,
-  .form button {
+  .form textarea {
     color: #ffffff;
     border: 1px solid #3d444d;
     background-color: #082437;
@@ -573,10 +594,6 @@ a:hover:not(nav a) {
   .form textarea:focus {
     border: none;
     outline: 0.08rem solid #54a4dc;
-    box-shadow: inset 0 0 0 1px #1f6feb;
-  }
-  .form input:focus-visible,
-  .form textarea:focus-visible {
     box-shadow: inset 0 0 0 1px #1f6feb;
   }
   .form button {
