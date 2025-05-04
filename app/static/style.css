@@ -83,6 +83,7 @@ nav #user:hover {
 
 .container main {
   margin: 1rem 1.2rem;
+  width: 100%;
 }
 
 aside.user {
@@ -92,7 +93,7 @@ aside.user {
   max-width: 250px;
   padding: 1.5rem;
   margin: 1rem 1.2rem;
-  border-right: 1px solid #979797;
+  border-right: 1px solid #9198a1;
   border-radius: 0;
 }
 aside.user h3 {
@@ -198,20 +199,33 @@ a:hover:not(nav a) {
 }
 
 .add {
-  max-width: 5%;
-  padding: 6px;
+  width: 60px;
+  height: 25px;
+  padding: 2px;
+  font-size: 12px;
+  font-weight: 800;
+  margin: 3px 0 0 0;
+  border-radius: 6px;
   text-align: center;
   color: #0c1a24;
-  background-color: #54a4dc;
+  background-color: #4793cc;
 }
 .add:hover {
   text-decoration: none;
+  background-color: #54a4dc;
+}
+
+.product-bar {
+  display: flex;
+  gap: 1rem;
+  margin: 8px 0 0 8px;
 }
 
 .product-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  margin: 15px 0 0 0;
 }
 
 .product {
@@ -222,6 +236,8 @@ a:hover:not(nav a) {
 .product img {
   max-width: 100%;
   object-fit: contain;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 .product p {
   text-align: center;
@@ -254,7 +270,7 @@ a:hover:not(nav a) {
   justify-content: space-between;
   padding: 0.5rem 0;
   margin: 0 0 0.5rem 0;
-  border-bottom: 1px solid #979797;
+  border-bottom: 1px solid #9198a1;
 }
 .phead .stock {
   color: #4cca51;
@@ -325,7 +341,7 @@ a:hover:not(nav a) {
   text-wrap: nowrap;
   padding: 0.5rem 0;
   margin: 0 0 0.5rem 0;
-  border-bottom: 1px solid #979797;
+  border-bottom: 1px solid #9198a1;
 }
 .reviews form {
   padding: 0;
@@ -334,12 +350,12 @@ a:hover:not(nav a) {
   box-shadow: none;
   margin: 0 0 3rem 0;
 }
-.reviews form div {
+.reviews form div:last-of-type {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
-.reviews form div button {
+.reviews form div:last-of-type button {
   margin: 5px 5px 8px;
 }
 .reviews hr {
@@ -398,14 +414,75 @@ a:hover:not(nav a) {
   flex-direction: column;
   margin: 0 0 1.5rem 0;
 }
-.comment ch {
+.comment .chead {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.comment .chead span:first-of-type {
+  color: #9198a1;
+  margin: 0 0 0 10px;
+}
+.comment .chead .cedit {
+  margin: 0 0 0 10px;
+}
+.comment .chead .cedit a {
+  cursor: pointer;
+  font-weight: unset;
 }
 .comment form {
   display: inline;
 }
 .comment button:hover {
   text-decoration: underline;
+}
+
+.star {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23e3e3e3' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 76%;
+}
+.star.fill {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23fcd93a' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+}
+
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+.rating.display {
+  flex-direction: unset;
+}
+.rating.display span:nth-of-type(6) {
+  margin-left: 5px;
+}
+
+.rating > input {
+  display: none;
+}
+
+.rating > label {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23e3e3e3' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 76%;
+}
+
+.rating > input:checked ~ label,
+.rating > input:checked ~ label ~ label {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23fcd93a' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+}
+
+.rating > input:not(:checked) ~ label:hover,
+.rating > input:not(:checked) ~ label:hover ~ label {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23d8b11e' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
 }
 
 #cart-add {
@@ -431,7 +508,7 @@ a:hover:not(nav a) {
 .cart .title {
   font-size: 30px;
   margin: 0 10px 0 0px;
-  border-bottom: 1px solid #979797;
+  border-bottom: 1px solid #9198a1;
 }
 .cart .title p {
   margin-left: 10px;
@@ -444,7 +521,7 @@ a:hover:not(nav a) {
   align-items: center;
   justify-content: flex-start;
   padding: 2px 0 5px 5rem;
-  border-bottom: 1px solid #979797;
+  border-bottom: 1px solid #9198a1;
 }
 .cart .heading p {
   margin: 5px 10px 0 10px;
@@ -484,7 +561,7 @@ a:hover:not(nav a) {
 .cart .total {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #979797;
+  border-top: 1px solid #9198a1;
   margin-top: auto;
   padding: 10px 0 0 0;
 }

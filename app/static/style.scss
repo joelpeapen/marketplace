@@ -4,7 +4,7 @@ $orange: #fe8019;
 $yellow: #fabd2f;
 $green: #4cca51;
 $green-dark: #4caf50;
-$grey: #979797;
+$grey: #9198a1;
 $grey-dark: #3d444d;
 $white: #ffffff;
 $white-dark: #f1f3f5;
@@ -16,6 +16,9 @@ $navy-light: #304f64;
 $navy-dark: #0c1a24;
 $navy-bg: #04121b;
 $shadow: #0000011a;
+$star: "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23e3e3e3' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e";
+$starfill: "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23fcd93a' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e";
+$starhover: "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23d8b11e' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e";
 
 *,
 *::before,
@@ -106,6 +109,7 @@ nav {
 
 .container main {
   margin: 1rem 1.2rem;
+  width: 100%;
 }
 
 aside.user {
@@ -125,7 +129,7 @@ aside.user {
   #flname {
     display: inline;
     font-size: 20px;
-    color: #9198a1;
+    color: $grey;
 
     a {
       font-size: 13px;
@@ -149,7 +153,7 @@ aside.user {
   p:first-of-type {
     font-weight: 500;
     font-size: 18px;
-    color: #9198a1;
+    color: $grey;
   }
 }
 
@@ -238,21 +242,34 @@ a:hover:not(nav a) {
 }
 
 .add {
-  max-width: 5%;
-  padding: 6px;
+  width: 60px;
+  height: 25px;
+  padding: 2px;
+  font-size: 12px;
+  font-weight: 800;
+  margin: 3px 0 0 0;
+  border-radius: 6px;
   text-align: center;
   color: $navy-dark;
-  background-color: $blue;
+  background-color: $blue-dark;
 
   &:hover {
     text-decoration: none;
+    background-color: $blue;
   }
+}
+
+.product-bar {
+  display: flex;
+  gap: 1rem;
+  margin: 8px 0 0 8px;
 }
 
 .product-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  margin: 15px 0 0 0;
 }
 
 .product {
@@ -263,6 +280,8 @@ a:hover:not(nav a) {
   img {
     max-width: 100%;
     object-fit: contain;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
   }
 
   p {
@@ -305,12 +324,12 @@ a:hover:not(nav a) {
 
   .stock {
     color: $green;
-  }
-  .stock.low {
-    color: $orange;
-  }
-  .stock.nil {
-    color: $red;
+    &.low {
+      color: $orange;
+    }
+    &.nil {
+      color: $red;
+    }
   }
 }
 
@@ -385,7 +404,7 @@ a:hover:not(nav a) {
     box-shadow: none;
     margin: 0 0 3rem 0;
 
-    div {
+    div:last-of-type {
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -460,8 +479,24 @@ a:hover:not(nav a) {
   flex-direction: column;
   margin: 0 0 1.5rem 0;
 
-  ch {
+  .chead {
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    span:first-of-type {
+      color: $grey;
+      margin: 0 0 0 10px;
+    }
+
+    .cedit {
+      margin: 0 0 0 10px;
+
+      a {
+        cursor: pointer;
+        font-weight: unset;
+      }
+    }
   }
 
   form {
@@ -473,6 +508,57 @@ a:hover:not(nav a) {
       text-decoration: underline;
     }
   }
+}
+
+.star {
+  background-image: url($star);
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 76%;
+
+  &.fill {
+    background-image: url($starfill);
+  }
+}
+
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+
+  &.display {
+    flex-direction: unset;
+
+    span:nth-of-type(6) {
+      margin-left: 5px;
+    }
+  }
+}
+
+.rating>input {
+  display: none;
+}
+
+.rating>label {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  background-image: url($star);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 76%;
+}
+
+.rating>input:checked~label,
+.rating>input:checked~label~label {
+  background-image: url($starfill);
+}
+
+.rating>input:not(:checked)~label:hover,
+.rating>input:not(:checked)~label:hover~label {
+  background-image: url($starhover);
 }
 
 #cart-add {
@@ -628,7 +714,7 @@ a:hover:not(nav a) {
       rgba(255, 67, 67, 0.2) 10px,
       rgba(4, 18, 27, 0.2) 10px,
       rgba(4, 18, 27, 0.2) 20px
-    );
+      );
 
     button {
       max-width: 150px;
@@ -656,7 +742,7 @@ a:hover:not(nav a) {
     border: 0.0625rem solid $grey-dark;
 
     &:hover {
-        box-shadow: 5px 5px $blue-dark;
+      box-shadow: 5px 5px $blue-dark;
     }
   }
 

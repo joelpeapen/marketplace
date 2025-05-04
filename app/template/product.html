@@ -4,128 +4,164 @@
 
 {% block content %}
 
-    <div class="pdetails">
-        <img src="/static{{ product.image.url }}">
+<div class="container">
+    <main>
+        <div class="pdetails">
+            <img src="/static{{ product.image.url }}">
 
-        <section>
-            <div class="phead">
-                <div class="pname">
-                    <h2>{{ product.name }}</h2>
-                    <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
-                    <p>Rating: {{ product.rating }}</p>
-                    <p class="stock {% if product.stock < 5 %} low {% elif product.stock < 1 %} nil {% endif %}">Stock: {{ product.stock }} left</p>
+            <section>
+                <div class="phead">
+                    <div class="pname">
+                        <h2>{{ product.name }}</h2>
+                        <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
+                        <div class="rating display">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= product.rating %}
+                                <span class="star fill"></span>
+                                {% else %}
+                                <span class=star></span>
+                                {% endif %}
+                            {% endfor %}
+                            <span>{% if count > 0 %}({{ count }}){% endif %}</span>
+                        </div>
+                        <p class="stock {% if product.stock < 5 %} low {% elif product.stock < 1 %} nil {% endif %}">Stock: {{ product.stock }} left</p>
+                    </div>
+                    {% if user.is_authenticated and user == product.author %}
+                    <div class="edit">
+                        <a href="{% url 'product-update' product.id %}">Update</a>
+                        <a class="delete confirm" href="{% url 'product-del' product.id %}">Delete</a>
+                    </div>
+                    {% endif %}
                 </div>
-            {% if user.is_authenticated and user == product.author %}
-                <div class="edit">
-                    <a href="{% url 'product-update' product.id %}">Update</a>
-                    <a class="delete confirm" href="{% url 'product-del' product.id %}">Delete</a>
-                </div>
-            {% endif %}
-            </div>
-            <div class="product-cart">
-                <p class="price">₹ {{ product.price }}</p>
-                {% if user.is_authenticated and user != product.author %}
-                <div class="p-action">
-                    {% if not in_cart %}
-                    <form action="{% url 'cart-add' product.id %}" method="post">
-                        {% csrf_token %}
-                        <label for="quantity">Quantity</label>
-                        <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max={{ product.stock }}>
-                        <button id="cart-add" type="submit">Add to Cart</button>
-                    </form>
-                    {% else %}
-                    <form action="{% url 'cart-del' product.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="confirm" id="cart-del" type="submit">Remove from Cart</button>
-                    </form>
-                    <div class="q-update">
-                        <form action="{% url 'cart-update' product.id %}" method="post">
+                <div class="product-cart">
+                    <p class="price">₹ {{ product.price }}</p>
+                    {% if user.is_authenticated and user != product.author %}
+                    <div class="p-action">
+                        {% if not in_cart %}
+                        <form action="{% url 'cart-add' product.id %}" method="post">
                             {% csrf_token %}
                             <label for="quantity">Quantity</label>
                             <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max={{ product.stock }}>
-                            <button id="cart-add" type="submit">Update</button>
+                            <button id="cart-add" type="submit">Add to Cart</button>
+                        </form>
+                        {% else %}
+                        <form action="{% url 'cart-del' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="confirm" id="cart-del" type="submit">Remove from Cart</button>
+                        </form>
+                        <div class="q-update">
+                            <form action="{% url 'cart-update' product.id %}" method="post">
+                                {% csrf_token %}
+                                <label for="quantity">Quantity</label>
+                                <input name="quantity" type="number" value={% if cart_item %}{{ cart_item.quantity }}{% else %}1{% endif %} min=1 max={{ product.stock }}>
+                                <button id="cart-add" type="submit">Update</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="desc">
+                    <h5>About</h5>
+                    <p>{{ product.desc }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="metadata">
+            <p>Added on {{ product.creation_date }}</p>
+        </div>
+
+        <section class="reviews">
+            <div id="h">
+                <h3>Reviews ({{ count }})</h3>
+                {% if user.is_authenticated and is_bought %}
+                <a id="add-comment">Add Review</a>
+                {% endif %}
+            </div>
+            {% if user.is_authenticated and is_bought %}
+            <form class="form" id="comment-form" action="{% url 'comment-add' product.id %}" method="post">
+                {% csrf_token %}
+                <div class="rating">
+                    {% for i in "12345" %}
+                    <input type="radio" name="rating" id="r{{ forloop.revcounter }}" value="{{ forloop.revcounter}}">
+                    <label for="r{{ forloop.revcounter }}"></label>
+                    {% endfor %}
+                    <span>Rating:</span>
+                </div>
+                <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>
+                <div>
+                    <button id="cancel" class="cancel" type="button">Cancel</button>
+                    <button type="submit">Post</button>
+                </div>
+            </form>
+            {% endif %}
+        </section>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <div class="comments">
+            {% for comment in comments %}
+            <div class="comment">
+                <div class="chead">
+                    <a href="{% url 'user' comment.user %}">{{ comment.user }}</a><span>{{ comment.creation_date }}</span>
+                    <div class="rating display">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= comment.rating %}
+                            <span class="star fill"></span>
+                            {% else %}
+                            <span class=star></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if user.is_authenticated and user == comment.user %}
+                    <div class="cedit">
+                        <a id="update-comment">edit</a></button>
+                        <form action="{% url 'comment-del' comment.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="delete confirm" >delete</button>
                         </form>
                     </div>
                     {% endif %}
                 </div>
-            {% endif %}
-            </div>
-            <div class="desc">
-                <h5>About</h5>
-                <p>{{ product.desc }}</p>
-            </div>
-        </section>
-    </div>
-
-    <div class="metadata">
-        <p>Added on {{ product.creation_date }}</p>
-    </div>
-
-    <section class="reviews">
-        <div id="h">
-            <h3>Reviews ({{ count }})</h3>
-        {% if user.is_authenticated and is_bought %}
-            <a id="add-comment">Add Review</a>
-        {% endif %}
-        </div>
-    {% if user.is_authenticated and is_bought %}
-        <form class="form" id="comment-form" action="{% url 'comment-add' product.id %}" method="post">
-            {% csrf_token %}
-            <textarea name="comment" placeholder="Write a review" rows=10 required></textarea>
-            <div>
-                <button id="cancel" class="cancel" type="button">Cancel</button>
-                <button type="submit">Post</button>
-            </div>
-        </form>
-    {% endif %}
-    </section>
-
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-
-    {% if comments %}
-    <div class="comments">
-        {% for comment in comments %}
-        <div class="comment">
-            <div class="ch">
-                <a href="{% url 'user' comment.user %}">{{ comment.user }}</a> - <span>{{ comment.creation_date }}</span>
                 {% if user.is_authenticated and user == comment.user %}
-                <a id="update-comment">| edit</a></button>
-                <form action="{% url 'comment-del' comment.id %}" method="post">
+                <p id="user-comment">{{ comment.text }}</p>
+                {% else %}
+                <p>{{ comment.text }}</p>
+                {% endif %}
+                {% if user.is_authenticated and is_bought %}
+                <form class="form edit" id="comment-update-form" action="{% url 'comment-update' product.id %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="delete confirm" >| delete</button>
+                    <div class="rating">
+                        {% for i in "12345" %}
+                        <input type="radio" name="rating" id="ru{{ forloop.revcounter }}" value="{{ forloop.revcounter}}" {% if comment.rating == forloop.revcounter %} checked {%endif%}>
+                        <label for="ru{{ forloop.revcounter }}"></label>
+                        {% endfor %}
+                        <span>Rating:</span>
+                    </div>
+                    <textarea name="comment" rows=10 required>{{ comment.text }}</textarea>
+                    <div>
+                        <button id="cancel-update" class="cancel" type="button">Cancel</button>
+                        <button type="submit">Save</button>
+                    </div>
                 </form>
                 {% endif %}
             </div>
-            {% if user.is_authenticated and user == comment.user %}
-                <p id="user-comment">{{ comment.text }}</p>
-            {% else %}
-                <p>{{ comment.text }}</p>
-            {% endif %}
-           {% if user.is_authenticated and is_bought %}
-           <form class="form edit" id="comment-update-form" action="{% url 'comment-update' product.id %}" method="post">
-               {% csrf_token %}
-                <textarea name="comment" rows=10 required>{{ comment.text }}</textarea>
-               <div>
-                   <button id="cancel-update" class="cancel" type="button">Cancel</button>
-                   <button type="submit">Save</button>
-               </div>
-           </form>
-       {% endif %}
-       </div>
-       {% endfor %}
-    </div>
-    {% elif not user.is_authenticated %}
-    <div class="comments">
-        <p>There are no reviews</p>
-    </div>
-    {% endif %}
+            {% empty %}
+            <div class="comments">
+                <p>There are no reviews</p>
+            </div>
+            {% endfor %}
+        </div>
 
-    <section class="similar">
-        <h3>Simliar Items</h3>
-    </section>
+        <section class="similar">
+            <h3>Simliar Items</h3>
+        </section>
+    </main>
+</div>
 
 {% endblock content %}

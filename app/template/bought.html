@@ -4,18 +4,22 @@
 
 {% block content %}
 
+<div class="container">
     {% if user.is_authenticated %}
-    <h3>Purchases</h3>
-    <div>
-        <ul>
-        {% for p in products %}
-        <li>
-            <a id="product-name" href="{% url 'product' p.id %}">{{ p.name }}:</a>
-            <span>₹{{ p.total }} at ₹{{p.price}} ({{ p.quantity }})<em> on {{ p.date }}</em></span>
-        </li>
-        {% endfor %}
-        </ul>
+    <div class="main">
+        <h3>Purchases</h3>
+        <div>
+            <ul>
+            {% for p in products %}
+            <li>
+                <a id="product-name" href="{% url 'product' p.id %}">{{ p.name }}:</a>
+                <span>₹{{ p.total }} at ₹{{p.price}} ({{ p.quantity }})<em> on {{ p.date }}</em></span>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
     </div>
     {% endif %}
+</div>
 
 {% endblock content %}

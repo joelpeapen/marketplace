@@ -295,25 +295,27 @@ def market(request):
     return render(request, "market.html", {"user": request.user, "products": products})
 
 
-# TODO: need to make purchased table and comment only if user has bought product
 def comment_add(request, id):
     if not request.user.is_authenticated:
         return redirect(f"/product/{id}")
 
     if request.POST:
         text = request.POST.get("comment")
-        user = request.user
+        rating = int(request.POST.get("rating"))
         product = Product.objects.get(pk=id)
 
         if not product.is_bought(request.user):
             messages.error("Must buy the product to comment")
             return redirect(f"/product/{id}")
 
-        if text:
-            Comment.objects.create(text=text, user=user, product=product)
+        if text and rating:
+            Comment.objects.create(
+                text=text, user=request.user, product=product, rating=rating
+            )
+            product.make_rating()
             return redirect(f"/product/{id}")
         else:
-            messages.error("Must add a comment first")
+            messages.error("Must add a comment and rating")
             return redirect(f"/product/{id}")
 
     return redirect(f"/product/{id}")
@@ -325,8 +327,17 @@ def comment_update(request, id):
 
     if request.POST:
         text = request.POST.get("comment")
-        if text:
-            Comment.objects.update(text=text)
+        rating = int(request.POST.get("rating"))
+
+        if text and rating:
+            comment = Comment.objects.get(product=id)
+            comment.text = text
+            comment.rating = rating
+            comment.save()
+            comment.product.make_rating()
+            return redirect(f"/product/{id}")
+        else:
+            messages.error("Must add a comment and rating")
             return redirect(f"/product/{id}")
 
     return redirect(request.path.get("HTTP_REFERER"))
@@ -341,6 +352,7 @@ def comment_delete(request, id):
     if request.POST:
         if comment.user == request.user:
             comment.delete()
+            comment.product.make_rating()
         return redirect(f"/product/{comment.product.id}")
 
     return redirect(f"/product/{comment.product.id}")

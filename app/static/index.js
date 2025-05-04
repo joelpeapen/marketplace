@@ -41,6 +41,28 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    const rating = document.getElementById("comment-form");
+    if (rating) {
+        rating.addEventListener("submit", function(event) {
+            const selected = document.querySelector('input[name="rating"]:checked');
+            if (!selected) {
+                event.preventDefault();
+                alert("Please Select rating");
+            }
+        });
+    }
+
+    const ratingUpdate = document.getElementById("comment-update-form");
+    if (ratingUpdate) {
+        ratingUpdate.addEventListener("submit", function(event) {
+            const selected = document.querySelector('input[name="rating"]:checked');
+            if (!selected) {
+                event.preventDefault();
+                alert("Please Select rating");
+            }
+        });
+    }
+
     const links = document.querySelectorAll(".confirm");
     links.forEach(link => {
         link.addEventListener("click", function(event) {

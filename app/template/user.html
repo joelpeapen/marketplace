@@ -22,14 +22,16 @@
         </aside>
 
         <main>
-            {% if user.is_authenticated %}
-            <h3>Your Products</h3>
-            {% else %}
-            <h3>{{ profile.username }}'s Products</h3>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <a class="add" href="/product/add">Add</a>
-            {% endif %}
+            <div class="product-bar">
+                {% if user.is_authenticated %}
+                <h3>Your Products</h3>
+                {% else %}
+                <h3>{{ profile.username }}'s Products</h3>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="add" href="/product/add">+ Add</a>
+                {% endif %}
+            </div>
 
             {% if products %}
             <div class="product-container">

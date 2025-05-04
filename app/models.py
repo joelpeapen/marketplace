@@ -1,13 +1,17 @@
 from django.db import models
+from django.db.models import Avg
 from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
     email = models.EmailField(primary_key=True, max_length=254)
-    pic = models.ImageField(upload_to="images/profiles/", default="images/profiles/profile_default.png")
+    pic = models.ImageField(
+        upload_to="images/profiles/", default="images/profiles/profile_default.png"
+    )
     purchases = models.ManyToManyField("History", related_name="products_bought")
     creation_date = models.DateField(auto_now_add=True)
     bio = models.TextField()
+
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
@@ -22,6 +26,11 @@ class Product(models.Model):
 
     def is_bought(self, user):
         return user.purchases.filter(pid=self.id).exists()
+
+    def make_rating(self):
+        r = Comment.objects.filter(product=self).aggregate(average=Avg("rating"))
+        self.rating = r["average"] or 0
+        self.save()
 
 
 class History(models.Model):
@@ -44,6 +53,7 @@ class Comment(models.Model):
     creation_date = models.DateField(auto_now_add=True)
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
 
 
 class Cart(models.Model):
