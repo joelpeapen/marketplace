@@ -269,7 +269,6 @@ def update(request, id):
             product.stock = stock
             if img:
                 product.image = img
-            if request.user == product.author:
                 product.save()
                 Cart.update_product(product)
             return redirect(f"/product/{id}")
