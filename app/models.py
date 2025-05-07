@@ -1,3 +1,4 @@
+from enum import unique
 from django.db import models
 from django.db.models import Avg
 from django.contrib.auth.models import AbstractUser
@@ -24,6 +25,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="images/", default="images/default.png")
     users = models.ManyToManyField("User", related_name="carted_users")
     stock = models.IntegerField(default=0)
+    tags = models.ManyToManyField("Tag", related_name="product_tags")
 
     def is_bought(self, user):
         return user.purchases.filter(pid=self.id).exists()
@@ -32,6 +34,10 @@ class Product(models.Model):
         r = Comment.objects.filter(product=self).aggregate(average=Avg("rating"))
         self.rating = r["average"] or 0
         self.save()
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=20, unique=True)
 
 
 class History(models.Model):

@@ -372,8 +372,82 @@ a:hover:not(nav a) {
 }
 
 .metadata {
+  display: flex;
   font-size: 12px;
-  margin: 4rem 0 0 10%;
+  margin: 1rem 0 0 10%;
+  flex-direction: column;
+
+  .dates {
+    margin: 0 0 2rem 0;
+  }
+}
+
+.tag-container {
+  display: flex;
+  max-width: 500px;
+}
+
+@mixin tag-styles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+
+  input[type="text"] {
+    all: unset;
+    max-width: 80px;
+    border-bottom: 1px solid $orange;
+  }
+
+  input[type="submit"] {
+    all: unset;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: $green;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  a {
+    color: $orange;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.tag {
+  @include tag-styles;
+  margin: 3px 5px;
+  flex: 0 0 15%;
+  justify-content: space-around;
+}
+
+#tag-delete {
+  display: none;
+  all: unset;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  color: $white;
+  background-color: $red;
+}
+
+#tag-add-form {
+  @include tag-styles;
+  margin: 5px 5px;
 }
 
 .reviews,
@@ -744,6 +818,19 @@ a:hover:not(nav a) {
 
     &:hover {
       box-shadow: 5px 5px $blue-dark;
+    }
+  }
+
+  .tag {
+    background-color: $grey-dark;
+  }
+
+  #tag-add-form {
+    background-color: $grey-dark;
+    border: 1px solid $navy-light;
+
+    label, input {
+      color: $yellow ;
     }
   }
 

@@ -23,7 +23,7 @@
 
         <main>
             <div class="product-bar">
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and user == profile %}
                 <h3>Your Products</h3>
                 {% else %}
                 <h3>{{ profile.username }}'s Products</h3>

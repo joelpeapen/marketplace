@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    del = document.getElementById("delete-user");
+    const del = document.getElementById("delete-user");
     if (del) {
         del.addEventListener("click", function(event) {
             const confirmed = confirm("THIS ACTION CANNOT BE UNDONE!");
@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    user = document.getElementById("user")
+    const user = document.getElementById("user")
     if (user) {
         user.addEventListener("click", function() {
-            umenu = document.getElementById("umenu");
+            const umenu = document.getElementById("umenu");
             if (umenu.style.display === "none" || umenu.style.display === '') {
                 umenu.style.display = "flex";
             } else {

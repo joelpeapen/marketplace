@@ -69,8 +69,39 @@
         </div>
 
         <div class="metadata">
-            <p>Added on {{ product.creation_date }}</p>
-            <p>Last updated on {{ product.modify_date }}</p>
+            <div class="dates">
+                <p>Added on {{ product.creation_date }}</p>
+                <p>Last updated on {{ product.modify_date }}</p>
+            </div>
+
+            <div class="tag-container">
+                {% if tags %}
+                <div class="tags">
+                    {% for tag in tags %}
+                    <a href="{% url 'tags' tag.name %}">
+                    <div class="tag">
+                        <span>🏷️ {{ tag.name }}</span>
+                        {% if user.is_authenticated and user == product.author %}
+                        <form id="tag-delete-form" action="{% url 'tag-delete' product.id tag.id %}" method="post">
+                            {% csrf_token %}
+                            <input id="tag-delete" class="confirm" type="submit" value="×">
+                        </form>
+                        {% endif %}
+                    </div>
+                    </a>
+                    {% endfor %}
+                {% endif %}
+
+                {% if user.is_authenticated and user == product.author %}
+                <form id="tag-add-form" action="{% url 'tag-add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="tag">🏷️ </label>
+                    <input id="tag-text" name="tag" type="text" maxlength=20>
+                    <input type="submit" value="+">
+                </form>
+                {% endif %}
+                </div>
+            </div>
         </div>
 
         <section class="reviews">

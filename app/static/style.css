@@ -320,8 +320,92 @@ a:hover:not(nav a) {
 }
 
 .metadata {
+  display: flex;
   font-size: 12px;
-  margin: 4rem 0 0 10%;
+  margin: 1rem 0 0 10%;
+  flex-direction: column;
+}
+.metadata .dates {
+  margin: 0 0 2rem 0;
+}
+
+.tag-container {
+  display: flex;
+  max-width: 500px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tags a {
+  color: #fe8019;
+}
+.tags a:hover {
+  text-decoration: none;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin: 3px 5px;
+  flex: 0 0 15%;
+  justify-content: space-around;
+}
+.tag input[type=text] {
+  all: unset;
+  max-width: 80px;
+  border-bottom: 1px solid #fe8019;
+}
+.tag input[type=submit] {
+  all: unset;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #4cca51;
+}
+
+#tag-delete {
+  display: none;
+  all: unset;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  color: #ffffff;
+  background-color: #ff4343;
+}
+
+#tag-add-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin: 5px 5px;
+}
+#tag-add-form input[type=text] {
+  all: unset;
+  max-width: 80px;
+  border-bottom: 1px solid #fe8019;
+}
+#tag-add-form input[type=submit] {
+  all: unset;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #4cca51;
 }
 
 .reviews,
@@ -634,6 +718,16 @@ a:hover:not(nav a) {
   }
   .product:hover {
     box-shadow: 5px 5px #4793cc;
+  }
+  .tag {
+    background-color: #3d444d;
+  }
+  #tag-add-form {
+    background-color: #3d444d;
+    border: 1px solid #304f64;
+  }
+  #tag-add-form label, #tag-add-form input {
+    color: #fabd2f;
   }
   .settings {
     color: #ffffff;

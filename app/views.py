@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.models import Cart, Comment, Product, User
+from app.models import Cart, Comment, Product, User, Tag
 
 
 def index(request):
@@ -180,6 +180,7 @@ def product(request, id):
     try:
         product = Product.objects.get(pk=id)
         comments = Comment.objects.filter(product=id)
+        tags = product.tags.all()
     except Product.DoesNotExist:
         return redirect("/404")
 
@@ -188,6 +189,7 @@ def product(request, id):
         "product": product,
         "comments": comments,
         "count": comments.count(),
+        "tags": tags,
     }
 
     if request.user.is_authenticated:
@@ -456,3 +458,50 @@ def purchases(request):
         "bought.html",
         {"user": request.user, "products": request.user.purchases.all()},
     )
+
+
+def tags(request, name):
+    tags = Tag.objects.filter(name=name)
+    products = set()
+
+    for tag in tags:
+        products.update(tag.product_tags.all())
+
+    return render(
+        request,
+        "tags.html",
+        {"user": request.user, "products": list(products), "tag": tags[0]},
+    )
+
+
+def tag_add(request, id):
+    product = get_object_or_404(Product, pk=id)
+
+    if not request.user.is_authenticated or request.user != product.author:
+        messages.error(request, "only product author can add tags")
+        return redirect(f"/product/{id}")
+
+    if request.POST:
+        tag_name = request.POST.get("tag")
+
+        if tag_name:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            product.tags.add(tag)
+        else:
+            messages.error("Tag cannot be empty")
+
+    return redirect(f"/product/{id}")
+
+
+def tag_delete(request, pid, tid):
+    product = get_object_or_404(Product, pk=pid)
+
+    if not request.user.is_authenticated or request.user != product.author:
+        messages.error(request, "only product author can delete tags")
+        return redirect(f"/product/{pid}")
+
+    if request.POST:
+        tag = Tag.objects.get(pk=tid)
+        product.tags.remove(tag)
+
+    return redirect(f"/product/{pid}")

@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Market {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <main>
+        <div class="product-bar">
+            <h3>Tag: {{ tag.name }}</h3>
+        </div>
+
+        {% if products %}
+        <div class="product-container">
+            {% for p in products %}
+            <div class="product">
+                <a id="product-name" href="{% url 'product' p.id %}"><img src="/static{{ p.image.url }}"></a>
+                <p>
+                    <a id="product-name" href="{% url 'product' p.id %}">{{ p.name }}</a> by <a href="{% url 'user' p.author %}">{{ p.author }}</a>
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+    </main>
+</div>
+
+{% endblock content %}
