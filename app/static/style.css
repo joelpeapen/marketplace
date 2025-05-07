@@ -450,23 +450,6 @@ a:hover:not(nav a) {
   width: 20%;
 }
 
-.comment .edit {
-  padding: 0;
-  border: none;
-  display: none;
-  max-width: 40%;
-  box-shadow: none;
-  margin: 0 !important;
-}
-.comment .edit div {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.comment .edit div button {
-  margin: 5px 5px 8px;
-}
-
 #add-comment {
   cursor: pointer;
 }
@@ -481,6 +464,7 @@ a:hover:not(nav a) {
 
 .delete {
   color: #ff4343;
+  background-color: #0c1a24;
 }
 
 .comments {
@@ -496,13 +480,26 @@ a:hover:not(nav a) {
 
 .comment {
   display: flex;
-  flex-direction: column;
   margin: 0 0 1.5rem 0;
+}
+.comment img {
+  width: 50px;
+  height: 100%;
+  border-radius: 50%;
+  margin: 0 10px 0 0;
+}
+.comment .content {
+  display: flex;
+  flex-direction: column;
 }
 .comment .chead {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+.comment .chead a {
+  cursor: pointer;
+  font-weight: unset;
 }
 .comment .chead span:first-of-type {
   color: #9198a1;
@@ -511,15 +508,22 @@ a:hover:not(nav a) {
 .comment .chead .cedit {
   margin: 0 0 0 10px;
 }
-.comment .chead .cedit a {
-  cursor: pointer;
-  font-weight: unset;
+.comment .edit {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: none;
+}
+.comment .edit div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.comment .edit div button {
+  margin: 5px 5px 8px;
 }
 .comment form {
   display: inline;
-}
-.comment button:hover {
-  text-decoration: underline;
 }
 
 .star {
@@ -771,8 +775,7 @@ a:hover:not(nav a) {
   .form button {
     color: #ffffff;
   }
-  .reviews form,
-  .comment button {
+  .reviews form {
     background-color: #0c1a24;
   }
   .cart a {

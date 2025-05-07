@@ -139,32 +139,34 @@
         <div class="comments">
             {% for comment in comments %}
             <div class="comment">
-                <div class="chead">
-                    <a href="{% url 'user' comment.user %}">{{ comment.user }}</a><span>{{ comment.creation_date }}</span>
-                    <div class="rating display">
-                        {% for i in "12345" %}
-                            {% if forloop.counter <= comment.rating %}
-                            <span class="star fill"></span>
-                            {% else %}
-                            <span class=star></span>
-                            {% endif %}
-                        {% endfor %}
+                <img src="/static{{ comment.user.pic.url }}" alt="{{ comment.user }}'s profile picture">
+                <div class="content">
+                    <div class="chead">
+                        <a href="{% url 'user' comment.user %}">{{ comment.user }}</a><span>{{ comment.creation_date }}</span>
+                        <div class="rating display">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= comment.rating %}
+                                <span class="star fill"></span>
+                                {% else %}
+                                <span class=star></span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if user.is_authenticated and user == comment.user %}
+                        <div class="cedit">
+                            <a id="update-comment">edit</a></button>
+                            <form action="{% url 'comment-del' comment.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="delete confirm" >delete</button>
+                            </form>
+                        </div>
+                        {% endif %}
                     </div>
                     {% if user.is_authenticated and user == comment.user %}
-                    <div class="cedit">
-                        <a id="update-comment">edit</a></button>
-                        <form action="{% url 'comment-del' comment.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="delete confirm" >delete</button>
-                        </form>
-                    </div>
+                    <p id="user-comment">{{ comment.text }}</p>
+                    {% else %}
+                    <p>{{ comment.text }}</p>
                     {% endif %}
-                </div>
-                {% if user.is_authenticated and user == comment.user %}
-                <p id="user-comment">{{ comment.text }}</p>
-                {% else %}
-                <p>{{ comment.text }}</p>
-                {% endif %}
                 {% if user.is_authenticated and is_bought %}
                 <form class="form edit" id="comment-update-form" action="{% url 'comment-update' product.id %}" method="post">
                     {% csrf_token %}
@@ -181,6 +183,7 @@
                         <button type="submit">Save</button>
                     </div>
                 </form>
+                </div>
                 {% endif %}
             </div>
             {% empty %}

@@ -499,27 +499,6 @@ a:hover:not(nav a) {
   }
 }
 
-.comment {
-  .edit {
-    padding: 0;
-    border: none;
-    display: none;
-    max-width: 40%;
-    box-shadow: none;
-    margin: 0 !important;
-
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      button {
-        margin: 5px 5px 8px;
-      }
-    }
-  }
-}
-
 #add-comment {
   cursor: pointer;
 }
@@ -535,6 +514,7 @@ a:hover:not(nav a) {
 
 .delete {
   color: $red;
+  background-color: $navy-dark;
 }
 
 .comments {
@@ -551,13 +531,29 @@ a:hover:not(nav a) {
 
 .comment {
   display: flex;
-  flex-direction: column;
   margin: 0 0 1.5rem 0;
+
+  img {
+    width: 50px;
+    height: 100%;
+    border-radius: 50%;
+    margin: 0 10px 0 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
 
   .chead {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
+    a {
+      cursor: pointer;
+      font-weight: unset;
+    }
 
     span:first-of-type {
       color: $grey;
@@ -567,21 +563,28 @@ a:hover:not(nav a) {
     .cedit {
       margin: 0 0 0 10px;
 
-      a {
-        cursor: pointer;
-        font-weight: unset;
+    }
+  }
+
+  .edit {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: none;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      button {
+        margin: 5px 5px 8px;
       }
     }
   }
 
   form {
     display: inline;
-  }
-
-  button {
-    &:hover {
-      text-decoration: underline;
-    }
   }
 }
 
@@ -892,8 +895,7 @@ a:hover:not(nav a) {
     }
   }
 
-  .reviews form,
-  .comment button {
+  .reviews form {
     background-color: $navy-dark;
   }
 
