@@ -77,10 +77,27 @@ nav #user:hover {
   border-radius: 50%;
 }
 
+.messages {
+  top: 12%;
+  margin-right: 2%;
+  position: absolute;
+  left: auto !important;
+  right: 0 !important;
+  width: 12%;
+  list-style: none;
+  text-align: center;
+  z-index: 1000;
+}
+.messages li {
+  padding: 0.4em;
+  line-height: 2em;
+  border-radius: 10px;
+  word-wrap: none;
+}
+
 .container {
   display: flex;
 }
-
 .container main {
   margin: 1rem 1.2rem;
   width: 100%;
@@ -144,14 +161,13 @@ aside.user p:last-of-type {
 }
 
 #umenu {
-  width: 14%;
-  display: none;
-  margin-right: 10px;
   top: 8%;
-  text-align: left;
+  margin-right: 10px;
   position: absolute;
   left: auto !important;
   right: 0 !important;
+  width: 14%;
+  display: none;
 }
 
 a:hover:not(nav a) {
@@ -423,7 +439,7 @@ a:hover:not(nav a) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  text-wrap: nowrap;
+  word-wrap: nowrap;
   padding: 0.5rem 0;
   margin: 0 0 0.5rem 0;
   border-bottom: 1px solid #9198a1;
@@ -714,6 +730,21 @@ a:hover:not(nav a) {
   }
   a {
     color: #54a4dc;
+  }
+  .messages {
+    color: #0c1a24;
+  }
+  .messages li.success {
+    background-color: #4cca51;
+  }
+  .messages li.warning {
+    background-color: #fabd2f;
+  }
+  .messages li.error {
+    background-color: #ff4343;
+  }
+  .messages li.info, .messages li.debug {
+    background-color: #54a4dc;
   }
   .product {
     outline: none;

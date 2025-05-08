@@ -103,14 +103,39 @@ nav {
   border-radius: 50%;
 }
 
-.container {
-  display: flex;
+@mixin floater($top, $r) {
+  top: $top;
+  margin-right: $r;
+  position: absolute;
+  left: auto !important;
+  right: 0 !important;
 }
 
-.container main {
-  margin: 1rem 1.2rem;
-  width: 100%;
+.messages {
+  @include floater(12%, 2%);
+
+  width: 12%;
+  list-style: none;
+  text-align: center;
+  z-index: 1000;
+
+  li {
+    padding: 0.4em;
+    line-height: 2.0em;
+    border-radius: 10px;
+    word-wrap: none;
+  }
 }
+
+.container {
+  display: flex;
+
+  main {
+    margin: 1rem 1.2rem;
+    width: 100%;
+  }
+}
+
 
 aside.user {
   display: flex;
@@ -178,14 +203,10 @@ aside.user {
 }
 
 #umenu {
+  @include floater(8%, 10px);
+
   width: 14%;
   display: none;
-  margin-right: 10px;
-  top: 8%;
-  text-align: left;
-  position: absolute;
-  left: auto !important;
-  right: 0 !important;
 }
 
 a:hover:not(nav a) {
@@ -324,9 +345,11 @@ a:hover:not(nav a) {
 
   .stock {
     color: $green;
+
     &.low {
       color: $orange;
     }
+
     &.nil {
       color: $red;
     }
@@ -356,6 +379,7 @@ a:hover:not(nav a) {
   align-items: flex-end;
   justify-content: space-between;
   margin: 5px 0;
+
   input {
     width: 5rem;
   }
@@ -466,7 +490,7 @@ a:hover:not(nav a) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    text-wrap: nowrap;
+    word-wrap: nowrap;
     padding: 0.5rem 0;
     margin: 0 0 0.5rem 0;
     border-bottom: 1px solid $grey;
@@ -812,6 +836,28 @@ a:hover:not(nav a) {
 
   a {
     color: $blue;
+  }
+
+  .messages {
+    color: $navy-dark;
+
+    li {
+      &.success {
+        background-color: $green;
+      }
+
+      &.warning {
+        background-color: $yellow;
+      }
+
+      &.error {
+        background-color: $red;
+      }
+
+      &.info, &.debug {
+        background-color: $blue;
+      }
+    }
   }
 
   .product {
