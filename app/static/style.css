@@ -1,3 +1,4 @@
+@charset "UTF-8";
 *,
 *::before,
 *::after {
@@ -166,8 +167,28 @@ aside.user p:last-of-type {
   position: absolute;
   left: auto !important;
   right: 0 !important;
-  width: 14%;
+  width: 10%;
   display: none;
+}
+#umenu a[href="/user/"]::before {
+  font-size: 20px;
+  content: "𐇑";
+  margin-right: 5px;
+}
+#umenu a[href="/purchases/"]::before {
+  font-size: 20px;
+  content: "$";
+  margin-right: 5px;
+}
+#umenu a[href="/user/settings"]::before {
+  font-size: 20px;
+  content: "⚙";
+  margin-right: 5px;
+}
+#umenu a[href="/logout"]::before {
+  font-size: 10px;
+  content: "❌";
+  margin-right: 5px;
 }
 
 a:hover:not(nav a) {
