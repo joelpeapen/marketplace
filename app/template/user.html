@@ -33,6 +33,8 @@
                 {% endif %}
             </div>
 
+            {% include "./components/searchbar.html" with user=profile.username query=query %}
+
             {% if products %}
             <div class="product-container">
                 {% for product in products %}

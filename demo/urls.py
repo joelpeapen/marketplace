@@ -48,5 +48,6 @@ urlpatterns = [
     path("purchases/", views.purchases, name="purchases"),
     path("tags/<str:name>/", views.tags, name="tags"),
     path("tags/add/<int:id>/", views.tag_add, name="tag-add"),
-    path("tags/delete/<int:pid>/<int:tid>/", views.tag_delete, name="tag-delete")
+    path("tags/delete/<int:pid>/<int:tid>/", views.tag_delete, name="tag-delete"),
+    path("search/", views.search, name="search"),
 ]

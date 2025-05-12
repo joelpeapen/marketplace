@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -152,7 +153,9 @@ def user(request, username=None):
     if username:
         try:
             profile = User.objects.get(username=username)
-            products = Product.objects.filter(author=profile, stock__gt=0)
+            products = Product.objects.filter(author=profile, stock__gt=0).order_by(
+                "-rating"
+            )
             return render(
                 request,
                 "user.html",
@@ -161,17 +164,15 @@ def user(request, username=None):
         except User.DoesNotExist:
             return redirect("/404")
 
+    # /user/ -> logged-in user's page
     if request.user.is_authenticated:
-        products = Product.objects.filter(author=request.user, stock__gt=0)
+        products = Product.objects.filter(author=request.user, stock__gt=0).order_by(
+            "-rating"
+        )
         return render(
             request,
             "user.html",
-            {
-                "profile": request.user,
-                "user": request.user,
-                "products": products,
-                "user_products": request.user.purchases.all(),
-            },
+            {"profile": request.user, "user": request.user, "products": products},
         )
     return redirect("/login")
 
@@ -271,8 +272,9 @@ def update(request, id):
             product.stock = stock
             if img:
                 product.image = img
-                product.save()
-                Cart.update_product(product)
+
+            product.save()
+            Cart.update_product(product)
             return redirect(f"/product/{id}")
         else:
             messages.error("Must provide name and price")
@@ -292,7 +294,7 @@ def delete(request, id):
 
 
 def market(request):
-    products = Product.objects.filter(stock__gt=0)
+    products = Product.objects.filter(stock__gt=0).order_by("-rating")
     return render(request, "market.html", {"user": request.user, "products": products})
 
 
@@ -505,3 +507,29 @@ def tag_delete(request, pid, tid):
         product.tags.remove(tag)
 
     return redirect(f"/product/{pid}")
+
+
+def search(request):
+    if request.GET:
+        query = request.GET.get("query")
+        username = request.GET.get("user", None)
+        qf = Q(name__icontains=query) | Q(desc__icontains=query) & Q(stock__gt=0)
+
+        if username:
+            try:
+                u = User.objects.get(username=username)
+                qf &= Q(author=u)
+            except User.DoesNotExist:
+                u = None
+
+        products = Product.objects.filter(qf).order_by("-rating").distinct()
+
+    return render(
+        request,
+        "search.html",
+        {
+            "query": query,
+            "username": username,
+            "products": products,
+        },
+    )

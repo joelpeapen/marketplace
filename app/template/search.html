@@ -1,20 +1,16 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Market {% endblock title %}
+    {% block title %} Search results for {{ query }} {% endblock title %}
 
 {% block content %}
 
 <div class="container">
     <main>
         <div class="product-bar">
-            <h3>Market</h3>
-
-            {% if user.is_authenticated %}
-            <a class="add" href="/product/add">+ Add</a>
-            {% endif %}
+            <h3>Search results for {{ query }}</h3>
         </div>
 
-        {% include "./components/searchbar.html" with user=None %}
+        {% include "./components/searchbar.html" with user=username query=query %}
 
         {% if products %}
         <div class="product-container">

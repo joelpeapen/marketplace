@@ -1,0 +1,6 @@
+<div class="searchbar">
+    <form class="form search" action="{% url 'search' %}" method="get">
+        {% if user %}<input type="hidden" name="user" value="{{ user }}"/>{% endif %}
+        <input id="search" name="query" type="text" class="input" placeholder="search..." value="{{ query|default:'' }}"/>
+    </form>
+</div>
