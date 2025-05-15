@@ -37,6 +37,16 @@ figure, blockquote, dl, dd {
   margin-block-end: 0;
 }
 
+.err {
+  margin: 22vh 0 0 0 !important;
+  text-align: center;
+
+  span {
+    font-size: 200px;
+    font-weight: bold;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;

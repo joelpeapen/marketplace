@@ -6,6 +6,14 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from app.models import Cart, Comment, Product, User, Tag
 
 
+def err(request, exception):
+    return render(request, exception + ".html", {"e": exception, "user": request.user})
+
+
+def e500(request):
+    return render(request, "500.html", {"user": request.user})
+
+
 def index(request):
     return render(request, "index.html", {"user": request.user})
 
@@ -151,18 +159,15 @@ def settings_account(request):
 
 def user(request, username=None):
     if username:
-        try:
-            profile = User.objects.get(username=username)
-            products = Product.objects.filter(author=profile, stock__gt=0).order_by(
-                "-rating"
-            )
-            return render(
-                request,
-                "user.html",
-                {"profile": profile, "user": request.user, "products": products},
-            )
-        except User.DoesNotExist:
-            return redirect("/404")
+        profile = get_object_or_404(User, username=username)
+        products = Product.objects.filter(author=profile, stock__gt=0).order_by(
+            "-rating"
+        )
+        return render(
+            request,
+            "user.html",
+            {"profile": profile, "user": request.user, "products": products},
+        )
 
     # /user/ -> logged-in user's page
     if request.user.is_authenticated:
@@ -178,12 +183,9 @@ def user(request, username=None):
 
 
 def product(request, id):
-    try:
-        product = Product.objects.get(pk=id)
-        comments = Comment.objects.filter(product=id)
-        tags = product.tags.all()
-    except Product.DoesNotExist:
-        return redirect("/404")
+    product = get_object_or_404(Product, pk=id)
+    comments = Comment.objects.filter(product=id)
+    tags = product.tags.all()
 
     data = {
         "user": request.user,
@@ -194,7 +196,7 @@ def product(request, id):
     }
 
     if request.user.is_authenticated:
-        cart = Cart.objects.get(pk=request.user.email)
+        cart = get_object_or_404(Cart, pk=request.user.email)
         data["cart"] = cart
         data["in_cart"] = cart.has_item(product)
         data["cart_item"] = cart.get_item(product)
@@ -333,7 +335,7 @@ def comment_update(request, id):
         rating = int(request.POST.get("rating"))
 
         if text and rating:
-            comment = Comment.objects.get(product=id)
+            comment = get_object_or_404(Comment, product=id)
             comment.text = text
             comment.rating = rating
             comment.save()
@@ -350,7 +352,7 @@ def comment_delete(request, id):
     if not request.user.is_authenticated:
         return redirect(request.path.get("HTTP_REFERER"))
 
-    comment = Comment.objects.get(pk=id)
+    comment = get_object_or_404(Comment, pk=id)
 
     if request.POST:
         if comment.user == request.user:
@@ -365,7 +367,7 @@ def cart(request):
     if not request.user.is_authenticated:
         return redirect("/login")
 
-    cart = Cart.objects.get(pk=request.user.email)
+    cart = get_object_or_404(Cart, pk=request.user.email)
 
     return render(
         request,
@@ -383,7 +385,7 @@ def cart_add(request, id):
         return redirect(f"/product/{id}")
 
     if request.POST:
-        cart = Cart.objects.get(pk=request.user)
+        cart = get_object_or_404(Cart, pk=request.user)
         product = get_object_or_404(Product, id=id)
         quantity = int(request.POST.get("quantity"))
 
@@ -402,7 +404,7 @@ def cart_delete(request, id):
         return redirect(f"/product/{id}")
 
     if request.POST:
-        cart = Cart.objects.get(pk=request.user)
+        cart = get_object_or_404(Cart, pk=request.user)
         product = get_object_or_404(Product, id=id)
         cart.remove_item(product)
 
@@ -414,7 +416,7 @@ def cart_update(request, id):
         return redirect(f"/product/{id}")
 
     if request.POST:
-        cart = Cart.objects.get(pk=request.user)
+        cart = get_object_or_404(Cart, pk=request.user)
         product = get_object_or_404(Product, id=id)
         quantity = int(request.POST.get("quantity"))
 
@@ -436,7 +438,7 @@ def checkout(request):
         return redirect("/login")
 
     if request.POST:
-        cart = Cart.objects.get(user=request.user)
+        cart = get_object_or_404(Cart, user=request.user)
         cart.checkout()
 
         checked = request.user.purchases.filter(cart_status=True)
@@ -503,7 +505,7 @@ def tag_delete(request, pid, tid):
         return redirect(f"/product/{pid}")
 
     if request.POST:
-        tag = Tag.objects.get(pk=tid)
+        tag = get_object_or_404(Tag, pk=tid)
         product.tags.remove(tag)
 
     return redirect(f"/product/{pid}")

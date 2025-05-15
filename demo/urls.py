@@ -20,6 +20,11 @@ from django.urls import path
 
 from app import views
 
+handler400 = "app.views.err"
+handler403 = "app.views.err"
+handler404 = "app.views.err"
+handler500 = "app.views.e500"
+
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     path('', views.index, name='index'),
