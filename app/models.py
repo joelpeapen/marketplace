@@ -22,9 +22,10 @@ class Product(models.Model):
     creation_date = models.DateField(auto_now_add=True)
     modify_date = models.DateField(auto_now=True)
     image = models.ImageField(upload_to="images/", default="images/default.png")
-    users = models.ManyToManyField("User", related_name="carted_users")
     stock = models.IntegerField(default=0)
     tags = models.ManyToManyField("Tag", related_name="product_tags")
+    carters = models.ManyToManyField("User", related_name="carted_users")
+    buyers = models.ManyToManyField("User", related_name="buyers")
 
     def is_bought(self, user):
         return user.purchases.filter(pid=self.id).exists()
@@ -41,6 +42,7 @@ class Tag(models.Model):
 
 class History(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
+    username = models.CharField(max_length=150)
     pid = models.IntegerField(default=0)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -88,20 +90,21 @@ class Cart(models.Model):
             self.total += item.total
 
         self.save()
-        p.users.add(self.user)
+        p.carters.add(self.user)
 
     def remove_item(self, p):
         item = CartItem.objects.get(cart=self, product=p)
         self.total -= item.total
         item.delete()
         self.save()
-        p.users.remove(self.user)
+        p.carters.remove(self.user)
 
     def checkout(self):
         History.status_remove()
         for item in self.get_items():
             h = History.objects.create(
                 user=self.user,
+                username=self.user.username,
                 pid=item.product.id,
                 name=item.product.name,
                 price=item.product.price,
@@ -110,6 +113,7 @@ class Cart(models.Model):
                 cart_status=True,
             )
             self.user.purchases.add(h)
+            item.product.buyers.add(self.user)
             item.product.stock -= item.quantity
             item.product.save()
             self.remove_item(item.product)

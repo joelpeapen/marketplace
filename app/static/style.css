@@ -613,6 +613,9 @@ a:hover:not(nav a) {
 .rating.display span:nth-of-type(6) {
   margin-left: 5px;
 }
+.rating.display #buyers {
+  margin: 0 5px;
+}
 
 .rating > input {
   display: none;

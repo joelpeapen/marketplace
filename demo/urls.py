@@ -51,6 +51,7 @@ urlpatterns = [
     path("cart/update/<int:id>", views.cart_update, name="cart-update"),
     path("checkout/", views.checkout, name="checkout"),
     path("purchases/", views.purchases, name="purchases"),
+    path("buyers/<int:id>", views.buyers, name="buyers"),
     path("tags/<str:name>/", views.tags, name="tags"),
     path("tags/add/<int:id>/", views.tag_add, name="tag-add"),
     path("tags/delete/<int:pid>/<int:tid>/", views.tag_delete, name="tag-delete"),

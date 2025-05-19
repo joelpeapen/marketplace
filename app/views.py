@@ -1,9 +1,9 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.models import Cart, Comment, Product, User, Tag
+from app.models import Cart, Comment, Product, User, Tag, History
 
 
 def err(request, exception):
@@ -160,8 +160,10 @@ def settings_account(request):
 def user(request, username=None):
     if username:
         profile = get_object_or_404(User, username=username)
-        products = Product.objects.filter(author=profile, stock__gt=0).order_by(
-            "-rating"
+        products = (
+            Product.objects.filter(author=profile, stock__gt=0)
+            .annotate(num_buyers=Count("buyers"))
+            .order_by("-rating", "-num_buyers")
         )
         return render(
             request,
@@ -201,6 +203,7 @@ def product(request, id):
         data["in_cart"] = cart.has_item(product)
         data["cart_item"] = cart.get_item(product)
         data["is_bought"] = product.is_bought(request.user)
+        data["buycount"] = request.user.buyers.count()
 
     return render(request, "product.html", data)
 
@@ -296,7 +299,11 @@ def delete(request, id):
 
 
 def market(request):
-    products = Product.objects.filter(stock__gt=0).order_by("-rating")
+    products = (
+        Product.objects.filter(stock__gt=0)
+        .annotate(num_buyers=Count("buyers"))
+        .order_by("-rating", "-num_buyers")
+    )
     return render(request, "market.html", {"user": request.user, "products": products})
 
 
@@ -459,8 +466,25 @@ def purchases(request):
 
     return render(
         request,
-        "bought.html",
+        "purchased.html",
         {"user": request.user, "products": request.user.purchases.all()},
+    )
+
+
+def buyers(request, id):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+
+    buyers = History.objects.filter(pid=id)
+
+    return render(
+        request,
+        "buyers.html",
+        {
+            "user": request.user,
+            "buyers": buyers,
+            "product": buyers[0]
+        },
     )
 
 
@@ -524,7 +548,12 @@ def search(request):
             except User.DoesNotExist:
                 u = None
 
-        products = Product.objects.filter(qf).order_by("-rating").distinct()
+        products = (
+            Product.objects.filter(qf)
+            .annotate(num_buyers=Count("buyers"))
+            .order_by("-rating", "-num_buyers")
+            .distinct()
+        )
 
     return render(
         request,

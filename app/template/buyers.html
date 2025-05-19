@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+    {% block title %} Buyers of {{ product.name }} {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    {% if user.is_authenticated %}
+    <main>
+        <h3>Buyers of <a href="{% url 'product' product.pid %}">{{ product.name }}</a></h3>
+        <div>
+            <ul>
+            {% for u in buyers %}
+            <li>
+                <a id="product-name" href="{% url 'user' u.username %}">{{ u.username }}:</a>
+                <span>₹{{ u.total }} at ₹{{ u.price }} ({{ u.quantity }})<em> on {{ u.date }}</em></span>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </main>
+    {% endif %}
+</div>
+
+{% endblock content %}
