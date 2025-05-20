@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db.models import Q, Count
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
@@ -37,7 +38,7 @@ def register(request):
                 return redirect("/register")
             else:
                 user = User.objects.create_user(
-                    username=username, email=email, password=password
+                    username=username, email=email, password=password, date_joined=datetime.utcnow()
                 )
                 Cart.objects.create(user=user, total=0)
                 messages.success(request, "Registration successful")
@@ -235,6 +236,7 @@ def add(request):
                 "price": price,
                 "stock": stock,
                 "desc": desc,
+                "creation_date": datetime.utcnow(),
             }
             if img:
                 data["image"] = img
@@ -275,6 +277,7 @@ def update(request, id):
             product.price = price
             product.desc = desc
             product.stock = stock
+            product.modify_date = datetime.utcnow()
             if img:
                 product.image = img
 
@@ -480,11 +483,7 @@ def buyers(request, id):
     return render(
         request,
         "buyers.html",
-        {
-            "user": request.user,
-            "buyers": buyers,
-            "product": buyers[0]
-        },
+        {"user": request.user, "buyers": buyers, "product": buyers[0]},
     )
 
 

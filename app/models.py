@@ -9,7 +9,6 @@ class User(AbstractUser):
         upload_to="images/profiles/", default="images/profiles/profile_default.png"
     )
     purchases = models.ManyToManyField("History", related_name="products_bought")
-    creation_date = models.DateField(auto_now_add=True)
     bio = models.TextField()
 
 
@@ -19,8 +18,8 @@ class Product(models.Model):
     author = models.ForeignKey("User", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     rating = models.IntegerField(default=0)
-    creation_date = models.DateField(auto_now_add=True)
-    modify_date = models.DateField(auto_now=True)
+    creation_date = models.DateTimeField()
+    modify_date = models.DateTimeField()
     image = models.ImageField(upload_to="images/", default="images/default.png")
     stock = models.IntegerField(default=0)
     tags = models.ManyToManyField("Tag", related_name="product_tags")

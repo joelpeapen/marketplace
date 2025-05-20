@@ -74,8 +74,8 @@
 
         <div class="metadata">
             <div class="dates">
-                <p>Added on {{ product.creation_date }}</p>
-                <p>Last updated on {{ product.modify_date }}</p>
+                <p>Added on {{ product.creation_date|date:"M d Y \a\t H:i" }}</p>
+                <p>Last updated on {{ product.modify_date|date:"M d Y \a\t H:i" }}</p>
             </div>
 
             <div class="tag-container">

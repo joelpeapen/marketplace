@@ -18,7 +18,7 @@
                 <p>{{ profile.bio }}</p>
                 {% endif %}
             </div>
-            <p><em>joined on {{ profile.creation_date }}</em></p>
+            <p><em>joined on {{ profile.date_joined|date:"M d Y \a\t H:i" }}</em></p>
         </aside>
 
         <main>
