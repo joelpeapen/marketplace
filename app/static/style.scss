@@ -859,8 +859,11 @@ a:hover:not(nav a) {
     }
   }
 
-  .form {
+  .forms {
+    display: flex;
+    flex-direction: column;
     width: 60%;
+    gap: 20px;
   }
 
   input[type="file"] {

@@ -749,8 +749,11 @@ a:hover:not(nav a) {
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 }
-.settings .form {
+.settings .forms {
+  display: flex;
+  flex-direction: column;
   width: 60%;
+  gap: 20px;
 }
 .settings input[type=file] {
   display: block;
