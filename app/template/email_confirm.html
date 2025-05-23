@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+
+    <div class="container">
+        <main>
+            {% if change %}
+                <p>Check your new email address at {{ user.email }} for the verification link</p>
+            {% else %}
+                {% if is_email_confirmed == True %}
+                    <div>Your email has been confirmed. Login <a href="/login">Here</a></div>
+                {% else %}
+                    {% if new %}
+                        <p>Check your email at {{ user.email }} for the verification link</p>
+                    {% else %}
+                        <p>Your email {{ user.email }} has not been confirmed</p>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+            {% if is_email_confirmed != True %}
+            <form action="{% url 'send-email-confirm' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ user.username }}"/>
+                <button type="submit">Resend Confirmation Email</button>
+            </form>
+            {% endif %}
+        </main>
+    </div>
+
+{% endblock content %}

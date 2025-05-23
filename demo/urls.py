@@ -56,4 +56,6 @@ urlpatterns = [
     path("tags/add/<int:id>/", views.tag_add.as_view(), name="tag-add"),
     path("tags/delete/<int:pid>/<int:tid>/", views.tag_delete.as_view(), name="tag-delete"),
     path("search/", views.search.as_view(), name="search"),
+    path("send-email-confirm/", views.send_email_confirm, name="send-email-confirm"),
+    path("email-confirm/", views.set_email_confirm, name="set-email-confirm"),
 ]

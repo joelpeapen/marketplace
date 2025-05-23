@@ -5,7 +5,16 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.models import Cart, Comment, Product, User, Tag, History
+from app.utils import send_confirmation_email
+from app.models import (
+    Cart,
+    Comment,
+    Product,
+    User,
+    Tag,
+    History,
+    EmailConfirmationToken,
+)
 
 
 def err(request, exception):
@@ -57,21 +66,18 @@ class register(View):
                     date_joined=datetime.utcnow(),
                 )
                 Cart.objects.create(user=user, total=0)
-                messages.success(request, "Registration successful")
-                return redirect("/login")
+
+                token = EmailConfirmationToken.objects.create(user=user)
+                send_confirmation_email(
+                    email=user.email, token_id=token.pk, user_id=user.pk
+                )
+
+                return render(
+                    request, "email_confirm.html", {"new": True, "email": email}
+                )
         else:
             messages.error(request, "All fields must be filled")
             return redirect("/register")
-
-
-class delete_user(View):
-    def post(self, request):
-        check_login(request)
-
-        n = request.user.username
-        request.user.delete()
-        messages.success(request, f"User {n} has been deleted")
-        return redirect("/register")
 
 
 class login_user(View):
@@ -84,15 +90,17 @@ class login_user(View):
 
         if username and password:
             user = authenticate(username=username, password=password)
+            if user:
+                if user.is_email_confirmed:
+                    login(request, user)
+                    return redirect("/user")
+                else:
+                    return render(request, "email_confirm.html", {"user": user})
+            else:
+                messages.error(request, "Username or password is incorrect")
+                return redirect("/login")
         else:
             messages.error(request, "All fields must be filled")
-
-        if user:
-            login(request, user)
-            return redirect("/user")
-        else:
-            messages.error(request, "Username or password is incorrect")
-            return redirect("/login")
 
 
 class logout_user(View):
@@ -103,6 +111,16 @@ class logout_user(View):
         return redirect("/login")
 
 
+class delete_user(View):
+    def post(self, request):
+        check_login(request)
+
+        n = request.user.username
+        request.user.delete()
+        messages.success(request, f"User {n} has been deleted")
+        return redirect("/register")
+
+
 class settings(View):
     def get(self, request):
         check_login(request)
@@ -111,7 +129,6 @@ class settings(View):
     def post(self, request):
         check_login(request)
 
-        email = request.POST.get("email")
         username = request.POST.get("username")
         fname = request.POST.get("fname")
         lname = request.POST.get("lname")
@@ -121,9 +138,6 @@ class settings(View):
         user = request.user
         if username and username != user.username:
             user.username = username
-
-        if email and email != user.email:
-            user.email = email
 
         if fname != user.first_name:
             user.first_name = fname
@@ -147,6 +161,7 @@ class settings_account(View):
         check_login(request)
         return render(request, "settings_account.html", {"user": request.user})
 
+    # to change password
     def post(self, request):
         check_login(request)
 
@@ -165,6 +180,8 @@ class settings_account(View):
             messages.error(request, "Passwords do not match")
         elif not user.check_password(old_password):
             messages.error(request, "Old password is incorrect")
+        elif password == old_password == confirm:
+            messages.error(request, "Thats the same password")
         else:
             user.set_password(password)
             update_session_auth_hash(request, user)
@@ -545,7 +562,7 @@ class tag_add(View):
         tag_name = request.POST.get("tag")
 
         if tag_name:
-            tag, created = Tag.objects.get_or_create(name=tag_name)
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
             product.tags.add(tag)
         else:
             messages.error("Tag cannot be empty")
@@ -596,3 +613,31 @@ class search(View):
                 "products": products,
             },
         )
+
+
+def send_email_confirm(request):
+    if request.POST:
+        username = request.POST.get("user")
+        if username:
+            user = get_object_or_404(User, username=username)
+
+        token, _ = EmailConfirmationToken.objects.get_or_create(user=user)
+        send_confirmation_email(email=user.email, token_id=token.pk, user_id=user.pk)
+        messages.info(request, "Check your email for the verification link")
+        return render(request, "email_confirm.html", {"is_email_confirmed": False})
+
+
+# the email sends link to this
+def set_email_confirm(request):
+    if request.GET:
+        token_id = request.GET.get("token_id", None)
+        try:
+            token = EmailConfirmationToken.objects.get(pk=token_id)
+            user = token.user
+            user.is_email_confirmed = True
+            user.save()
+            data = {"is_email_confirmed": True}
+            return render(request, "email_confirm.html", data)
+        except EmailConfirmationToken.DoesNotExist:
+            data = {"is_email_confirmed": False}
+            return render(request, "email_confirm.html", data)
