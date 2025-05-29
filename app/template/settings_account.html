@@ -11,31 +11,48 @@
             <a class="active" href="/user/settings/account">Account</a>
         </aside>
 
-        <div class="form">
-            <p class="header">Change Password</p>
-            <form method="post">
-                {% csrf_token %}
+        <div class="forms">
+            <div class="form">
+                <p class="header">Change Email</p>
+                <form action="{% url 'email-change' %}" method="post">
+                    {% csrf_token %}
 
-                <div class="input">
-                    <label for="old-password">Old Password</label>
-                    <input id="old-password" type="password" name="old-password" maxlength=50 required>
-                </div>
+                    <div class="input">
+                        <label for="email">New Email</label>
+                        <input id="email" type="email" name="email" maxlength=50 placeholder="{{ user.email }}" required>
+                    </div>
 
-                <div class="input">
-                    <label for="password">New Password</label>
-                    <input id="password" type="password" name="password" maxlength=50 required>
-                </div>
+                    <div class="input">
+                        <button type="submit" name="submit">Save</button>
+                    </div>
+                </form>
+            </div>
 
-                <div class="input">
-                    <label for="confirm-pw">Confirm New Password</label>
-                    <input id="confirm-pw" type="password" name="confirm-pw" maxlength=50 required>
-                </div>
+            <div class="form">
+                <p class="header">Change Password</p>
+                <form method="post">
+                    {% csrf_token %}
 
-                <div class="input">
-                    <button type="submit" name="submit">Save</button>
-                </div>
-            </form>
+                    <div class="input">
+                        <label for="old-password">Old Password</label>
+                        <input id="old-password" type="password" name="old-password" maxlength=50 required>
+                    </div>
 
+                    <div class="input">
+                        <label for="password">New Password</label>
+                        <input id="password" type="password" name="password" maxlength=50 required>
+                    </div>
+
+                    <div class="input">
+                        <label for="confirm-pw">Confirm New Password</label>
+                        <input id="confirm-pw" type="password" name="confirm-pw" maxlength=50 required>
+                    </div>
+
+                    <div class="input">
+                        <button type="submit" name="submit">Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

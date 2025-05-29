@@ -7,7 +7,13 @@
     <div class="container">
         <main>
             {% if change %}
-                <p>Check your new email address at {{ user.email }} for the verification link</p>
+                {% if is_email_confirmed == True %}
+                    <p>Your email has changed</p>
+                {% elif is_email_confirmed == False %}
+                    <p>Your email has not been changed!</p>
+                {% else %}
+                    <p>Check your new email address at {{ email }} for the verification link</p>
+                {% endif %}
             {% else %}
                 {% if is_email_confirmed == True %}
                     <div>Your email has been confirmed. Login <a href="/login">Here</a></div>

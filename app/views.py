@@ -68,9 +68,7 @@ class register(View):
                 Cart.objects.create(user=user, total=0)
 
                 token = EmailConfirmationToken.objects.create(user=user)
-                send_confirmation_email(
-                    email=user.email, token_id=token.pk, user_id=user.pk
-                )
+                send_confirmation_email(email=user.email, token_id=token.pk)
 
                 return render(
                     request, "email_confirm.html", {"new": True, "email": email}
@@ -137,6 +135,9 @@ class settings(View):
 
         user = request.user
         if username and username != user.username:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "A user with this username already exists")
+                return redirect("/user/settings")
             user.username = username
 
         if fname != user.first_name:
@@ -234,7 +235,7 @@ class product(View):
         }
 
         if request.user.is_authenticated:
-            cart = get_object_or_404(Cart, pk=request.user.email)
+            cart = get_object_or_404(Cart, pk=request.user.pk)
             data["cart"] = cart
             data["in_cart"] = cart.has_item(product)
             data["cart_item"] = cart.get_item(product)
@@ -268,16 +269,20 @@ class add(View):
             return redirect(request.META.get("HTTP_REFERER"))
 
         if name and price:
+            date = datetime.utcnow()
             data = {
                 "name": name,
                 "author": author,
                 "price": price,
                 "stock": stock,
                 "desc": desc,
-                "creation_date": datetime.utcnow(),
+                "creation_date": date,
+                "modify_date": date,
             }
             if img:
                 data["image"] = img
+
+            print(data)
 
             product = Product(**data)
             product.save()
@@ -421,7 +426,7 @@ class cart(View):
     def get(self, request):
         check_login(request)
 
-        cart = get_object_or_404(Cart, pk=request.user.email)
+        cart = get_object_or_404(Cart, pk=request.user.pk)
 
         return render(
             request,
@@ -622,7 +627,7 @@ def send_email_confirm(request):
             user = get_object_or_404(User, username=username)
 
         token, _ = EmailConfirmationToken.objects.get_or_create(user=user)
-        send_confirmation_email(email=user.email, token_id=token.pk, user_id=user.pk)
+        send_confirmation_email(email=user.email, token_id=token.pk)
         messages.info(request, "Check your email for the verification link")
         return render(request, "email_confirm.html", {"is_email_confirmed": False})
 
@@ -636,8 +641,49 @@ def set_email_confirm(request):
             user = token.user
             user.is_email_confirmed = True
             user.save()
+            token.delete()
             data = {"is_email_confirmed": True}
             return render(request, "email_confirm.html", data)
         except EmailConfirmationToken.DoesNotExist:
             data = {"is_email_confirmed": False}
+            return render(request, "email_confirm.html", data)
+
+
+def email_change(request):
+    if request.POST:
+        check_login(request)
+
+        user = request.user
+        new_email = request.POST.get("email")
+        print(f"NEW EMAIL: {new_email}")
+
+        if User.objects.filter(email=new_email).exists():
+            messages.error(request, "A user with this email already exists")
+            return redirect("/user/settings/account")
+
+        token, _ = EmailConfirmationToken.objects.get_or_create(user=user)
+        send_confirmation_email(email=new_email, token_id=token.pk, change=True)
+        return render(
+            request, "email_confirm.html", {"change": True, "email": new_email}
+        )
+
+
+def set_email_change_confirm(request):
+    if request.GET:
+        token_id = request.GET.get("token_id", None)
+        email = request.GET.get("email", None)
+        print(f"RECEIVED TOKEN: {token_id}")
+        print(f"RECEIVED EMAIL: {email}")
+        try:
+            token = EmailConfirmationToken.objects.get(pk=token_id)
+            user = token.user
+            print(f"RECEIVED USER: {user}")
+            user.email = email
+            print(f"SET THE EMAIL: {email}")
+            user.save()
+            token.delete()
+            data = {"change": True, "is_email_confirmed": True}
+            return render(request, "email_confirm.html", data)
+        except EmailConfirmationToken.DoesNotExist:
+            data = {"change": True, "is_email_confirmed": False}
             return render(request, "email_confirm.html", data)

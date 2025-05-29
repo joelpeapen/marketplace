@@ -3,9 +3,13 @@ from django.template.loader import get_template
 
 
 # TODO: send token with mail
-def send_confirmation_email(email, token_id, user_id):
-    data = {"token_id": str(token_id), "user_id": str(user_id)}
-    message = get_template("email_confirm.txt").render(data)
+def send_confirmation_email(email, token_id, change=None):
+    data = {"token_id": str(token_id)}
+    if change:
+        data["email"] = email
+        message = get_template("email_change.txt").render(data)
+    else:
+        message = get_template("email_confirm.txt").render(data)
     send_mail(
         subject="Please confirm your email",
         message=message,
