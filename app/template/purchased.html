@@ -12,7 +12,7 @@
             <ul>
             {% for p in products %}
             <li>
-                <a id="product-name" href="{% url 'product' p.id %}">{{ p.name }}:</a>
+                <a id="product-name" href="{% url 'product' p.pid %}">{{ p.name }}:</a>
                 <span>₹{{ p.total }} at ₹{{p.price}} ({{ p.quantity }})<em> on {{ p.date }}</em></span>
             </li>
             {% endfor %}

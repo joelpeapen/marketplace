@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.utils import send_confirmation_email
+from app.utils import send_confirmation_email, send_purchase_email, send_purchase_email_seller
 from app.models import (
     Cart,
     Comment,
@@ -503,6 +503,11 @@ class checkout(View):
         checked = request.user.purchases.filter(cart_status=True)
         count = checked.count()
 
+        send_purchase_email(request.user.email, checked)
+
+        for purchase in checked:
+            send_purchase_email_seller(purchase.author.email, purchase)
+
         return render(
             request,
             "checkout.html",
@@ -525,12 +530,13 @@ class buyers(View):
     def get(self, request, id):
         check_login(request)
 
+        product = Product.objects.get(pk=id)
         buyers = History.objects.filter(pid=id)
 
         return render(
             request,
             "buyers.html",
-            {"user": request.user, "buyers": buyers, "product": buyers[0]},
+            {"user": request.user, "buyers": buyers, "product": product},
         )
 
 

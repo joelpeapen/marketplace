@@ -7,7 +7,7 @@
 <div class="container">
     {% if user.is_authenticated %}
     <main>
-        <h3>Buyers of <a href="{% url 'product' product.pid %}">{{ product.name }}</a></h3>
+        <h3>Buyers of <a href="{% url 'product' product.id %}">{{ product.name }}</a></h3>
         <div>
             <ul>
             {% for u in buyers %}

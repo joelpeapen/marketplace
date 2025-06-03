@@ -44,6 +44,7 @@ class Tag(models.Model):
 class History(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     username = models.CharField(max_length=150)
+    author = models.ForeignKey("User", on_delete=models.CASCADE, related_name="history_authors")
     pid = models.IntegerField(default=0)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -106,6 +107,7 @@ class Cart(models.Model):
             h = History.objects.create(
                 user=self.user,
                 username=self.user.username,
+                author=item.product.author,
                 pid=item.product.id,
                 name=item.product.name,
                 price=item.product.price,
