@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     email = models.EmailField(max_length=254)
     is_email_confirmed = models.BooleanField(default=False)
+    is_password_confirmed = models.BooleanField(default=False)
     pic = models.ImageField(
         upload_to="images/profiles/", default="images/profiles/profile_default.png"
     )

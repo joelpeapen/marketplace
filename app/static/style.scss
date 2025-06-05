@@ -297,9 +297,26 @@ a:hover:not(nav a) {
     text-align: center;
   }
 
-  div {
-    &:last-of-type {
-      text-align: center;
+  #help {
+    top: 75%;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+
+    max-width: 30%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: $navy-dark;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .loginlink, #help {
+    text-align: center;
+
+    button {
+      all: unset;
+      color: $yellow;
+      cursor: pointer;
     }
   }
 }

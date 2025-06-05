@@ -1,19 +1,27 @@
 from datetime import datetime
-from django.views import View
-from django.db.models import Q, Count
-from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
-from app.utils import send_confirmation_email, send_purchase_email, send_purchase_email_seller
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.hashers import PBKDF2PasswordHasher
+from django.db.models import Count, Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View
+
 from app.models import (
     Cart,
     Comment,
-    Product,
-    User,
-    Tag,
-    History,
     EmailConfirmationToken,
+    History,
+    Product,
+    Tag,
+    User,
+)
+from app.utils import (
+    send_confirmation_email,
+    send_password_email,
+    send_purchase_email,
+    send_purchase_email_seller,
+    send_username_email,
 )
 
 
@@ -281,8 +289,6 @@ class add(View):
             }
             if img:
                 data["image"] = img
-
-            print(data)
 
             product = Product(**data)
             product.save()
@@ -638,7 +644,6 @@ def send_email_confirm(request):
         return render(request, "email_confirm.html", {"is_email_confirmed": False})
 
 
-# the email sends link to this
 def set_email_confirm(request):
     if request.GET:
         token_id = request.GET.get("token_id", None)
@@ -661,7 +666,6 @@ def email_change(request):
 
         user = request.user
         new_email = request.POST.get("email")
-        print(f"NEW EMAIL: {new_email}")
 
         if User.objects.filter(email=new_email).exists():
             messages.error(request, "A user with this email already exists")
@@ -678,14 +682,10 @@ def set_email_change_confirm(request):
     if request.GET:
         token_id = request.GET.get("token_id", None)
         email = request.GET.get("email", None)
-        print(f"RECEIVED TOKEN: {token_id}")
-        print(f"RECEIVED EMAIL: {email}")
         try:
             token = EmailConfirmationToken.objects.get(pk=token_id)
             user = token.user
-            print(f"RECEIVED USER: {user}")
             user.email = email
-            print(f"SET THE EMAIL: {email}")
             user.save()
             token.delete()
             data = {"change": True, "is_email_confirmed": True}
@@ -693,3 +693,66 @@ def set_email_change_confirm(request):
         except EmailConfirmationToken.DoesNotExist:
             data = {"change": True, "is_email_confirmed": False}
             return render(request, "email_confirm.html", data)
+
+
+class pass_mail(View):
+    def get(self, request):
+        type = request.GET.get("type", None)
+        return render(
+            request, "passmail.html", {"is_password_confirmed": False, "type": type}
+        )
+
+
+class pass_reset(View):
+    def get(self, request):
+        token_id = request.GET.get("token_id", None)
+        return render(request, "passreset.html", {"token_id": token_id})
+
+
+def send_pass_mail_confirm(request):
+    if request.POST:
+        t = request.POST.get("type", None)
+        email = request.POST.get("email", None)
+
+        if not User.objects.filter(email=email).exists():
+            if t == "username":
+                messages.error(request, "No user associated with that email")
+                return redirect("/pass-mail?type=username")
+            if t == "password":
+                messages.error(request, "No user associated with that email")
+                return redirect("/pass-mail?type=password")
+
+        user = User.objects.get(email=email)
+
+        if t == "username":
+            send_username_email(email=email, username=user.username)
+            messages.info(request, "Check your mail for your username")
+            return redirect("/login")
+
+        if t == "password":
+            token, _ = EmailConfirmationToken.objects.get_or_create(user=user)
+            send_password_email(email=email, token_id=token.pk)
+
+            return render(
+                request,
+                "pass_confirm.html",
+                {"is_password_confirmed": False, "type": t},
+            )
+
+
+def set_password_confirm(request):
+    if request.POST:
+        token_id = request.POST.get("token", None)
+        password = request.POST.get("password", None)
+        try:
+            token = EmailConfirmationToken.objects.get(pk=token_id)
+            user = token.user
+            hasher = PBKDF2PasswordHasher()
+            user.password = hasher.encode(password, hasher.salt())
+            user.save()
+            token.delete()
+            data = {"is_password_confirmed": True, "type": type}
+            return render(request, "pass_confirm.html", data)
+        except EmailConfirmationToken.DoesNotExist:
+            data = {"is_password_confirmed": False, "type": type}
+            return render(request, "pass_confirm.html", data)

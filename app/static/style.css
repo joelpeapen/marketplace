@@ -239,8 +239,24 @@ a:hover:not(nav a) {
 .lr h3 {
   text-align: center;
 }
-.lr div:last-of-type {
+.lr #help {
+  top: 75%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  max-width: 30%;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #0c1a24;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.lr .loginlink, .lr #help {
   text-align: center;
+}
+.lr .loginlink button, .lr #help button {
+  all: unset;
+  color: #fabd2f;
+  cursor: pointer;
 }
 
 .add {

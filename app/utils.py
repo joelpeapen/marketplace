@@ -40,3 +40,29 @@ def send_purchase_email_seller(email, product):
         recipient_list=[email],
         fail_silently=True,
     )
+
+
+def send_username_email(email, username):
+    message = get_template("username.txt").render({"username": username})
+    send_mail(
+        subject="Your OpenTrader username",
+        message=message,
+        from_email="admin@app.com",
+        recipient_list=[email],
+        fail_silently=True,
+    )
+
+
+def send_password_email(email, token_id):
+    data = {
+        "token_id": str(token_id),
+        "email": email,
+    }
+    message = get_template("password.txt").render(data)
+    send_mail(
+        subject="Your OpenTrader password recovery",
+        message=message,
+        from_email="admin@app.com",
+        recipient_list=[email],
+        fail_silently=True,
+    )

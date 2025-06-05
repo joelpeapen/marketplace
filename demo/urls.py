@@ -59,5 +59,9 @@ urlpatterns = [
     path("send-email-confirm/", views.send_email_confirm, name="send-email-confirm"),
     path("email-confirm/", views.set_email_confirm, name="set-email-confirm"),
     path("email-change/", views.email_change, name="email-change"),
-    path("email-change-confirm/", views.set_email_change_confirm, name="email-change-confirm")
+    path("email-change-confirm/", views.set_email_change_confirm, name="email-change-confirm"),
+    path("pass-mail/", views.pass_mail.as_view(), name="pass-mail"),
+    path("passreset", views.pass_reset.as_view(), name="pass-reset"),
+    path("send-pass-mail-confirm/", views.send_pass_mail_confirm, name="send-pass-mail-confirm"),
+    path("set-password-confirm/", views.set_password_confirm, name="set-password-confirm")
 ]

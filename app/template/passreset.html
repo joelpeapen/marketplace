@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Register {% endblock title %}
+
+{% block content %}
+
+    <div class="form lr">
+        <h3>Reset Password</h3>
+        <form action="{% url 'set-password-confirm' %}" method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="token" value="{{ token_id }}"/>
+            <div class="input">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" maxlength=50 required>
+            </div>
+
+            <div class="input">
+                <button type="submit" name="submit">Reset</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}
