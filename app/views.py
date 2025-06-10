@@ -15,12 +15,15 @@ from app.models import (
     Product,
     Tag,
     User,
+    Notify,
 )
+
 from app.utils import (
     send_confirmation_email,
     send_password_email,
     send_purchase_email,
     send_purchase_email_seller,
+    send_review_email,
     send_username_email,
 )
 
@@ -39,15 +42,6 @@ def index(request):
 
 def about(request):
     return render(request, "about.html", {"user": request.user})
-
-
-def check_login(request, id=None):
-    if id:
-        if not request.user.is_authenticated:
-            return redirect(f"/product/{id}")
-    else:
-        if not request.user.is_authenticated:
-            return redirect("/login")
 
 
 class register(View):
@@ -74,6 +68,7 @@ class register(View):
                     date_joined=datetime.utcnow(),
                 )
                 Cart.objects.create(user=user, total=0)
+                Notify.objects.create(user=user)
 
                 token = EmailConfirmationToken.objects.create(user=user)
                 send_confirmation_email(email=user.email, token_id=token.pk)
@@ -111,7 +106,8 @@ class login_user(View):
 
 class logout_user(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         logout(request)
         return redirect("/login")
@@ -119,7 +115,8 @@ class logout_user(View):
 
 class delete_user(View):
     def post(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         n = request.user.username
         request.user.delete()
@@ -129,11 +126,14 @@ class delete_user(View):
 
 class settings(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
+
         return render(request, "settings.html", {"user": request.user})
 
     def post(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         username = request.POST.get("username")
         fname = request.POST.get("fname")
@@ -167,12 +167,14 @@ class settings(View):
 
 class settings_account(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
         return render(request, "settings_account.html", {"user": request.user})
 
     # to change password
     def post(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         user = request.user
         password = request.POST.get("password")
@@ -198,6 +200,44 @@ class settings_account(View):
             messages.success(request, "Password Changed")
 
         return redirect("/user/settings/account")
+
+
+class settings_notify(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
+
+        notify = Notify.objects.get(user=request.user)
+        return render(
+            request, "settings_notify.html", {"user": request.user, "notify": notify}
+        )
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
+
+        type = request.GET.get("type", None)
+        notify = Notify.objects.get(user=request.user)
+
+        if type == "reviews":
+            enable = request.POST.get("notify-review")
+            if enable:
+                notify.on_comment = True
+                notify.save()
+            else:
+                notify.on_comment = False
+                notify.save()
+
+        if type == "sale":
+            enable = request.POST.get("notify-sale")
+            if enable:
+                notify.on_sale = True
+                notify.save()
+            else:
+                notify.on_sale = False
+                notify.save()
+
+        return redirect("/user/settings/notifications")
 
 
 class user(View):
@@ -255,11 +295,13 @@ class product(View):
 
 class add(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
         return render(request, "add.html", {"user": request.user})
 
     def post(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         name = request.POST.get("product-name")
         price = float(request.POST.get("price"))
@@ -342,7 +384,7 @@ class update(View):
             Cart.update_product(product)
             return redirect(f"/product/{id}")
         else:
-            messages.error("Must provide name and price")
+            messages.error(request, "Must provide name and price")
             return redirect(f"/product/update/{id}")
 
 
@@ -371,14 +413,15 @@ class market(View):
 
 class comment_add(View):
     def post(self, request, id):
-        check_login(request, id)
+        if not request.user.is_authenticated:
+            return redirect(f"/product/{id}")
 
         text = request.POST.get("comment")
-        rating = int(request.POST.get("rating"))
+        rating = int(request.POST.get("rating", 0))
         product = Product.objects.get(pk=id)
 
         if not product.is_bought(request.user):
-            messages.error("Must buy the product to comment")
+            messages.error(request, "Must buy the product to comment")
             return redirect(f"/product/{id}")
 
         if text and rating:
@@ -386,9 +429,16 @@ class comment_add(View):
                 text=text, user=request.user, product=product, rating=rating
             )
             product.make_rating()
+
+            notify = Notify.objects.get(user=product.author)
+            if notify.on_comment:
+                send_review_email(
+                    product.author.email, product, request.user, rating, text
+                )
+
             return redirect(f"/product/{id}")
         else:
-            messages.error("Must add a comment and rating")
+            messages.error(request, "Must add a comment and rating")
             return redirect(f"/product/{id}")
 
         return redirect(f"/product/{id}")
@@ -396,7 +446,8 @@ class comment_add(View):
 
 class comment_update(View):
     def post(self, request, id):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect(f"/product/{id}")
 
         text = request.POST.get("comment")
         rating = int(request.POST.get("rating"))
@@ -409,7 +460,7 @@ class comment_update(View):
             comment.product.make_rating()
             return redirect(f"/product/{id}")
         else:
-            messages.error("Must add a comment and rating")
+            messages.error(request, "Must add a comment and rating")
             return redirect(f"/product/{id}")
 
         return redirect(request.path.get("HTTP_REFERER"))
@@ -417,7 +468,8 @@ class comment_update(View):
 
 class comment_delete(View):
     def post(self, request, id):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect(f"/product/{id}")
 
         comment = get_object_or_404(Comment, pk=id)
 
@@ -430,7 +482,8 @@ class comment_delete(View):
 
 class cart(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         cart = get_object_or_404(Cart, pk=request.user.pk)
 
@@ -447,7 +500,8 @@ class cart(View):
 
 class cart_add(View):
     def post(self, request, id):
-        check_login(request, id)
+        if not request.user.is_authenticated:
+            return redirect(f"/product/{id}")
 
         cart = get_object_or_404(Cart, pk=request.user)
         product = get_object_or_404(Product, id=id)
@@ -465,7 +519,8 @@ class cart_add(View):
 
 class cart_delete(View):
     def post(self, request, id):
-        check_login(request, id)
+        if not request.user.is_authenticated:
+            return redirect(f"/product/{id}")
 
         cart = get_object_or_404(Cart, pk=request.user)
         product = get_object_or_404(Product, id=id)
@@ -476,7 +531,8 @@ class cart_delete(View):
 
 class cart_update(View):
     def post(self, request, id):
-        check_login(request, id)
+        if not request.user.is_authenticated:
+            return redirect(f"/product/{id}")
 
         cart = get_object_or_404(Cart, pk=request.user)
         product = get_object_or_404(Product, id=id)
@@ -497,11 +553,13 @@ class cart_update(View):
 
 class checkout(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
         return redirect("/user")
 
     def post(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         cart = get_object_or_404(Cart, user=request.user)
         cart.checkout()
@@ -512,7 +570,9 @@ class checkout(View):
         send_purchase_email(request.user.email, checked)
 
         for purchase in checked:
-            send_purchase_email_seller(purchase.author.email, purchase)
+            notify = Notify.objects.get(user=purchase.author)
+            if notify.on_sale:
+                send_purchase_email_seller(purchase.author.email, purchase)
 
         return render(
             request,
@@ -523,7 +583,8 @@ class checkout(View):
 
 class purchases(View):
     def get(self, request):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         return render(
             request,
@@ -534,7 +595,8 @@ class purchases(View):
 
 class buyers(View):
     def get(self, request, id):
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         product = Product.objects.get(pk=id)
         buyers = History.objects.filter(pid=id)
@@ -582,7 +644,7 @@ class tag_add(View):
             tag, _ = Tag.objects.get_or_create(name=tag_name)
             product.tags.add(tag)
         else:
-            messages.error("Tag cannot be empty")
+            messages.error(request, "Tag cannot be empty")
 
         return redirect(f"/product/{id}")
 
@@ -662,7 +724,8 @@ def set_email_confirm(request):
 
 def email_change(request):
     if request.POST:
-        check_login(request)
+        if not request.user.is_authenticated:
+            return redirect("/login")
 
         user = request.user
         new_email = request.POST.get("email")

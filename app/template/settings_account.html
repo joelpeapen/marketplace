@@ -7,8 +7,9 @@
     <div class="container settings">
         <aside class="menu">
             <p class="header">User settings</p>
-            <a href="/user/settings">Profile</a>
-            <a class="active" href="/user/settings/account">Account</a>
+            <a href="{% url 'settings' %}">Profile</a>
+            <a class="active" href="{% url 'settings-account' %}">Account</a>
+            <a href="{% url 'settings-notify' %}">Notifications</a>
         </aside>
 
         <div class="forms">
@@ -51,6 +52,15 @@
                     <div class="input">
                         <button type="submit" name="submit">Save</button>
                     </div>
+                </form>
+
+            </div>
+
+            <div class="form delete">
+                <p class="header">Danger Zone</p>
+                <form action="{% url "delete-user" %}" method="post">
+                    {% csrf_token %}
+                    <button id="delete-user" type="submit" name=submit>Delete Account</button>
                 </form>
             </div>
         </div>

@@ -42,6 +42,23 @@ def send_purchase_email_seller(email, product):
     )
 
 
+def send_review_email(email, product, reviewer, rating, review):
+    data = {
+        "product": product,
+        "reviewer": reviewer,
+        "rating": rating,
+        "review": review,
+    }
+    message = get_template("review.txt").render(data)
+    send_mail(
+        subject="OpenTrader: Review on product",
+        message=message,
+        from_email="admin@app.com",
+        recipient_list=[email],
+        fail_silently=True,
+    )
+
+
 def send_username_email(email, username):
     message = get_template("username.txt").render({"username": username})
     send_mail(

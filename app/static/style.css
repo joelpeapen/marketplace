@@ -10,8 +10,16 @@
   padding: 0;
 }
 
-body, h1, h2, h3, h4, p,
-figure, blockquote, dl, dd {
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
   margin-block-end: 0;
 }
 
@@ -207,7 +215,9 @@ a:hover:not(nav a) {
   padding: 1.2rem;
   border-radius: 0.5rem;
 }
-.form input, .form textarea, .form button {
+.form input,
+.form textarea,
+.form button {
   width: 100%;
   padding: 1.2%;
   border-radius: 6px;
@@ -250,10 +260,12 @@ a:hover:not(nav a) {
   background-color: #0c1a24;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.lr .loginlink, .lr #help {
+.lr .loginlink,
+.lr #help {
   text-align: center;
 }
-.lr .loginlink button, .lr #help button {
+.lr .loginlink button,
+.lr #help button {
   all: unset;
   color: #fabd2f;
   cursor: pointer;
@@ -757,7 +769,7 @@ a:hover:not(nav a) {
 }
 .settings .menu {
   width: 200px;
-  max-height: 147px;
+  max-height: 197px;
   display: flex;
   border-radius: 0.5rem;
 }
@@ -779,7 +791,7 @@ a:hover:not(nav a) {
   max-width: 150px;
 }
 .settings .delete {
-  border: 3px solid #ff4343;
+  border: 2px solid #ff4343;
   padding: 10px;
   border-radius: 6px;
   margin: 10px 0 0 0;
@@ -791,6 +803,45 @@ a:hover:not(nav a) {
 }
 .settings .delete button:hover {
   background-color: red;
+}
+
+.toggler {
+  margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle {
+  width: 60px;
+  height: 34px;
+}
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle .slider {
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  border-radius: 24px;
+  background-color: #3d444d;
+  cursor: pointer;
+}
+.toggle .slider:before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: white;
+}
+.toggle input:checked + .slider {
+  background-color: #4cca51;
+}
+.toggle input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -831,7 +882,8 @@ a:hover:not(nav a) {
     background-color: #3d444d;
     border: 1px solid #304f64;
   }
-  #tag-add-form label, #tag-add-form input {
+  #tag-add-form label,
+  #tag-add-form input {
     color: #fabd2f;
   }
   .settings {
@@ -854,7 +906,8 @@ a:hover:not(nav a) {
   #umenu {
     box-shadow: 0 6px 8px rgba(0, 0, 1, 0.1019607843);
   }
-  .form, .cart {
+  .form,
+  .cart {
     border: 1px solid #3d444d;
     background-color: #04121b;
   }
@@ -879,7 +932,8 @@ a:hover:not(nav a) {
   .form button {
     color: #ffffff;
   }
-  .reviews form, .form.search {
+  .reviews form,
+  .form.search {
     background-color: #0c1a24;
   }
   .cart a {

@@ -1,0 +1,3 @@
+<strong>{{ reviewer }}</strong> posted a <strong>{{ rating }}</strong> star review on your product <strong>{{ product.name }}</strong>
+
+<p>{{ review }}</p>

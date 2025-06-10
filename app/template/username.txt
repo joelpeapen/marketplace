@@ -1,1 +1,1 @@
-Your OpenTrader username is {{ username }}
+Your OpenTrader username is <strong>{{ username }}</strong>

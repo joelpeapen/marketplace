@@ -32,8 +32,16 @@ $search: "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/
   padding: 0;
 }
 
-body, h1, h2, h3, h4, p,
-figure, blockquote, dl, dd {
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
   margin-block-end: 0;
 }
 
@@ -185,6 +193,7 @@ aside.user {
 
 .bio {
   margin: 10px 0;
+
   p:first-of-type {
     font-weight: 500;
     font-size: 18px;
@@ -216,7 +225,7 @@ aside.user {
   @include floater(8%, 10px);
   display: none;
 
-  a{
+  a {
     &[href="/user/"] {
       &::before {
         font-size: 20px;
@@ -259,7 +268,9 @@ a:hover:not(nav a) {
   padding: 1.2rem;
   border-radius: 0.5rem;
 
-  input, textarea, button {
+  input,
+  textarea,
+  button {
     width: 100%;
     padding: 1.2%;
     border-radius: 6px;
@@ -310,7 +321,8 @@ a:hover:not(nav a) {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
-  .loginlink, #help {
+  .loginlink,
+  #help {
     text-align: center;
 
     button {
@@ -774,6 +786,7 @@ a:hover:not(nav a) {
     font-size: 30px;
     margin: 0 10px 0 0px;
     border-bottom: 1px solid $grey;
+
     p {
       margin-left: 10px;
     }
@@ -866,7 +879,7 @@ a:hover:not(nav a) {
 
   .menu {
     width: 200px;
-    max-height: 147px;
+    max-height: 197px;
     display: flex;
     border-radius: 0.5rem;
 
@@ -893,24 +906,67 @@ a:hover:not(nav a) {
   }
 
   .delete {
-    border: 3px solid $red;
+    border: 2px solid $red;
     padding: 10px;
     border-radius: 6px;
     margin: 10px 0 0 0;
-    background: repeating-linear-gradient(
-      45deg,
-      rgba(255, 67, 67, 0.2),
-      rgba(255, 67, 67, 0.2) 10px,
-      rgba(4, 18, 27, 0.2) 10px,
-      rgba(4, 18, 27, 0.2) 20px
-      );
+    background: repeating-linear-gradient(45deg,
+        rgba(255, 67, 67, 0.2),
+        rgba(255, 67, 67, 0.2) 10px,
+        rgba(4, 18, 27, 0.2) 10px,
+        rgba(4, 18, 27, 0.2) 20px);
 
     button {
       max-width: 150px;
       background-color: $red-dark;
+
       &:hover {
         background-color: red;
       }
+    }
+  }
+}
+
+.toggler {
+  margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle {
+  width: 60px;
+  height: 34px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    width: 50px;
+    height: 25px;
+    border-radius: 24px;
+    background-color: $grey-dark;
+    cursor: pointer;
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: white;
+    }
+  }
+
+  input:checked+.slider {
+    background-color: $green;
+
+    &:before {
+      transform: translateX(26px);
     }
   }
 }
@@ -941,7 +997,8 @@ a:hover:not(nav a) {
         background-color: $red;
       }
 
-      &.info, &.debug {
+      &.info,
+      &.debug {
         background-color: $blue;
       }
     }
@@ -965,7 +1022,8 @@ a:hover:not(nav a) {
     background-color: $grey-dark;
     border: 1px solid $navy-light;
 
-    label, input {
+    label,
+    input {
       color: $yellow ;
     }
   }
@@ -997,7 +1055,8 @@ a:hover:not(nav a) {
     box-shadow: 0 6px 8px $shadow;
   }
 
-  .form, .cart {
+  .form,
+  .cart {
     border: 1px solid $grey-dark;
     background-color: $navy-bg;
   }
@@ -1011,6 +1070,7 @@ a:hover:not(nav a) {
   }
 
   .form {
+
     input,
     textarea {
       color: $white;
@@ -1032,7 +1092,8 @@ a:hover:not(nav a) {
     }
   }
 
-  .reviews form, .form.search {
+  .reviews form,
+  .form.search {
     background-color: $navy-dark;
   }
 

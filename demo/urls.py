@@ -35,6 +35,7 @@ urlpatterns = [
     path("user/", views.user.as_view()),
     path("user/settings/", views.settings.as_view(), name="settings"),
     path("user/settings/account/", views.settings_account.as_view(), name="settings-account"),
+    path("user/settings/notifications/", views.settings_notify.as_view(), name="settings-notify"),
     path("user/delete/", views.delete_user.as_view(), name="delete-user"),
     path("user/<str:username>/", views.user.as_view(), name="user"),
     path("market/", views.market.as_view(), name="market"),

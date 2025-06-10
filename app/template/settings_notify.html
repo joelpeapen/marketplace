@@ -1,0 +1,44 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Account Settings {% endblock title %}
+
+{% block content %}
+
+    <div class="container settings">
+        <aside class="menu">
+            <p class="header">User settings</p>
+            <a href="{% url 'settings' %}">Profile</a>
+            <a href="{% url 'settings-account' %}">Account</a>
+            <a class="active" href="{% url 'settings-notify' %}">Notifications</a>
+        </aside>
+
+        <div class="forms">
+            <div class="form">
+                <p class="header">Email notifications</p>
+                <form action="{% url 'settings-notify' %}?type=reviews" method="post">
+                    {% csrf_token %}
+                    <div class="input toggler">
+                        <span>Reviews on products</span>
+                        <label class="toggle" for="on-comment">
+                            <input onChange="this.form.submit()" id="on-comment" type="checkbox" name="notify-review" {% if notify.on_comment == True %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </form>
+
+                <form action="{% url 'settings-notify' %}?type=sale" method="post">
+                    {% csrf_token %}
+                    <div class="input toggler">
+                        <span>Sale of products</span>
+                        <label class="toggle" for="on-sale">
+                            <input onChange="this.form.submit()" id="on-sale" type="checkbox" name="notify-sale" {% if notify.on_sale == True %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content %}

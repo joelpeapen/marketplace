@@ -1,5 +1,5 @@
 You bought products
 
 {% for p in products %}
-You bought {{ p.quantity }} {{ p.name }} from {{ p.author }} for {{ p.price }}. Total: {{ p.total }}
+You bought <strong>{{ p.quantity }} {{ p.name }}</strong> from <strong>{{ p.author }}</strong> for <strong>{{ p.price }}</strong>. Total: <strong>{{ p.total }}</strong>
 {% endfor %}
