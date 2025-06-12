@@ -288,7 +288,7 @@ class product(View):
             data["in_cart"] = cart.has_item(product)
             data["cart_item"] = cart.get_item(product)
             data["is_bought"] = product.is_bought(request.user)
-            data["buycount"] = request.user.buyers.count()
+            data["buycount"] = product.buyers.count()
 
         return render(request, "product.html", data)
 
@@ -581,15 +581,22 @@ class checkout(View):
         )
 
 
+class sales(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
+
+        sales = History.objects.filter(author=request.user)
+        return render(request, "sales.html", {"sales": sales})
+
+
 class purchases(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect("/login")
 
         return render(
-            request,
-            "purchased.html",
-            {"user": request.user, "products": request.user.purchases.all()},
+            request, "purchased.html", {"products": request.user.purchases.all()}
         )
 
 

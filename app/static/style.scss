@@ -234,6 +234,14 @@ aside.user {
       }
     }
 
+    &[href="/sales/"] {
+      &::before {
+        font-size: 20px;
+        content: "$";
+        margin-right: 5px;
+      }
+    }
+
     &[href="/purchases/"] {
       &::before {
         font-size: 20px;

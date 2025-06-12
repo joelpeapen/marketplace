@@ -191,6 +191,11 @@ aside.user p:last-of-type {
   content: "𐇑";
   margin-right: 5px;
 }
+#umenu a[href="/sales/"]::before {
+  font-size: 20px;
+  content: "$";
+  margin-right: 5px;
+}
 #umenu a[href="/purchases/"]::before {
   font-size: 20px;
   content: "$";

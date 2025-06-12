@@ -1,21 +1,22 @@
 <nav>
     <a class="navitem" href="/">Home</a>
-    <a class="navitem" href="/market">Market</a>
-    <a class="navitem" href="/about">About</a>
+    <a class="navitem" href="{% url "market" %}">Market</a>
+    <a class="navitem" href="{% url "about" %}">About</a>
 {% if user.is_authenticated %}
-    <a class="navitem nlast" href="/cart">Cart</a>
+    <a class="navitem nlast" href="{% url "cart" %}">Cart</a>
     <button id="user" class="navitem user">
         <img class="user navicon" src="/static{{ user.pic.url }}" alt="profile picture">
         {{ user.username }}
     </button>
     <div id="umenu" class="menu">
         <p class="header">{{ user.username }}</p>
-        <a href="/user/">Profile</a>
-        <a href="/purchases/">Purchases</a>
-        <a href="/user/settings">Settings</a>
-        <a href="/logout">Log out</a>
+        <a href="{% url "user" %}">Profile</a>
+        <a href="{% url "sales" %}">Sales</a>
+        <a href="{% url "purchases" %}">Purchases</a>
+        <a href="{% url "settings" %}">Settings</a>
+        <a href="{% url "logout" %}">Log out</a>
     </div>
 {% else %}
-    <a class="navitem nlast" href="/login">Login</a>
+    <a class="navitem nlast" href="{% url "login" %}">Login</a>
 {% endif %}
 </nav>

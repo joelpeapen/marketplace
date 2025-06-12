@@ -23,10 +23,10 @@
             </div>
         </form>
 
-        <div class="loginlink">Or <a href="/register">create an account</a></div>
+        <div class="loginlink">Or <a href="{% url "register" %}">create an account</a></div>
         <dialog id="help">
-            <div class="loginlink"><a href="/pass-mail?type=username">forgot username</a></div>
-            <div class="loginlink"><a href="/pass-mail?type=password">forgot password</a></div>
+            <div class="loginlink"><a href="{% url "pass-mail" %}?type=username">forgot username</a></div>
+            <div class="loginlink"><a href="{% url "pass-mail" %}?type=password">forgot password</a></div>
             <button onclick="help.close()">Close</button>
         </dialog>
         <div class="loginlink"><button onclick="help.showModal()">Need Help?</button></div>

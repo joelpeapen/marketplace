@@ -7,7 +7,7 @@
     <div class="container">
         <main>
             {% if is_password_confirmed == True %}
-                <p>Your password has been sucessfully reset. <a href="/login">Login</a></p>
+                <p>Your password has been sucessfully reset. <a href="{% url "login" %}">Login</a></p>
             {% endif %}
 
             {% if is_password_confirmed != True %}

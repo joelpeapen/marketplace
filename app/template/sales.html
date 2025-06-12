@@ -1,15 +1,15 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Purchases {% endblock title %}
+{% block title %} Sales {% endblock title %}
 
 {% block content %}
 
 <div class="container">
     <main>
-        <h3>Your Purchases</h3>
+        <h3>Your Sales</h3>
         <div>
             <ul>
-            {% for p in products %}
+            {% for p in sales %}
             <li>
                 <a id="product-name" href="{% url 'product' p.pid %}">{{ p.name }}:</a>
                 <span>₹{{ p.total }} at ₹{{p.price}} ({{ p.quantity }})<em> on {{ p.date }}</em></span>

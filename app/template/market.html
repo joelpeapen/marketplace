@@ -10,7 +10,7 @@
             <h3>Market</h3>
 
             {% if user.is_authenticated %}
-            <a class="add" href="/product/add">+ Add</a>
+            <a class="add" href="{% url "product-add" %}">+ Add</a>
             {% endif %}
         </div>
 

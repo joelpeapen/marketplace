@@ -16,7 +16,7 @@
                 {% endif %}
             {% else %}
                 {% if is_email_confirmed == True %}
-                    <div>Your email has been confirmed. Login <a href="/login">Here</a></div>
+                    <div>Your email has been confirmed. <a href="{% url "login" %}">Login</a></div>
                 {% else %}
                     {% if new %}
                         <p>Check your email at {{ user.email }} for the verification link</p>

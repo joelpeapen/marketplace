@@ -25,7 +25,7 @@
                             <span>{% if count > 0 %}({{ count }}){% endif %}</span>
                             {% if user.is_authenticated and user == product.author %}
                             <a id="buyers" href="{% url 'buyers' product.id %}">Buyers</a>
-                            <span>{% if count > 0 %}({{ count }}){% endif %}</span>
+                            <span>{% if buycount > 0 %}({{ buycount }}){% endif %}</span>
                             {% endif %}
                         </div>
                         <p class="stock {% if product.stock < 5 %} low {% elif product.stock < 1 %} nil {% endif %}">Stock: {{ product.stock }} left</p>
