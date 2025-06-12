@@ -250,6 +250,7 @@ a:hover:not(nav a) {
 
 .lr {
   margin: auto !important;
+  max-width: 40%;
 }
 .lr h3 {
   text-align: center;
