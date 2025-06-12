@@ -268,6 +268,29 @@ aside.user {
   }
 }
 
+table {
+  margin: 4px 0;
+  padding: 10px;
+  border: 2px solid $navy-light;
+  border-collapse: collapse;
+
+  thead {
+    border-bottom: 2px solid $navy-light;
+  }
+
+  tbody>tr:nth-of-type(even) {
+    background-color: $navy;
+  }
+
+  th {
+    padding: 10px 15px;
+  }
+
+  td {
+    padding: 10px 15px;
+  }
+}
+
 a:hover:not(nav a) {
   text-decoration: underline;
 }

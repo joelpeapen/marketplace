@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.hashers import PBKDF2PasswordHasher
 from django.db.models import Count, Q
+from django.db.models.aggregates import Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
@@ -587,7 +588,13 @@ class sales(View):
             return redirect("/login")
 
         sales = History.objects.filter(author=request.user)
-        return render(request, "sales.html", {"sales": sales})
+        total = sales.values().aggregate(t=Sum("total"))
+        quantity = sales.values().aggregate(q=Sum("quantity"))
+        return render(
+            request,
+            "sales.html",
+            {"sales": sales, "total": total["t"], "quantity": quantity["q"]},
+        )
 
 
 class purchases(View):
@@ -595,8 +602,13 @@ class purchases(View):
         if not request.user.is_authenticated:
             return redirect("/login")
 
+        products = History.objects.filter(user=request.user)
+        total = products.values().aggregate(t=Sum("total"))
+        quantity = products.values().aggregate(q=Sum("quantity"))
         return render(
-            request, "purchased.html", {"products": request.user.purchases.all()}
+            request,
+            "purchased.html",
+            {"products": products, "total": total["t"], "quantity": quantity["q"]},
         )
 
 
@@ -607,11 +619,19 @@ class buyers(View):
 
         product = Product.objects.get(pk=id)
         buyers = History.objects.filter(pid=id)
+        total = buyers.values().aggregate(t=Sum("total"))
+        quantity = buyers.values().aggregate(q=Sum("quantity"))
 
         return render(
             request,
             "buyers.html",
-            {"user": request.user, "buyers": buyers, "product": product},
+            {
+                "user": request.user,
+                "buyers": buyers,
+                "product": product,
+                "total": total["t"],
+                "quantity": quantity["q"],
+            },
         )
 
 

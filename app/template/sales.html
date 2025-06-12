@@ -7,16 +7,36 @@
 <div class="container">
     <main>
         <h3>Your Sales</h3>
-        <div>
-            <ul>
-            {% for p in sales %}
-            <li>
-                <a id="product-name" href="{% url 'product' p.pid %}">{{ p.name }}:</a>
-                <span>₹{{ p.total }} at ₹{{p.price}} ({{ p.quantity }})<em> on {{ p.date }}</em></span>
-            </li>
-            {% endfor %}
-            </ul>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total (₹)</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in sales %}
+                <tr>
+                    <td><a id="product-name" href="{% url 'product' p.pid %}">{{ p.name }}</a></th>
+                    <td>{{ p.price }}</th>
+                    <td>{{ p.quantity }}</th>
+                    <td>{{ p.total }}</th>
+                    <td>{{ p.date }}</th>
+                </tr>
+                {% endfor %}
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{ quantity }}</td>
+                        <td>{{ total }}</td>
+                    </tr>
+                </tfoot>
+            </tbody>
+        </table>
     </main>
 </div>
 

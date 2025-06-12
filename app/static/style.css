@@ -212,6 +212,25 @@ aside.user p:last-of-type {
   margin-right: 5px;
 }
 
+table {
+  margin: 4px 0;
+  padding: 10px;
+  border: 2px solid #304f64;
+  border-collapse: collapse;
+}
+table thead {
+  border-bottom: 2px solid #304f64;
+}
+table tbody > tr:nth-of-type(even) {
+  background-color: #082437;
+}
+table th {
+  padding: 10px 15px;
+}
+table td {
+  padding: 10px 15px;
+}
+
 a:hover:not(nav a) {
   text-decoration: underline;
 }

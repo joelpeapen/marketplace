@@ -9,14 +9,36 @@
     <main>
         <h3>Buyers of <a href="{% url 'product' product.id %}">{{ product.name }}</a></h3>
         <div>
-            <ul>
-            {% for u in buyers %}
-            <li>
-                <a id="product-name" href="{% url 'user' u.username %}">{{ u.username }}:</a>
-                <span>₹{{ u.total }} at ₹{{ u.price }} ({{ u.quantity }})<em> on {{ u.date }}</em></span>
-            </li>
-            {% endfor %}
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total (₹)</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in buyers %}
+                    <tr>
+                        <td><a id="product-name" href="{% url 'user' u.user %}">{{ u.user }}</a></th>
+                        <td>{{ u.price }}</th>
+                        <td>{{ u.quantity }}</th>
+                        <td>{{ u.total }}</th>
+                        <td>{{ u.date }}</th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{ quantity }}</td>
+                        <td>{{ total }}</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </main>
     {% endif %}
