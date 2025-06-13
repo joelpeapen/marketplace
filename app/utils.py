@@ -1,5 +1,15 @@
+import io
+
+from django.contrib import messages
+from django.shortcuts import redirect
+import matplotlib.pyplot as plt
+import numpy as np
 from django.core.mail import send_mail
+from django.db.models import Sum
+from django.http import HttpResponse
 from django.template.loader import get_template
+
+from app import models
 
 
 def send_confirmation_email(email, token_id, change=None):
@@ -83,3 +93,47 @@ def send_password_email(email, token_id):
         recipient_list=[email],
         fail_silently=True,
     )
+
+
+def sales_plot(request):
+    names, qs, ts = [], [], []
+
+    hists = models.History.objects.filter(author=request.user)
+    if hists.count() < 1:
+        messages.error(request, "you have no sales to plot")
+        return redirect("/sales")
+
+    sales = hists.values("name", "total").annotate(quantity=Sum("quantity"))
+
+    for sale in sales:
+        names.append(sale["name"])
+        qs.append(sale["quantity"])
+        ts.append(sale["total"])
+
+    data = {"quantity": qs, "revenue": ts}
+
+    x = np.arange(len(names))
+
+    fig, ax = plt.subplots(layout="constrained")
+
+    width, mult = 0.25, 0
+    for q, t in data.items():
+        offset = width * mult
+        rects = ax.barh(x + offset, t, width, label=q)
+        ax.bar_label(rects, padding=3)
+        mult += 1
+
+    ax.set_title("Product Sales")
+    ax.set_xlabel("quantity sold / revenue")
+    ax.set_yticks(x + width, names)
+    ax.legend(loc="upper right", ncols=2)
+    ax.set_xlim(0, 250)
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format="jpg")
+    buf.seek(0)
+    plt.close(fig)
+
+    response = HttpResponse(buf.getvalue(), content_type="image/jpg")
+    response["Content-Disposition"] = 'attachment; filename="sales.jpg"'
+    return response

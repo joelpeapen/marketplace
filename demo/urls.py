@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app import views
+from app import views, utils
 
 handler400 = "app.views.err"
 handler403 = "app.views.err"
@@ -52,6 +52,7 @@ urlpatterns = [
     path("cart/update/<int:id>", views.cart_update.as_view(), name="cart-update"),
     path("checkout/", views.checkout.as_view(), name="checkout"),
     path("sales/", views.sales.as_view(), name="sales"),
+    path("sales/plot/", utils.sales_plot, name="sales-plot"),
     path("purchases/", views.purchases.as_view(), name="purchases"),
     path("buyers/<int:id>", views.buyers.as_view(), name="buyers"),
     path("tags/<str:name>/", views.tags.as_view(), name="tags"),
