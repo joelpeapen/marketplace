@@ -11,7 +11,6 @@ class User(AbstractUser):
     pic = models.ImageField(
         upload_to="images/profiles/", default="images/profiles/profile_default.png"
     )
-    purchases = models.ManyToManyField("History", related_name="products_bought")
     bio = models.TextField()
 
 
@@ -30,7 +29,7 @@ class Product(models.Model):
     buyers = models.ManyToManyField("User", related_name="buyers")
 
     def is_bought(self, user):
-        return user.purchases.filter(pid=self.id).exists()
+        return History.objects.filter(user=user, pid=self.id).exists()
 
     def make_rating(self):
         r = Comment.objects.filter(product=self).aggregate(average=Avg("rating"))
@@ -107,7 +106,7 @@ class Cart(models.Model):
     def checkout(self):
         History.status_remove()
         for item in self.get_items():
-            h = History.objects.create(
+            History.objects.create(
                 user=self.user,
                 username=self.user.username,
                 author=item.product.author,
@@ -118,7 +117,6 @@ class Cart(models.Model):
                 total=item.product.price * item.quantity,
                 cart_status=True,
             )
-            self.user.purchases.add(h)
             item.product.buyers.add(self.user)
             item.product.stock -= item.quantity
             item.product.save()
@@ -160,10 +158,15 @@ class Notify(models.Model):
     on_comment = models.BooleanField(default=True)
     on_sale = models.BooleanField(default=True)
 
+
 class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reporter")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    reporter = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reporter"
+    )
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, null=True, blank=True
+    )
     spam = models.BooleanField(default=False)
     scam = models.BooleanField(default=False)
     other = models.CharField(max_length=250)

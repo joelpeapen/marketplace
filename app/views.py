@@ -574,7 +574,7 @@ class checkout(View):
         cart = get_object_or_404(Cart, user=request.user)
         cart.checkout()
 
-        checked = request.user.purchases.filter(cart_status=True)
+        checked = History.objects.filter(user=request.user, cart_status=True)
         count = checked.count()
 
         send_purchase_email(request.user.email, checked)
