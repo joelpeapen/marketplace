@@ -201,6 +201,18 @@ aside.user {
   }
 }
 
+.reported {
+  margin: 10px 0;
+
+
+  p {
+    font-weight: bold;
+    font-size: 11px;
+    color: $orange;
+    margin: 1px;
+  }
+}
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -339,30 +351,55 @@ a:hover:not(nav a) {
   h3 {
     text-align: center;
   }
+}
 
-  #help {
-    top: 75%;
+#popup {
+  top: 75%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+
+  max-width: 30%;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: $navy-dark;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  &.report {
+    top: 55%;
     left: 50%;
-    position: fixed;
-    transform: translate(-50%, -50%);
+    color: white;
+  }
+}
 
-    max-width: 30%;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: $navy-dark;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.poplink,
+#popup {
+  text-align: center;
+
+  button[type="submit"] {
+    color: $green !important;
   }
 
-  .loginlink,
-  #help {
-    text-align: center;
+  button {
+    all: unset;
+    color: $yellow !important;
+    cursor: pointer;
 
-    button {
-      all: unset;
-      color: $yellow;
-      cursor: pointer;
-    }
   }
+}
+
+.h150 {
+  width: 500px;
+  height: 150px;
+}
+
+.h300 {
+  width: 500px;
+}
+
+#other-div,
+#scam-div {
+  display: none;
 }
 
 .add {

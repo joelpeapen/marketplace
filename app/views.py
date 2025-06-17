@@ -14,6 +14,7 @@ from app.models import (
     EmailConfirmationToken,
     History,
     Product,
+    Report,
     Tag,
     User,
     Notify,
@@ -250,11 +251,19 @@ class user(View):
                 .annotate(num_buyers=Count("buyers"))
                 .order_by("-rating", "-num_buyers")
             )
-            return render(
-                request,
-                "user.html",
-                {"profile": profile, "user": request.user, "products": products},
-            )
+
+            data = {
+                "profile": profile,
+                "user": request.user,
+                "products": products,
+            }
+
+            try:
+                data["reported"] = Report.objects.filter(user=profile).exists()
+            except Report.DoesNotExist:
+                pass
+
+            return render(request, "user.html", data)
 
         # /user/ -> logged-in user's page
         if request.user.is_authenticated:
@@ -846,3 +855,45 @@ def set_password_confirm(request):
         except EmailConfirmationToken.DoesNotExist:
             data = {"is_password_confirmed": False, "type": type}
             return render(request, "pass_confirm.html", data)
+
+
+class report(View):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
+
+        username = request.POST.get("user", None)
+        report = request.POST.get("report", None)
+        user = User.objects.get(username=username)
+
+        if user and report:
+            r = Report.objects.create(user=user, reporter=request.user)
+
+            if report == "Spam":
+                r.spam = True
+            if report == "Scam":
+                p = request.POST.get("scam-pid", None)
+
+                try:
+                    product = Product.objects.get(pk=p)
+                    if product.author != user:
+                        messages.error(
+                            request, f"Product {p} does not belong to {username}"
+                        )
+                        r.delete()
+                        return redirect(f"/user/{user}")
+                except Product.DoesNotExist:
+                    messages.error(request, f"Product {p} does not exist")
+                    r.delete()
+                    return redirect(f"/user/{user}")
+
+                r.scam = True
+                r.product = product
+            if report == "Other":
+                text = request.POST.get("other-report", None)
+                if text:
+                    r.other = text
+
+            r.save()
+
+        return redirect(f"/user/{user}")

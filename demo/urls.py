@@ -66,5 +66,6 @@ urlpatterns = [
     path("pass-mail/", views.pass_mail.as_view(), name="pass-mail"),
     path("passreset", views.pass_reset.as_view(), name="pass-reset"),
     path("send-pass-mail-confirm/", views.send_pass_mail_confirm, name="send-pass-mail-confirm"),
-    path("set-password-confirm/", views.set_password_confirm, name="set-password-confirm")
+    path("set-password-confirm/", views.set_password_confirm, name="set-password-confirm"),
+    path("report/", views.report.as_view(), name="report")
 ]

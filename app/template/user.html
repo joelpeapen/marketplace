@@ -18,7 +18,40 @@
                 <p>{{ profile.bio }}</p>
                 {% endif %}
             </div>
+
+            <div class="reported">
+            {% if reported == True %} <p>USER HAS BEEN REPORTED</p> {% endif %}
+            </div>
+
             <p><em>joined on {{ profile.date_joined|date:"M d Y \a\t H:i" }}</em></p>
+
+            {% if user.is_authenticated and user != profile %}
+            <dialog id="popup" class="report form h150">
+                <form action="{% url "report" %}" method="post">
+                    {% csrf_token %}
+                    <label for="report-select">Select a Report:</label><br>
+                    <select name="report" id="report-select" required>
+                        <option value="">--Select a report--</option>
+                        <option value="Spam">Spam</option>
+                        <option value="Scam">Scam</option>
+                        <option value="Other">Other</option>
+                    </select><br>
+                    <div class="input" id="scam-div">
+                        <label for="scam-product">Product ID</label>
+                        <input id="scam-product" type="number" name="scam-pid">
+                    </div>
+                    <div class="input" id="other-div">
+                        <label for="other-report">Details</label>
+                        <textarea id="other-report" name="other-report" placeholder="(250 characters)" rows=10 maxlength=250 required></textarea>
+                    </div>
+                    <input type="hidden" name="user" value="{{ profile }}"/>
+                    <button type="submit">Submit Report</button>
+                </form>
+                <button onclick="popup.close()">Close</button>
+            </dialog>
+            <div class="poplink"><button onclick="popup.showModal()">Report</button></div>
+            {% endif %}
+
         </aside>
 
         <main>
@@ -47,7 +80,7 @@
                 {% endfor %}
             </div>
             {% else %}
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and user == profile %}
                 <p>You have no products</p>
                 {% else %}
                 <p>This user has no products</p>

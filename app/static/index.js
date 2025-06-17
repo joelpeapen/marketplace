@@ -108,4 +108,35 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
+    const report = document.getElementById("report-select")
+    if (report) {
+        report.addEventListener("change", function() {
+            text = document.getElementById("other-div")
+            textbox = document.getElementById("other-report")
+            pop = document.getElementById("popup")
+            scam = document.getElementById("scam-div")
+            scampid = document.getElementById("scam-product")
+
+            if (report.value === "Other") {
+                text.style.display = "block"
+                pop.classList.remove("h150");
+                pop.classList.add("h300");
+            } else {
+                text.style.display = "none"
+                pop.style.height = 150
+                pop.classList.remove("h300");
+                pop.classList.add("h150");
+                textbox.removeAttribute("required", "")
+            }
+
+            if (report.value === "Scam") {
+                scam.style.display = "block"
+                scampid.setAttribute("required", "required")
+            } else {
+                scam.style.display = "none"
+                scampid.removeAttribute("required", "")
+            }
+        });
+    }
 });

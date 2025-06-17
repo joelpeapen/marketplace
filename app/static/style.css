@@ -161,6 +161,16 @@ aside.user p:last-of-type {
   color: #9198a1;
 }
 
+.reported {
+  margin: 10px 0;
+}
+.reported p {
+  font-weight: bold;
+  font-size: 11px;
+  color: #fe8019;
+  margin: 1px;
+}
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -274,7 +284,8 @@ a:hover:not(nav a) {
 .lr h3 {
   text-align: center;
 }
-.lr #help {
+
+#popup {
   top: 75%;
   left: 50%;
   position: fixed;
@@ -285,15 +296,39 @@ a:hover:not(nav a) {
   background-color: #0c1a24;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.lr .loginlink,
-.lr #help {
+#popup.report {
+  top: 55%;
+  left: 50%;
+  color: white;
+}
+
+.poplink,
+#popup {
   text-align: center;
 }
-.lr .loginlink button,
-.lr #help button {
+.poplink button[type=submit],
+#popup button[type=submit] {
+  color: #4cca51 !important;
+}
+.poplink button,
+#popup button {
   all: unset;
-  color: #fabd2f;
+  color: #fabd2f !important;
   cursor: pointer;
+}
+
+.h150 {
+  width: 500px;
+  height: 150px;
+}
+
+.h300 {
+  width: 500px;
+}
+
+#other-div,
+#scam-div {
+  display: none;
 }
 
 .add {

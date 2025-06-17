@@ -159,3 +159,11 @@ class Notify(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     on_comment = models.BooleanField(default=True)
     on_sale = models.BooleanField(default=True)
+
+class Report(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reporter")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    spam = models.BooleanField(default=False)
+    scam = models.BooleanField(default=False)
+    other = models.CharField(max_length=250)
