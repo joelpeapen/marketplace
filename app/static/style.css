@@ -70,6 +70,9 @@ nav #user {
 nav #user:hover {
   background-color: #0c1a24;
 }
+nav #user img {
+  border-radius: 50%;
+}
 
 .navitem {
   color: #ffffff;
@@ -89,10 +92,6 @@ nav #user:hover {
 
 .nlast {
   margin-left: auto;
-}
-
-.user {
-  border-radius: 50%;
 }
 
 .messages {
@@ -121,7 +120,22 @@ nav #user:hover {
   width: 100%;
 }
 
-aside.user {
+.menu {
+  padding: 0;
+}
+.menu a {
+  border-radius: 0;
+  padding: 13px 16px;
+}
+.menu a:hover {
+  text-decoration: none;
+}
+.menu .header {
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+}
+
+aside {
   display: flex;
   flex-direction: column;
   height: 88vh;
@@ -131,8 +145,8 @@ aside.user {
   border-right: 1px solid #9198a1;
   border-radius: 0;
 }
-aside.user h3 {
-  font-size: 30px;
+aside h3 {
+  font-size: 20px;
 }
 aside.user #flname {
   display: inline;
@@ -142,7 +156,7 @@ aside.user #flname {
 aside.user #flname a {
   font-size: 13px;
 }
-aside.user img.user {
+aside.user img {
   width: 100%;
   border-radius: 50%;
   border: 6px solid #304f64 !important;
@@ -150,6 +164,28 @@ aside.user img.user {
 }
 aside.user p:last-of-type {
   margin-top: auto;
+}
+aside.category {
+  width: 200px;
+  padding: 1.5rem 0;
+}
+aside.category label {
+  margin: 5px;
+}
+aside.category input {
+  margin: 3px;
+}
+aside.category button[type=submit] {
+  width: 50%;
+  padding: 1.2%;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin: 5px 0 8px 5px;
+  color: #ffffff;
+  background-color: #4caf50;
+}
+aside.category button[type=submit]:hover {
+  background-color: #4cca51;
 }
 
 .bio {
@@ -171,23 +207,6 @@ aside.user p:last-of-type {
   margin: 1px;
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-}
-.menu a {
-  border-radius: 0;
-  padding: 13px 16px;
-}
-.menu a:hover {
-  text-decoration: none;
-}
-.menu .header {
-  font-weight: 600;
-  padding: 0.7rem 1rem;
-}
-
 #umenu {
   top: 8%;
   margin-right: 10px;
@@ -195,6 +214,7 @@ aside.user p:last-of-type {
   left: auto !important;
   right: 0 !important;
   display: none;
+  flex-direction: column;
 }
 #umenu a[href="/user/"]::before {
   font-size: 20px;
@@ -257,13 +277,6 @@ a:hover:not(nav a) {
   border-radius: 6px;
   box-sizing: border-box;
   margin: 5px 0 8px;
-}
-.form button[type=submit] {
-  color: #ffffff;
-  background-color: #4caf50;
-}
-.form button[type=submit]:hover {
-  background-color: #4cca51;
 }
 .form .header {
   font-weight: 800;
@@ -991,6 +1004,13 @@ a:hover:not(nav a) {
   }
   .form button {
     color: #ffffff;
+  }
+  .form button[type=submit] {
+    color: #ffffff;
+    background-color: #4caf50;
+  }
+  .form button[type=submit]:hover {
+    background-color: #4cca51;
   }
   .reviews form,
   .form.search {

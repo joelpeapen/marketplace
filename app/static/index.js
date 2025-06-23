@@ -139,4 +139,23 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
+    if (!window.location.href.includes("/user/")) {
+        multiform("searchbar", "searchfilter")
+        multiform("searchfilter", "searchbar")
+    }
 });
+
+function multiform(form1, form2) {
+    document.getElementById(form1).addEventListener("submit", function(event) {
+        event.preventDefault();
+        const filter = document.getElementById(form2);
+
+        const formData = new FormData(this);
+        const filterData = new FormData(filter);
+        filterData.forEach((value, key) => formData.append(key, value));
+
+        const query = new URLSearchParams(formData).toString();
+        window.location.href = this.action + '?' + query;
+    })
+}

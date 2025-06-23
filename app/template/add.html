@@ -7,6 +7,17 @@
     <form class="form lr" method="post" enctype="multipart/form-data">
         <h3>Add Product</h3>
         {% csrf_token %}
+
+        <div class="input">
+            <label for="desc">Category</label><br>
+            <select name="category" id="category" required>
+                <option value="">--Select a category--</option>
+                {% for c in categories %}
+                <option value="{{ c.name }}">{{ c.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
         <div class="input">
             <label for="name">Name</label>
             <input id="name" type="text" name="product-name" maxlength=50 required>

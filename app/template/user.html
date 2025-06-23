@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <aside class="user">
-            <img class="user" src="/static{{ profile.pic.url }}" alt="profile picture">
+            <img src="/static{{ profile.pic.url }}" alt="profile picture">
             <h3>{{ profile.username }}</h3>
             <p id="flname">
             {% if profile.first_name %} {{ profile.first_name }} {% endif %}

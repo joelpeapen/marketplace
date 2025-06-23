@@ -10,6 +10,7 @@ from django.views import View
 
 from app.models import (
     Cart,
+    Category,
     Comment,
     EmailConfirmationToken,
     History,
@@ -307,12 +308,15 @@ class add(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect("/login")
-        return render(request, "add.html", {"user": request.user})
+
+        cats = Category.objects.all()
+        return render(request, "add.html", {"user": request.user, "categories": cats})
 
     def post(self, request):
         if not request.user.is_authenticated:
             return redirect("/login")
 
+        category = request.POST.get("category")
         name = request.POST.get("product-name")
         price = float(request.POST.get("price"))
         stock = int(request.POST.get("stock"))
@@ -328,9 +332,11 @@ class add(View):
             messages.error(request, "invalid stock")
             return redirect(request.META.get("HTTP_REFERER"))
 
-        if name and price:
+        if category and name and price:
+            cat = Category.objects.create(name=category)
             date = datetime.utcnow()
             data = {
+                "category": cat,
                 "name": name,
                 "author": author,
                 "price": price,
@@ -346,7 +352,7 @@ class add(View):
             product.save()
             return redirect(f"/product/{product.id}")
         else:
-            messages.error(request, "Must provide name and price")
+            messages.error(request, "Must fill in all fields")
             return redirect(request.META.get("HTTP_REFERER"))
 
 
@@ -416,9 +422,14 @@ class market(View):
             .annotate(num_buyers=Count("buyers"))
             .order_by("-rating", "-num_buyers")
         )
-        return render(
-            request, "market.html", {"user": request.user, "products": products}
-        )
+
+        data = {
+            "user": request.user,
+            "products": products,
+            "categories": Category.objects.all(),
+        }
+
+        return render(request, "market.html", data)
 
 
 class comment_add(View):
@@ -701,9 +712,10 @@ class tag_delete(View):
 
 class search(View):
     def get(self, request):
-        query = request.GET.get("query")
+        query = request.GET.get("query", None)
         username = request.GET.get("user", None)
         qf = Q(name__icontains=query) | Q(desc__icontains=query) & Q(stock__gt=0)
+        data = {}
 
         if username:
             try:
@@ -712,6 +724,11 @@ class search(View):
             except User.DoesNotExist:
                 u = None
 
+        filters = request.GET.getlist("filter")
+        if filters:
+            data["filters"] = filters
+            qf &= Q(category__name__in=filters)
+
         products = (
             Product.objects.filter(qf)
             .annotate(num_buyers=Count("buyers"))
@@ -719,15 +736,13 @@ class search(View):
             .distinct()
         )
 
-        return render(
-            request,
-            "search.html",
-            {
-                "query": query,
-                "username": username,
-                "products": products,
-            },
-        )
+        data["query"] = query
+        data["username"] = username
+        data["products"] = products
+        data["categories"] = Category.objects.all()
+        data["count"] = len(products)
+
+        return render(request, "search.html", data)
 
 
 def send_email_confirm(request):

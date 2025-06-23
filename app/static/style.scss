@@ -94,6 +94,10 @@ nav {
     &:hover {
       background-color: $navy-dark;
     }
+
+    img {
+      border-radius: 50%;
+    }
   }
 }
 
@@ -116,10 +120,6 @@ nav {
 
 .nlast {
   margin-left: auto;
-}
-
-.user {
-  border-radius: 50%;
 }
 
 @mixin floater($top, $r) {
@@ -155,7 +155,25 @@ nav {
   }
 }
 
-aside.user {
+.menu {
+  padding: 0;
+
+  a {
+    border-radius: 0;
+    padding: 13px 16px;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .header {
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+  }
+}
+
+aside {
   display: flex;
   flex-direction: column;
   height: 88vh;
@@ -166,28 +184,57 @@ aside.user {
   border-radius: 0;
 
   h3 {
-    font-size: 30px;
+    font-size: 20px;
   }
 
-  #flname {
-    display: inline;
-    font-size: 20px;
-    color: $grey;
+  &.user {
+    #flname {
+      display: inline;
+      font-size: 20px;
+      color: $grey;
 
-    a {
-      font-size: 13px;
+      a {
+        font-size: 13px;
+      }
+    }
+
+    img {
+      width: 100%;
+      border-radius: 50%;
+      border: 6px solid $navy-light !important;
+      margin: 0 0 5px 0;
+    }
+
+    p:last-of-type {
+      margin-top: auto;
     }
   }
 
-  img.user {
-    width: 100%;
-    border-radius: 50%;
-    border: 6px solid $navy-light !important;
-    margin: 0 0 5px 0;
-  }
+  &.category {
+    width: 200px;
+    padding: 1.5rem 0;
 
-  p:last-of-type {
-    margin-top: auto;
+    label {
+      margin: 5px;
+    }
+
+    input {
+      margin: 3px;
+    }
+
+    button[type="submit"] {
+      width: 50%;
+      padding: 1.2%;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin: 5px 0 8px 5px;
+      color: $white;
+      background-color: $green-dark;
+
+      &:hover {
+        background-color: $green;
+      }
+    }
   }
 }
 
@@ -213,29 +260,10 @@ aside.user {
   }
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-
-  a {
-    border-radius: 0;
-    padding: 13px 16px;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  .header {
-    font-weight: 600;
-    padding: 0.7rem 1rem;
-  }
-}
-
 #umenu {
   @include floater(8%, 10px);
   display: none;
+  flex-direction: column;
 
   a {
     &[href="/user/"] {
@@ -319,15 +347,6 @@ a:hover:not(nav a) {
     border-radius: 6px;
     box-sizing: border-box;
     margin: 5px 0 8px;
-  }
-
-  button[type="submit"] {
-    color: $white;
-    background-color: $green-dark;
-
-    &:hover {
-      background-color: $green;
-    }
   }
 
   .header {
@@ -1158,6 +1177,15 @@ a:hover:not(nav a) {
 
     button {
       color: $white;
+
+      &[type="submit"] {
+        color: $white;
+        background-color: $green-dark;
+
+        &:hover {
+          background-color: $green;
+        }
+      }
     }
   }
 

@@ -13,7 +13,7 @@
                 <div class="phead">
                     <div class="pname">
                         <h2>{{ product.name }}</h2>
-                        <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a></p>
+                        <p>by <a href="{% url 'user' product.author %}">{{ product.author }}</a> in <a href="{% url 'market' %}?filter={{ product.category.name }}">{{ product.category.name }}</a></p>
                         <div class="rating display">
                             {% for i in "12345" %}
                                 {% if forloop.counter <= product.rating %}

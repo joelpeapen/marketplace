@@ -24,6 +24,7 @@ class Product(models.Model):
     modify_date = models.DateTimeField()
     image = models.ImageField(upload_to="images/", default="images/default.png")
     stock = models.IntegerField(default=0)
+    category = models.ForeignKey("Category", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag", related_name="product_tags")
     carters = models.ManyToManyField("User", related_name="carted_users")
     buyers = models.ManyToManyField("User", related_name="buyers")
@@ -35,6 +36,10 @@ class Product(models.Model):
         r = Comment.objects.filter(product=self).aggregate(average=Avg("rating"))
         self.rating = r["average"] or 0
         self.save()
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=15)
 
 
 class Tag(models.Model):
@@ -154,18 +159,18 @@ class EmailConfirmationToken(models.Model):
 
 
 class Notify(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
     on_comment = models.BooleanField(default=True)
     on_sale = models.BooleanField(default=True)
 
 
 class Report(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
     reporter = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="reporter"
     )
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, null=True, blank=True
+        "Product", on_delete=models.CASCADE, null=True, blank=True
     )
     spam = models.BooleanField(default=False)
     scam = models.BooleanField(default=False)

@@ -1,13 +1,15 @@
 {% extends "layouts/base.html" %}
 
-    {% block title %} Search results for {{ query }} {% endblock title %}
+    {% block title %} Search results {% if query %} for {{ query }} {% endif %} {% endblock title %}
 
 {% block content %}
 
 <div class="container">
+    {% include './components/filter.html' %}
+
     <main>
         <div class="product-bar">
-            <h3>Search results for {{ query }}</h3>
+                <h3>Search results for {{ query }} ({{ count }})</h3>
         </div>
 
         {% include "./components/searchbar.html" with user=username query=query %}
