@@ -596,12 +596,13 @@ a:hover:not(nav a) {
   align-items: center;
   gap: 10px;
   padding: 5px 10px;
-  border-radius: 20px;
+  font-weight: 500;
+  border-radius: 2em;
 
   input[type="text"] {
     all: unset;
     max-width: 80px;
-    border-bottom: 1px solid $orange;
+    border-bottom: 1px solid $blue-light;
   }
 
   input[type="submit"] {
@@ -616,24 +617,22 @@ a:hover:not(nav a) {
   }
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-
-  a {
-    color: $orange;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-}
-
 .tag {
   @include tag-styles;
   margin: 3px 5px;
   flex: 0 0 15%;
   justify-content: space-around;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 #tag-delete {
@@ -645,8 +644,6 @@ a:hover:not(nav a) {
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  color: $white;
-  background-color: $red;
 }
 
 #tag-add-form {
@@ -1103,11 +1100,27 @@ a:hover:not(nav a) {
   }
 
   .tag {
-    background-color: $grey-dark;
+    background-color: $navy;
+    border: 1px solid $navy-light;
+    &:hover {
+      color: $white;
+      background-color: $blue-light;
+    }
+  }
+
+  .tags {
+    a {
+      color: $blue-light;
+    }
+  }
+
+  #tag-delete {
+    color: $white;
+    background-color: $red;
   }
 
   #tag-add-form {
-    background-color: $grey-dark;
+    background-color: $navy;
     border: 1px solid $navy-light;
 
     label,

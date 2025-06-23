@@ -499,23 +499,13 @@ a:hover:not(nav a) {
   max-width: 500px;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-}
-.tags a {
-  color: #fe8019;
-}
-.tags a:hover {
-  text-decoration: none;
-}
-
 .tag {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 5px 10px;
-  border-radius: 20px;
+  font-weight: 500;
+  border-radius: 2em;
   margin: 3px 5px;
   flex: 0 0 15%;
   justify-content: space-around;
@@ -523,7 +513,7 @@ a:hover:not(nav a) {
 .tag input[type=text] {
   all: unset;
   max-width: 80px;
-  border-bottom: 1px solid #fe8019;
+  border-bottom: 1px solid #1f6feb;
 }
 .tag input[type=submit] {
   all: unset;
@@ -536,6 +526,14 @@ a:hover:not(nav a) {
   background-color: #4cca51;
 }
 
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tags a:hover {
+  text-decoration: none;
+}
+
 #tag-delete {
   display: none;
   all: unset;
@@ -545,8 +543,6 @@ a:hover:not(nav a) {
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  color: #ffffff;
-  background-color: #ff4343;
 }
 
 #tag-add-form {
@@ -554,13 +550,14 @@ a:hover:not(nav a) {
   align-items: center;
   gap: 10px;
   padding: 5px 10px;
-  border-radius: 20px;
+  font-weight: 500;
+  border-radius: 2em;
   margin: 5px 5px;
 }
 #tag-add-form input[type=text] {
   all: unset;
   max-width: 80px;
-  border-bottom: 1px solid #fe8019;
+  border-bottom: 1px solid #1f6feb;
 }
 #tag-add-form input[type=submit] {
   all: unset;
@@ -949,10 +946,22 @@ a:hover:not(nav a) {
     box-shadow: 5px 5px #4793cc;
   }
   .tag {
-    background-color: #3d444d;
+    background-color: #082437;
+    border: 1px solid #304f64;
+  }
+  .tag:hover {
+    color: #ffffff;
+    background-color: #1f6feb;
+  }
+  .tags a {
+    color: #1f6feb;
+  }
+  #tag-delete {
+    color: #ffffff;
+    background-color: #ff4343;
   }
   #tag-add-form {
-    background-color: #3d444d;
+    background-color: #082437;
     border: 1px solid #304f64;
   }
   #tag-add-form label,
